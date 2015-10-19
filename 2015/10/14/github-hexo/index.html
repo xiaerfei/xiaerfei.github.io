@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="hexo 搭建博客以及过程和所遇到的问题," />
+  <meta name="keywords" content="Hexo,next" />
 
 
 
@@ -39,16 +39,28 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="just do it !">
+<meta name="description" content="##Mac下 搭建博客 之 hexo
+###引言：一直在CSDN写博客，但是CSDN对Markdown支持不是很好，而且还是在线，不是很方便。于是决定搭建一个自己的博客，正好github可以免费搭建博客，于是就搭建了一下。
+搭建的过程遇到很多的坑，在这里给大家说明，避免大家再次趟雷。
+###一、安装 HomeBrewHomeBrew 是 OS X 下的一个程式管理器，需要用他来安装其他程式。
+1r">
 <meta property="og:type" content="article">
 <meta property="og:title" content="github 搭建博客-hexo">
 <meta property="og:url" content="http://yoursite.com/2015/10/14/github-hexo/index.html">
 <meta property="og:site_name" content="二哥的博客">
-<meta property="og:description" content="just do it !">
-<meta property="og:updated_time" content="2015-10-14T15:01:45.000Z">
+<meta property="og:description" content="##Mac下 搭建博客 之 hexo
+###引言：一直在CSDN写博客，但是CSDN对Markdown支持不是很好，而且还是在线，不是很方便。于是决定搭建一个自己的博客，正好github可以免费搭建博客，于是就搭建了一下。
+搭建的过程遇到很多的坑，在这里给大家说明，避免大家再次趟雷。
+###一、安装 HomeBrewHomeBrew 是 OS X 下的一个程式管理器，需要用他来安装其他程式。
+1r">
+<meta property="og:updated_time" content="2015-10-19T13:46:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="github 搭建博客-hexo">
-<meta name="twitter:description" content="just do it !">
+<meta name="twitter:description" content="##Mac下 搭建博客 之 hexo
+###引言：一直在CSDN写博客，但是CSDN对Markdown支持不是很好，而且还是在线，不是很方便。于是决定搭建一个自己的博客，正好github可以免费搭建博客，于是就搭建了一下。
+搭建的过程遇到很多的坑，在这里给大家说明，避免大家再次趟雷。
+###一、安装 HomeBrewHomeBrew 是 OS X 下的一个程式管理器，需要用他来安装其他程式。
+1r">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -191,17 +203,30 @@
       
 
       
-        <span itemprop="articleBody"></span>
+        <span itemprop="articleBody"><p>##Mac下 搭建博客 之 hexo</p>
+<p>###引言：<br>一直在CSDN写博客，但是CSDN对Markdown支持不是很好，而且还是在线，不是很方便。于是决定搭建一个自己的博客，正好github可以免费搭建博客，于是就搭建了一下。</p>
+<p>搭建的过程遇到很多的坑，在这里给大家说明，避免大家再次趟雷。</p>
+<p>###一、安装 HomeBrew<br>HomeBrew 是 OS X 下的一个程式管理器，需要用他来安装其他程式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby <span class="operator">-e</span> <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span>"</span></span><br></pre></td></tr></table></figure>
+<p>###二、安装 NodeJS<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span>install node</span><br></pre></td></tr></table></figure></p>
+<p>###三、安装 Hexo<br>可以用 nodejs 自带 npm 安装,切到hexo</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="operator"><span class="keyword">install</span> hexo -<span class="keyword">g</span></span><br><span class="line">hexo init</span><br><span class="line">npm <span class="keyword">install</span></span></span><br></pre></td></tr></table></figure>
+<p>注意：在这里运行命令“npm install hexo -g”时可能会有错误</p>
+<p>1.错误：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">npm WARN locking <span class="keyword">Error</span>: EACCES, <span class="keyword">open</span> '/Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock'</span><br><span class="line">npm WARN locking    at <span class="keyword">Error</span> (native)</span><br><span class="line">npm WARN locking  /Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock failed &#123; [<span class="keyword">Error</span>: EACCES, <span class="keyword">open</span> '/Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock']</span><br><span class="line">npm WARN locking  errno: -13,</span><br><span class="line">npm WARN locking  code: 'EACCES',</span><br><span class="line">npm WARN locking  path: '/Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock' &#125;</span><br><span class="line">npm <span class="keyword">ERR</span>! Darwin 14.1.0</span><br><span class="line">npm <span class="keyword">ERR</span>! argv <span class="string">"node"</span> <span class="string">"/usr/local/bin/npm"</span> <span class="string">"install"</span> <span class="string">"hexo"</span> <span class="string">"-g"</span></span><br><span class="line">npm <span class="keyword">ERR</span>! node v0.12.0</span><br><span class="line">npm <span class="keyword">ERR</span>! npm  v2.10.0</span><br><span class="line"></span><br><span class="line">npm <span class="keyword">ERR</span>! Attempt to unlock /usr/<span class="keyword">local</span>/lib/node_modules/hexo, <span class="keyword">which</span> hasn't been locked</span><br></pre></td></tr></table></figure>
+<p>解决办法，运行以下命令：</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">sudo</span> <span class="comment">npm</span> <span class="comment">install</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">unsafe</span><span class="literal">-</span><span class="comment">perm</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">verbose</span> <span class="literal">-</span><span class="comment">g</span> <span class="comment">hexo</span></span><br></pre></td></tr></table></figure>
+<p>2.错误 运行“npm install”时</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node-pre-gyp <span class="operator"><span class="keyword">install</span> <span class="comment">--fallback-to-build</span></span></span><br></pre></td></tr></table></figure>
+<p>解决办法，运行以下命令：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="operator"><span class="keyword">install</span> <span class="comment">--production</span></span></span><br></pre></td></tr></table></figure>
+<p>###四、安装 GIT</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span>install git</span><br></pre></td></tr></table></figure>
+</span>
       
     </div>
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/hexo-搭建博客以及过程和所遇到的问题/" rel="tag">#hexo 搭建博客以及过程和所遇到的问题</a>
-          
-        </div>
       
 
       
@@ -288,7 +313,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">1</span>
+              <span class="site-state-item-count">0</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
