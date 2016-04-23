@@ -1,0 +1,431 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>JSPatch 学习 | 二哥的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="夏二飞">
+    
+
+    
+    <meta name="description" content="引言好久前就已经了解到JSPatch（JSPatch是iOS平台的热修复框架，能够及时的修复线上的一些小bug，iOS应用审核时间之长，大家都懂得），一直以来都没有抽出时间去学习，今天抽出时间来学习下，突然又发现只有官方的一些教程，自己照着写写满满都是泪（崩溃的次数多）。学JSPatch写法，首先大家需要先补一下JavaScript的知识。
+基础用法关于基础的用法大家可以先看官方的Wiki,大致有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JSPatch 学习">
+<meta property="og:url" content="http://yoursite.com/2016/04/23/JSPatch-stduy/index.html">
+<meta property="og:site_name" content="二哥的博客">
+<meta property="og:description" content="引言好久前就已经了解到JSPatch（JSPatch是iOS平台的热修复框架，能够及时的修复线上的一些小bug，iOS应用审核时间之长，大家都懂得），一直以来都没有抽出时间去学习，今天抽出时间来学习下，突然又发现只有官方的一些教程，自己照着写写满满都是泪（崩溃的次数多）。学JSPatch写法，首先大家需要先补一下JavaScript的知识。
+基础用法关于基础的用法大家可以先看官方的Wiki,大致有">
+<meta property="og:updated_time" content="2016-04-23T15:23:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JSPatch 学习">
+<meta name="twitter:description" content="引言好久前就已经了解到JSPatch（JSPatch是iOS平台的热修复框架，能够及时的修复线上的一些小bug，iOS应用审核时间之长，大家都懂得），一直以来都没有抽出时间去学习，今天抽出时间来学习下，突然又发现只有官方的一些教程，自己照着写写满满都是泪（崩溃的次数多）。学JSPatch写法，首先大家需要先补一下JavaScript的知识。
+基础用法关于基础的用法大家可以先看官方的Wiki,大致有">
+
+    
+    <link rel="alternative" href="/atom.xml" title="二哥的博客" type="application/atom+xml">
+    
+    
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="二哥的博客">二哥的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/04/23/JSPatch-stduy/" title="JSPatch 学习" itemprop="url">JSPatch 学习</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="夏二飞" target="_blank" itemprop="author">夏二飞</a>
+		
+  <p class="article-time">
+    <time datetime="2016-04-23T13:14:30.000Z" itemprop="datePublished"> 发布于 2016-04-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基础用法"><span class="toc-number">2.</span> <span class="toc-text">基础用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#require"><span class="toc-number">2.1.</span> <span class="toc-text">require</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#调用OC的方法"><span class="toc-number">2.2.</span> <span class="toc-text">调用OC的方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#常量、枚举、宏、全局变量"><span class="toc-number">2.3.</span> <span class="toc-text">常量、枚举、宏、全局变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#defineClass"><span class="toc-number">2.4.</span> <span class="toc-text">defineClass</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h3 id="引言">引言</h3><p>好久前就已经了解到JSPatch（JSPatch是iOS平台的热修复框架，能够及时的修复线上的一些小bug，iOS应用审核时间之长，大家都懂得），一直以来都没有抽出时间去学习，今天抽出时间来学习下，突然又发现只有官方的一些教程，自己照着写写满满都是泪（崩溃的次数多）。学JSPatch写法，首先大家需要先补一下JavaScript的知识。</p>
+<h3 id="基础用法">基础用法</h3><p>关于基础的用法大家可以先看<a href="https://github.com/bang590/JSPatch/wiki/JSPatch-基础用法" target="_blank" rel="external">官方的Wiki</a>,大致有13个知识点，我这里直接就上用法了。<br></p>
+<h4 id="require">require</h4><p>首先，用到哪个类就需要require一下，否则会崩溃，比如UIView、UILabel等等，中间逗号隔开</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'UILabel,UIView'</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="调用OC的方法">调用OC的方法</h4><p>因为JavaScript是链式语法，所以说和写OC有很大的不同,写的时候要注意</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'UIView, UIColor'</span>);</span><br><span class="line"><span class="keyword">var</span> view = UIView.alloc().init();<span class="comment">//实例方法</span></span><br><span class="line"><span class="keyword">var</span> red = UIColor.redColor();<span class="comment">//类方法</span></span><br></pre></td></tr></table></figure>
+<p>UIView 有很多的Property，这些Property如何调用呢？<br><br>等于调用这个 Property 的 getter / setter 方法，获取时记得加 (),如：</p>
+<figure class="highlight sml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">require(<span class="symbol">'UIView</span>, <span class="type">UIColor'</span>);</span><br><span class="line">var view = <span class="type">UIView</span>.alloc<span class="literal">()</span>.init<span class="literal">()</span>;</span><br><span class="line">view.setBackgroundColor(<span class="type">UIColor</span>.grayColor<span class="literal">()</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="常量、枚举、宏、全局变量">常量、枚举、宏、全局变量</h4><p>Objective-C 里的常量/枚举不能直接在 JS 上使用，可以直接在 JS 上用具体值代替：</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="keyword">label</span> = UILabel.alloc().init();</span><br><span class="line"><span class="keyword">label</span>.setTextAlignment(<span class="number">1</span>);<span class="comment">//这里需要写具体的值</span></span><br></pre></td></tr></table></figure>
+<p>宏也不使用，若定义的宏是一个值，可以在 JS 定义同样的全局变量代替，若定义的宏是程序，可以在JS展开宏</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">define</span> TABBAR_HEIGHT <span class="number">40</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> SCREEN_WIDTH [[UIScreen mainScreen] bounds].size.height</span></span><br><span class="line">[view setWidth:SCREEN_WIDTH height:TABBAR_HEIGHT];</span><br><span class="line"><span class="comment">//JS</span></span><br><span class="line">view.setWidth_height(<span class="number">40</span>, UIScreen.mainScreen().bounds().height);</span><br></pre></td></tr></table></figure>
+<p>若宏的值是某些在底层才能获取到的值，例如 CGFLOAT_MIN，可以通过在某个类或实例方法里将它返回，或者用添加扩展的方式提供支持，</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">JPMacroSupport</span></span></span><br><span class="line">+ (<span class="keyword">void</span>)main:(JSContext *)context</span><br><span class="line">&#123;</span><br><span class="line">  context[<span class="string">@"CGFLOAT_MIN"</span>] = ^<span class="built_in">CGFloat</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">CGFLOAT_MIN</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">require(<span class="string">'JPEngine'</span>).addExtensions([<span class="string">'JPMacroSupport'</span>])</span><br><span class="line">var <span class="built_in">float</span>M<span class="keyword">in</span> = CGFLOAT_MIN();</span><br></pre></td></tr></table></figure>
+<p>当然全局变量也是如此：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">NSString</span> *name;</span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">JPTestObject</span></span></span><br><span class="line">+ (<span class="built_in">NSString</span> *)name &#123;</span><br><span class="line">  <span class="keyword">return</span> name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">var</span> name = JPTestObject.<span class="function"><span class="title">name</span><span class="params">()</span></span> <span class="comment">//拿到全局变量值</span></span><br></pre></td></tr></table></figure>
+<h4 id="defineClass">defineClass</h4><p>在 defineClass 里定义 OC 已存在的方法即可覆盖:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">defineClass</span>(<span class="string">'ViewController'</span>, &#123;</span><br><span class="line">    <span class="tag">viewDidLoad</span>: <span class="tag">function</span>() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>如果想调用原方法，在方法名前加 ORIG 即可调用未覆盖前的 OC 原方法:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">defineClass(<span class="string">'ViewController'</span>, &#123;</span><br><span class="line">    viewDidLoad: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">self</span>.ORIGviewDidLoad();</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>下面是一个UILabel添加到View上的例子：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">require<span class="list">(<span class="quoted">'UILabel</span>,UIView,UIColor,UIFont')</span><span class="comment">;</span></span><br><span class="line"></span><br><span class="line">defineClass<span class="list">(<span class="quoted">'ViewController</span>', &#123;</span><br><span class="line">    viewDidLoad: function<span class="list">()</span> &#123;</span><br><span class="line">        self.ORIGviewDidLoad<span class="list">()</span><span class="comment">;</span></span><br><span class="line">        var view = self.view<span class="list">()</span><span class="comment">;</span></span><br><span class="line">        var label = UILabel.alloc<span class="list">()</span>.initWithFrame<span class="list">(&#123;x:<span class="number">100</span>, y:<span class="number">200</span>, width:<span class="number">100</span>, height:<span class="number">100</span>&#125;)</span><span class="comment">;</span></span><br><span class="line">        label.setFont<span class="list">(<span class="keyword">UIFont</span>.systemFontOfSize<span class="list">(<span class="number">10</span>)</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setTextAlignment<span class="list">(<span class="number">1</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setText<span class="list">(<span class="string">"你好 ！"</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setBackgroundColor<span class="list">(<span class="keyword">UIColor</span>.grayColor<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">        view.addSubview<span class="list">(<span class="keyword">label</span>)</span><span class="comment">;</span></span><br><span class="line">        </span><br><span class="line">        var background = UIView.alloc<span class="list">()</span>.initWithFrame<span class="list">(&#123;x:<span class="number">100</span>,y:<span class="number">350</span>,width:<span class="number">100</span>,height:<span class="number">100</span>&#125;)</span><span class="comment">;</span></span><br><span class="line">        background.setBackgroundColor<span class="list">(<span class="keyword">UIColor</span>.grayColor<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">        self.setBackgroundView<span class="list">(<span class="keyword">background</span>)</span><span class="comment">;</span></span><br><span class="line">        view.addSubview<span class="list">(<span class="keyword">self</span>.backgroundView<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>开始的时候一直不知道OC中的“self.view”在JavaScript中怎么调用，试了好久直接调用“self.view()”就行了。</p>
+<p><br><br><br></p>
+<hr>
+<p>参考：<br><br><a href="https://github.com/bang590/JSPatch/wiki" target="_blank" rel="external">官方的Wiki</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/04/23/JSPatch-stduy/" data-title="JSPatch 学习 | 二哥的博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/03/27/studytask/"  title="学习资料总结">
+ <strong>下一篇：</strong><br/> 
+ <span>学习资料总结
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基础用法"><span class="toc-number">2.</span> <span class="toc-text">基础用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#require"><span class="toc-number">2.1.</span> <span class="toc-text">require</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#调用OC的方法"><span class="toc-number">2.2.</span> <span class="toc-text">调用OC的方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#常量、枚举、宏、全局变量"><span class="toc-number">2.3.</span> <span class="toc-text">常量、枚举、宏、全局变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#defineClass"><span class="toc-number">2.4.</span> <span class="toc-text">defineClass</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="夏二飞">夏二飞</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
