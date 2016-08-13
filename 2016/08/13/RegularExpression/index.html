@@ -1,0 +1,461 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>iOS 正则表达式 | 二哥的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="夏二飞">
+    
+
+    
+    <meta name="description" content="iOS 正则表达式服务器每次返回的时间格式是这个样子的：
+12016-08-13T13:06:48Z
+显示的时候只要年月日 或者是时分秒：
+122016-08-1313:06:48
+这里常用的有两种方法
+
+使用 NSDateFormatter 格式化，来解析这时间格式的字符串，转换成 NSDate 格式，然后在格式化一次转换成相应的格式（这种方法感觉很蛋疼，折腾了两次）；
+使用 NSString">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 正则表达式">
+<meta property="og:url" content="http://yoursite.com/2016/08/13/RegularExpression/index.html">
+<meta property="og:site_name" content="二哥的博客">
+<meta property="og:description" content="iOS 正则表达式服务器每次返回的时间格式是这个样子的：
+12016-08-13T13:06:48Z
+显示的时候只要年月日 或者是时分秒：
+122016-08-1313:06:48
+这里常用的有两种方法
+
+使用 NSDateFormatter 格式化，来解析这时间格式的字符串，转换成 NSDate 格式，然后在格式化一次转换成相应的格式（这种方法感觉很蛋疼，折腾了两次）；
+使用 NSString">
+<meta property="og:updated_time" content="2016-08-13T08:36:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 正则表达式">
+<meta name="twitter:description" content="iOS 正则表达式服务器每次返回的时间格式是这个样子的：
+12016-08-13T13:06:48Z
+显示的时候只要年月日 或者是时分秒：
+122016-08-1313:06:48
+这里常用的有两种方法
+
+使用 NSDateFormatter 格式化，来解析这时间格式的字符串，转换成 NSDate 格式，然后在格式化一次转换成相应的格式（这种方法感觉很蛋疼，折腾了两次）；
+使用 NSString">
+
+    
+    <link rel="alternative" href="/atom.xml" title="二哥的博客" type="application/atom+xml">
+    
+    
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="二哥的博客">二哥的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/08/13/RegularExpression/" title="iOS 正则表达式" itemprop="url">iOS 正则表达式</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="夏二飞" target="_blank" itemprop="author">夏二飞</a>
+		
+  <p class="article-time">
+    <time datetime="2016-08-13T08:36:18.000Z" itemprop="datePublished"> 发布于 2016-08-13</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#iOS_正则表达式"><span class="toc-number">1.</span> <span class="toc-text">iOS 正则表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用正则表达式来解析这个时间格式"><span class="toc-number">2.</span> <span class="toc-text">使用正则表达式来解析这个时间格式</span></a></li></ol>
+		
+		</div>
+		
+		<h3 id="iOS_正则表达式">iOS 正则表达式</h3><p>服务器每次返回的时间格式是这个样子的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2016</span>-<span class="number">08</span>-<span class="number">13</span>T13:<span class="number">06</span>:<span class="number">48</span>Z</span><br></pre></td></tr></table></figure>
+<p>显示的时候只要年月日 或者是时分秒：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2016</span>-<span class="number">08</span>-<span class="number">13</span></span><br><span class="line"><span class="number">13</span>:<span class="number">06</span>:<span class="number">48</span></span><br></pre></td></tr></table></figure>
+<p>这里常用的有两种方法<br></p>
+<ol>
+<li>使用 NSDateFormatter 格式化，来解析这时间格式的字符串，转换成 NSDate 格式，然后在格式化一次转换成相应的格式（这种方法感觉很蛋疼，折腾了两次）；<br></li>
+<li>使用 NSString 分割方法:</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">-</span> (<span class="tag">NSArray</span>&lt;<span class="tag">NSString</span> *&gt; *)<span class="rule"><span class="attribute">componentsSeparatedByString</span>:<span class="value">(NSString *)separator</span></span>;</span><br></pre></td></tr></table></figure>
+<p>以 “T” 进行分割，最终得出自己想要的字符串；</p>
+<hr>
+<p>这两种方法是常用的方法，但是用起来总感觉不爽，后来想想还可以用 正则表达式，那就试试</p>
+<h3 id="使用正则表达式来解析这个时间格式">使用正则表达式来解析这个时间格式</h3><p>在iOS中通常使用 “NSRegularExpression” 进行字符串匹配，一般是这个样子：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">     <span class="built_in">NSString</span> *string = <span class="string">@"字符串xxxx"</span>;</span><br><span class="line">     <span class="built_in">NSString</span> *regexString = <span class="string">@"正则表达式"</span>;</span><br><span class="line">     <span class="built_in">NSRegularExpression</span> *regex = [<span class="built_in">NSRegularExpression</span> regularExpressionWithPattern:regexString options:<span class="built_in">NSRegularExpressionCaseInsensitive</span> error:<span class="literal">nil</span>];</span><br><span class="line">     <span class="built_in">NSArray</span> *matches = [regex matchesInString:string options:<span class="built_in">NSMatchingReportProgress</span> range:<span class="built_in">NSMakeRange</span>(<span class="number">0</span>, string<span class="variable">.length</span>)];</span><br><span class="line">     <span class="keyword">for</span> (<span class="built_in">NSTextCheckingResult</span> *match <span class="keyword">in</span> matches) &#123;</span><br><span class="line"><span class="comment">// do something...</span></span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>下面我们来写这个正则来匹配出  年月日 和 时分秒。具体的正则写法请自行Google，不过我在这里介绍一个好网站<a href="https://regexper.com" target="_blank" rel="external">regexper</a>可以分析你写的正则表达式；匹配时间的正则我已经写好了：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^(\\d&#123;<span class="number">4</span>&#125;-\\d&#123;<span class="number">1</span>,<span class="number">2</span>&#125;-\\d&#123;<span class="number">1</span>,<span class="number">2</span>&#125;)T(\\d&#123;<span class="number">1</span>,<span class="number">2</span>&#125;:\\d&#123;<span class="number">1</span>,<span class="number">2</span>&#125;:\\d&#123;<span class="number">1</span>,<span class="number">2</span>&#125;)Z$</span><br></pre></td></tr></table></figure>
+<p>在正则表达式中 有group之分，看上面的正则：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">group<span class="preprocessor">#<span class="number">1</span>:</span></span><br><span class="line">(\\d&#123;<span class="number">4</span>&#125;-\\d&#123;<span class="number">1</span>,<span class="number">2</span>&#125;-\\d&#123;<span class="number">1</span>,<span class="number">2</span>&#125;)</span><br><span class="line">group<span class="preprocessor">#<span class="number">2</span>:</span></span><br><span class="line">(\\d&#123;<span class="number">1</span>,<span class="number">2</span>&#125;:\\d&#123;<span class="number">1</span>,<span class="number">2</span>&#125;:\\d&#123;<span class="number">1</span>,<span class="number">2</span>&#125;)</span><br></pre></td></tr></table></figure>
+<p>group#1 匹配的是年月日，group#2匹配的是时分秒，正则匹配之后，我们是可以分别取出这两个group匹配出来的值的；在iOS中“NSRegularExpression”类，也是有的；下面是匹配：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *string = <span class="string">@"2016-08-13T13:06:48Z"</span>;</span><br><span class="line"><span class="built_in">NSString</span> *regexString = <span class="string">@"^(\\d&#123;4&#125;-\\d&#123;1,2&#125;-\\d&#123;1,2&#125;)T(\\d&#123;1,2&#125;:\\d&#123;1,2&#125;:\\d&#123;1,2&#125;)Z$"</span>;</span><br><span class="line"><span class="built_in">NSRegularExpression</span> *regex = [<span class="built_in">NSRegularExpression</span> regularExpressionWithPattern:regexString options:<span class="built_in">NSRegularExpressionCaseInsensitive</span> error:<span class="literal">nil</span>];</span><br><span class="line"><span class="built_in">NSArray</span> *matches = [regex matchesInString:string options:<span class="built_in">NSMatchingReportProgress</span> range:<span class="built_in">NSMakeRange</span>(<span class="number">0</span>, string<span class="variable">.length</span>)];</span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">NSTextCheckingResult</span> *match <span class="keyword">in</span> matches) &#123;</span><br><span class="line">    <span class="built_in">NSString</span>* group0 = [string substringWithRange:[match rangeAtIndex:<span class="number">0</span>]];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"group0 :%@"</span>, group0);</span><br><span class="line">    <span class="built_in">NSString</span>* group1 = [string substringWithRange:[match rangeAtIndex:<span class="number">1</span>]];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"group1 :%@"</span>, group1);</span><br><span class="line">    <span class="built_in">NSString</span>* group2 = [string substringWithRange:[match rangeAtIndex:<span class="number">2</span>]];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"group2 :%@"</span>, group2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用正则匹配出来之后，NSTextCheckingResult 中 使用 “[match rangeAtIndex:xxx]” 可以取出来。在这里NSTextCheckingResult 中 ：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">NSTextCheckingResult 类属性numberOfRanges 为<span class="number">3</span></span><br><span class="line">[match rangeAtIndex:<span class="number">0</span>] 匹配的是全量即：<span class="number">2016</span>-<span class="number">08</span>-<span class="number">13</span>T13:<span class="number">06</span>:<span class="number">48</span>Z</span><br><span class="line">[match rangeAtIndex:<span class="number">1</span>] 匹配的是：<span class="number">2016</span>-<span class="number">08</span>-<span class="number">13</span></span><br><span class="line">[match rangeAtIndex:<span class="number">2</span>] 匹配的是：<span class="number">13</span>:<span class="number">06</span>:<span class="number">48</span></span><br></pre></td></tr></table></figure>
+<p>这下处理不就简单了许多。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/08/13/RegularExpression/" data-title="iOS 正则表达式 | 二哥的博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/07/03/atom-Plug-In/"  title="Atom 插件编写(snippets)">
+ <strong>下一篇：</strong><br/> 
+ <span>Atom 插件编写(snippets)
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/08/13/RegularExpression/" data-title="iOS 正则表达式" data-url="http://yoursite.com/2016/08/13/RegularExpression/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#iOS_正则表达式"><span class="toc-number">1.</span> <span class="toc-text">iOS 正则表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用正则表达式来解析这个时间格式"><span class="toc-number">2.</span> <span class="toc-text">使用正则表达式来解析这个时间格式</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.sina.com.cn/s/articlelist_2774672495_0_1.html" target="_blank" title="浪漫的zerlinda的博客">浪漫的zerlinda的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2371405300" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/https://github.com/xiaerfei" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="夏二飞">夏二飞</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"xiaerfei"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
