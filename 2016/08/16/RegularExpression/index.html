@@ -11,37 +11,37 @@
     
 
     
-    <meta name="description" content="iOS 正则表达式服务器每次返回的时间格式是这个样子的：
-12016-08-13T13:06:48Z
-显示的时候只要年月日 或者是时分秒：
-122016-08-1313:06:48
-这里常用的有两种方法
-
-使用 NSDateFormatter 格式化，来解析这时间格式的字符串，转换成 NSDate 格式，然后在格式化一次转换成相应的格式（这种方法感觉很蛋疼，折腾了两次）；
-使用 NSString">
+    <meta name="description" content="正则表达式界定符表示一个正则表达式的开始和结束
+1/[0-9]/
+在iOS中不加界定符
+原子①可见原子Unicode 编码表中用键盘输出后可见的字符
+1234- 标点；“_?. 等等- 英文数字a-z,A-Z,0-9- 数理化公式符号- 其他可见字符
+②不可见原子Unicode 编码表中用键盘输出后不可见的字符
+12345- 换行符\n- 回车 \r- 制表符 \t- 空格- 其他不可见符号
+元字">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS 正则表达式">
-<meta property="og:url" content="http://yoursite.com/2016/08/13/RegularExpression/index.html">
+<meta property="og:url" content="http://yoursite.com/2016/08/16/RegularExpression/index.html">
 <meta property="og:site_name" content="二哥的博客">
-<meta property="og:description" content="iOS 正则表达式服务器每次返回的时间格式是这个样子的：
-12016-08-13T13:06:48Z
-显示的时候只要年月日 或者是时分秒：
-122016-08-1313:06:48
-这里常用的有两种方法
-
-使用 NSDateFormatter 格式化，来解析这时间格式的字符串，转换成 NSDate 格式，然后在格式化一次转换成相应的格式（这种方法感觉很蛋疼，折腾了两次）；
-使用 NSString">
-<meta property="og:updated_time" content="2016-08-13T08:36:18.000Z">
+<meta property="og:description" content="正则表达式界定符表示一个正则表达式的开始和结束
+1/[0-9]/
+在iOS中不加界定符
+原子①可见原子Unicode 编码表中用键盘输出后可见的字符
+1234- 标点；“_?. 等等- 英文数字a-z,A-Z,0-9- 数理化公式符号- 其他可见字符
+②不可见原子Unicode 编码表中用键盘输出后不可见的字符
+12345- 换行符\n- 回车 \r- 制表符 \t- 空格- 其他不可见符号
+元字">
+<meta property="og:updated_time" content="2016-08-16T13:59:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS 正则表达式">
-<meta name="twitter:description" content="iOS 正则表达式服务器每次返回的时间格式是这个样子的：
-12016-08-13T13:06:48Z
-显示的时候只要年月日 或者是时分秒：
-122016-08-1313:06:48
-这里常用的有两种方法
-
-使用 NSDateFormatter 格式化，来解析这时间格式的字符串，转换成 NSDate 格式，然后在格式化一次转换成相应的格式（这种方法感觉很蛋疼，折腾了两次）；
-使用 NSString">
+<meta name="twitter:description" content="正则表达式界定符表示一个正则表达式的开始和结束
+1/[0-9]/
+在iOS中不加界定符
+原子①可见原子Unicode 编码表中用键盘输出后可见的字符
+1234- 标点；“_?. 等等- 英文数字a-z,A-Z,0-9- 数理化公式符号- 其他可见字符
+②不可见原子Unicode 编码表中用键盘输出后不可见的字符
+12345- 换行符\n- 回车 \r- 制表符 \t- 空格- 其他不可见符号
+元字">
 
     
     <link rel="alternative" href="/atom.xml" title="二哥的博客" type="application/atom+xml">
@@ -92,14 +92,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/08/13/RegularExpression/" title="iOS 正则表达式" itemprop="url">iOS 正则表达式</a>
+      <a href="/2016/08/16/RegularExpression/" title="iOS 正则表达式" itemprop="url">iOS 正则表达式</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="夏二飞" target="_blank" itemprop="author">夏二飞</a>
 		
   <p class="article-time">
-    <time datetime="2016-08-13T08:36:18.000Z" itemprop="datePublished"> 发布于 2016-08-13</time>
+    <time datetime="2016-08-16T13:59:49.000Z" itemprop="datePublished"> 发布于 2016-08-16</time>
     
   </p>
 </header>
@@ -108,11 +108,28 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#iOS_正则表达式"><span class="toc-number">1.</span> <span class="toc-text">iOS 正则表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用正则表达式来解析这个时间格式"><span class="toc-number">2.</span> <span class="toc-text">使用正则表达式来解析这个时间格式</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#正则表达式"><span class="toc-number">1.</span> <span class="toc-text">正则表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#界定符"><span class="toc-number">1.0.1.</span> <span class="toc-text">界定符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#原子"><span class="toc-number">1.0.2.</span> <span class="toc-text">原子</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#元字符"><span class="toc-number">1.0.3.</span> <span class="toc-text">元字符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#量词"><span class="toc-number">1.0.4.</span> <span class="toc-text">量词</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#边界控制与模式单元"><span class="toc-number">1.0.5.</span> <span class="toc-text">边界控制与模式单元</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#修正模式"><span class="toc-number">1.0.6.</span> <span class="toc-text">修正模式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iOS_正则表达式"><span class="toc-number">2.</span> <span class="toc-text">iOS 正则表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用正则表达式来解析这个时间格式"><span class="toc-number">3.</span> <span class="toc-text">使用正则表达式来解析这个时间格式</span></a></li></ol>
 		
 		</div>
 		
-		<h3 id="iOS_正则表达式">iOS 正则表达式</h3><p>服务器每次返回的时间格式是这个样子的：</p>
+		<h3 id="正则表达式">正则表达式</h3><h5 id="界定符">界定符</h5><p>表示一个正则表达式的开始和结束</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/[<span class="number">0</span>-<span class="number">9</span>]/</span><br></pre></td></tr></table></figure>
+<p>在iOS中不加界定符</p>
+<h5 id="原子">原子</h5><p>①可见原子<br><br>Unicode 编码表中用键盘输出后可见的字符</p>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-<span class="ruby"> 标点；“<span class="number">_</span>?. 等等</span><br><span class="line"></span>-<span class="ruby"> 英文数字a-z,<span class="constant">A</span>-<span class="constant">Z</span>,<span class="number">0</span>-<span class="number">9</span></span><br><span class="line"></span>-<span class="ruby"> 数理化公式符号</span><br><span class="line"></span>-<span class="ruby"> 其他可见字符</span></span><br></pre></td></tr></table></figure>
+<p>②不可见原子<br><br>Unicode 编码表中用键盘输出后不可见的字符</p>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-<span class="ruby"> 换行符\n</span><br><span class="line"></span>-<span class="ruby"> 回车 \r</span><br><span class="line"></span>-<span class="ruby"> 制表符 \t</span><br><span class="line"></span>-<span class="ruby"> 空格</span><br><span class="line"></span>-<span class="ruby"> 其他不可见符号</span></span><br></pre></td></tr></table></figure>
+<h5 id="元字符">元字符</h5><p>①原子的筛选方式</p>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-<span class="ruby"> |   匹配两个或者多个分支选择</span><br><span class="line"></span>-<span class="ruby"> []  匹配方括号中的任意一个原子</span><br><span class="line"></span>-<span class="ruby"> [^] 匹配除方括号中的原子之外的任意字符</span></span><br></pre></td></tr></table></figure>
+<p>②原子的集合</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- .  匹配除换行符之外的任意字符</span><br><span class="line">- <span class="command">\d</span> 匹配任意一个十进制数字，即<span class="special">[</span>0-9<span class="special">]</span></span><br><span class="line">- <span class="command">\D</span> 匹配任意一个非十进制数字，即<span class="special">[</span>^0-9<span class="special">]</span></span><br><span class="line">- <span class="command">\s</span> 匹配一个不可见原子，即<span class="special">[</span><span class="command">\f</span><span class="command">\n</span><span class="command">\r</span><span class="command">\t</span><span class="command">\v</span><span class="special">]</span></span><br><span class="line">- <span class="command">\S</span> 匹配一个可见原子，即<span class="special">[</span>^<span class="command">\f</span><span class="command">\n</span><span class="command">\r</span><span class="command">\t</span><span class="command">\v</span><span class="special">]</span></span><br><span class="line">- <span class="command">\w</span> 匹配任意一个数字、字母或下划线，即<span class="special">[</span>0-9a-zA-Z_<span class="special">]</span></span><br><span class="line">- <span class="command">\W</span> 匹配任意一个非数字、字母或下划线，即<span class="special">[</span>^0-9a-zA-Z_<span class="special">]</span></span><br></pre></td></tr></table></figure>
+<h5 id="量词">量词</h5><figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-<span class="ruby"> &#123;n&#125;   表示其前面的原子恰好出现 n 次</span><br><span class="line"></span>-<span class="ruby"> &#123;n,&#125;  表示其前面的原子至少出现 n 次</span><br><span class="line"></span>-<span class="ruby"> &#123;n,m&#125; 表示其前面的原子恰好出现 n 次，最多出现m次</span><br><span class="line"></span>-<span class="ruby"> *     匹配<span class="number">0</span>次、<span class="number">1</span>次或者多次其之前的原子，即&#123;<span class="number">0</span>,&#125; </span><br><span class="line"></span>-<span class="ruby"> +     匹配一次或者多次其之前的原子，即&#123;<span class="number">1</span>,&#125;</span><br><span class="line"></span>-<span class="ruby"> ?     匹配<span class="number">0</span>次或者<span class="number">1</span>次其之前的原子，即&#123;<span class="number">0</span>,<span class="number">1</span>&#125;</span></span><br></pre></td></tr></table></figure>
+<h5 id="边界控制与模式单元">边界控制与模式单元</h5><figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-<span class="ruby"> ^  匹配字符串开始的位置</span><br><span class="line"></span>-<span class="ruby"> <span class="variable">$ </span> 匹配字符串结尾的位置</span><br><span class="line"></span>-<span class="ruby"> () 匹配其中的整体为一个原子</span></span><br></pre></td></tr></table></figure>
+<h5 id="修正模式">修正模式</h5><p>常见的修正模式</p>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-<span class="ruby"> <span class="constant">U</span> 懒惰匹配</span><br><span class="line"></span>-<span class="ruby"> i 忽略英文字母大小写</span><br><span class="line"></span>-<span class="ruby"> x 忽略空白</span><br><span class="line"></span>-<span class="ruby"> s 让元字符 <span class="string">` . `</span> 匹配包括换行符在内所有字符</span><br><span class="line"></span>-<span class="ruby"> e iOS 暂未知</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>好以上是正则的简单介绍，详细请看这个：<a href="http://www.jb51.net/tools/zhengze.html" target="_blank" rel="external">正则表达式30分钟入门教程</a></p>
+<h3 id="iOS_正则表达式">iOS 正则表达式</h3><p>服务器每次返回的时间格式是这个样子的：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2016</span>-<span class="number">08</span>-<span class="number">13</span>T13:<span class="number">06</span>:<span class="number">48</span>Z</span><br></pre></td></tr></table></figure>
 <p>显示的时候只要年月日 或者是时分秒：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2016</span>-<span class="number">08</span>-<span class="number">13</span></span><br><span class="line"><span class="number">13</span>:<span class="number">06</span>:<span class="number">48</span></span><br></pre></td></tr></table></figure>
@@ -148,7 +165,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://yoursite.com/2016/08/13/RegularExpression/" data-title="iOS 正则表达式 | 二哥的博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://yoursite.com/2016/08/16/RegularExpression/" data-title="iOS 正则表达式 | 二哥的博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -174,7 +191,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2016/08/13/RegularExpression/" data-title="iOS 正则表达式" data-url="http://yoursite.com/2016/08/13/RegularExpression/"></div>
+	<div class="ds-thread" data-thread-key="2016/08/16/RegularExpression/" data-title="iOS 正则表达式" data-url="http://yoursite.com/2016/08/16/RegularExpression/"></div>
 </section>
 
 
@@ -184,7 +201,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#iOS_正则表达式"><span class="toc-number">1.</span> <span class="toc-text">iOS 正则表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用正则表达式来解析这个时间格式"><span class="toc-number">2.</span> <span class="toc-text">使用正则表达式来解析这个时间格式</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#正则表达式"><span class="toc-number">1.</span> <span class="toc-text">正则表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#界定符"><span class="toc-number">1.0.1.</span> <span class="toc-text">界定符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#原子"><span class="toc-number">1.0.2.</span> <span class="toc-text">原子</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#元字符"><span class="toc-number">1.0.3.</span> <span class="toc-text">元字符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#量词"><span class="toc-number">1.0.4.</span> <span class="toc-text">量词</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#边界控制与模式单元"><span class="toc-number">1.0.5.</span> <span class="toc-text">边界控制与模式单元</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#修正模式"><span class="toc-number">1.0.6.</span> <span class="toc-text">修正模式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iOS_正则表达式"><span class="toc-number">2.</span> <span class="toc-text">iOS 正则表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用正则表达式来解析这个时间格式"><span class="toc-number">3.</span> <span class="toc-text">使用正则表达式来解析这个时间格式</span></a></li></ol>
  
   </div>
 
