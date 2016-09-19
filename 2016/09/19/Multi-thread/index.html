@@ -17,7 +17,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/09/19/Multi-thread/index.html">
 <meta property="og:site_name" content="二哥的博客">
 <meta property="og:description" content="iOS多线程前言在这篇文章中我整理了iOS多线程开发需要的一些知识点、方法和事项。本文主要讲述三部分 NSThread、Operation 和 GCD。本文不算是原创，是一些我觉得写的比较有质量文章的综合，文中摘抄了这些文章中的部分内容，在文中和文章末尾我已标注出处，之所以要摘抄是因为在需要之时，打开URL 是404 😂😂😂。我综合了这些文中给自己学习之用，也给大家方便查看之用，如有错误之处">
-<meta property="og:updated_time" content="2016-09-19T00:00:30.000Z">
+<meta property="og:updated_time" content="2016-09-19T00:03:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS多线程">
 <meta name="twitter:description" content="iOS多线程前言在这篇文章中我整理了iOS多线程开发需要的一些知识点、方法和事项。本文主要讲述三部分 NSThread、Operation 和 GCD。本文不算是原创，是一些我觉得写的比较有质量文章的综合，文中摘抄了这些文章中的部分内容，在文中和文章末尾我已标注出处，之所以要摘抄是因为在需要之时，打开URL 是404 😂😂😂。我综合了这些文中给自己学习之用，也给大家方便查看之用，如有错误之处">
@@ -78,7 +78,7 @@
 		<a href="/about" title="夏二飞" target="_blank" itemprop="author">夏二飞</a>
 		
   <p class="article-time">
-    <time datetime="2016-09-19T00:00:30.000Z" itemprop="datePublished"> 发布于 2016-09-19</time>
+    <time datetime="2016-09-19T00:03:50.000Z" itemprop="datePublished"> 发布于 2016-09-19</time>
     
   </p>
 </header>
@@ -126,14 +126,15 @@
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="typename">void</span>)<span class="string">detachNewThreadSelector:</span>(SEL)selector <span class="string">toTarget:</span>(id)target <span class="string">withObject:</span>(nullable id)argument;</span><br><span class="line">- (instancetype)<span class="string">initWithTarget:</span>(id)target <span class="string">selector:</span>(SEL)selector <span class="string">object:</span>(nullable id)argument</span><br></pre></td></tr></table></figure>
 <ul>
 <li>detach方法直接创建并启动一个线程去Selector，由于没有返回值，如果需要获取新创建的Thread，需要在执行的Selector中调用-[NSThread currentThread]获取;</li>
-<li>init方法初始化线程并返回，线程的入口函数由Selector传入。线程创建出来之后需要手动调用-start方法启动;<br><br><h4 id="线程操作">线程操作</h4>NSThread给线程提供的主要操作方法有启动，睡眠，取消，退出<br><br><h4 id="启动">启动</h4>使用init方法将线程创建出来之后，线程并不会立即运行，需要手动调用-start方法才会启动线程：</li>
+<li>init方法初始化线程并返回，线程的入口函数由Selector传入。线程创建出来之后需要手动调用-start方法启动;</li>
 </ul>
+<h4 id="线程操作">线程操作</h4><p>NSThread给线程提供的主要操作方法有启动，睡眠，取消，退出</p>
+<h4 id="启动">启动</h4><p>使用init方法将线程创建出来之后，线程并不会立即运行，需要手动调用-start方法才会启动线程：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)<span class="function">start <span class="title">NS_AVAILABLE</span><span class="params">(<span class="number">10</span>_5, <span class="number">2</span>_0)</span></span>;</span><br></pre></td></tr></table></figure>
 <p>在启动之前可以设置 线程的名称(当然启动后也可以在Selecter 中设置也可以)：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (nullable, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *name <span class="built_in">NS_AVAILABLE</span>(<span class="number">10</span>_5, <span class="number">2</span>_0);</span><br></pre></td></tr></table></figure>
 <p>不过优先级 需要在 start 之前 设置，否则会无效：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@<span class="function">property NSQualityOfService qualityOfService <span class="title">NS_AVAILABLE</span><span class="params">(<span class="number">10</span>_10, <span class="number">8</span>_0)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><br></p>
 <h4 id="睡眠">睡眠</h4><p>NSThread提供了2个让线程睡眠的方法:</p>
 <ul>
 <li>根据NSDate传入睡眠时间；</li>
