@@ -1,0 +1,511 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>排序算法之冒泡排序和选择排序 | 二哥的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="夏二飞">
+    
+
+    
+    <meta name="description" content="排序算法之冒泡排序和选择排序从这周开始，每周我将写一些工作中常用的算法如下：
+
+冒泡排序和选择排序；
+插入排序和希尔排序；
+归并排序及其优化；
+快速排序及其优化；
+堆排序；
+
+下面开始正文：
+冒泡排序冒泡排序可能是我们学习某种编程语言（大多数都是 C）之后，接触到的第一个排序算法。我在网上找了很多的博客之类的介绍冒泡排序的，但总是总是有点纰漏，比如 分析的和写的例子不一致（😂😂😂），很尴尬。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序算法之冒泡排序和选择排序">
+<meta property="og:url" content="http://yoursite.com/2017/03/05/bubble-sort/index.html">
+<meta property="og:site_name" content="二哥的博客">
+<meta property="og:description" content="排序算法之冒泡排序和选择排序从这周开始，每周我将写一些工作中常用的算法如下：
+
+冒泡排序和选择排序；
+插入排序和希尔排序；
+归并排序及其优化；
+快速排序及其优化；
+堆排序；
+
+下面开始正文：
+冒泡排序冒泡排序可能是我们学习某种编程语言（大多数都是 C）之后，接触到的第一个排序算法。我在网上找了很多的博客之类的介绍冒泡排序的，但总是总是有点纰漏，比如 分析的和写的例子不一致（😂😂😂），很尴尬。">
+<meta property="og:image" content="http://yoursite.com/./Image/F6D4FD2A-DE16-4CBE-A331-49B9A5912C4D.png">
+<meta property="og:image" content="http://yoursite.com/./Image/2ECCA823-E2AE-40EA-86C9-95E16ED895A9.png">
+<meta property="og:image" content="http://yoursite.com/./Image/DD3D9F80-D28D-424D-9BFC-9AEEFCBE9DAC.png">
+<meta property="og:image" content="http://yoursite.com/./Image/8734EF00-3EBB-480F-B312-B23ADFE1948C.png">
+<meta property="og:image" content="http://yoursite.com/./Image/6A8F031B-4B70-4465-B3C7-DAB81746EB4B.png">
+<meta property="og:image" content="http://yoursite.com/./Image/6A8F031B-4B70-4465-B3C7-DAB81746EB4B.png">
+<meta property="og:image" content="http://yoursite.com/./Image/122BF3F3-8654-47BF-B009-DE267657D701.png">
+<meta property="og:image" content="http://yoursite.com/./Image/F6D4FD2A-DE16-4CBE-A331-49B9A5912C4D.png">
+<meta property="og:image" content="http://yoursite.com/./Image/C60E4FC9-B327-4E5E-BF49-A04F3386F794.png">
+<meta property="og:image" content="http://yoursite.com/./Image/C60E4FC9-B327-4E5E-BF49-A04F3386F794.png">
+<meta property="og:image" content="http://yoursite.com/./Image/0BA71528-D5FC-486A-8417-BFEF28809073.png">
+<meta property="og:updated_time" content="2017-03-13T12:50:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="排序算法之冒泡排序和选择排序">
+<meta name="twitter:description" content="排序算法之冒泡排序和选择排序从这周开始，每周我将写一些工作中常用的算法如下：
+
+冒泡排序和选择排序；
+插入排序和希尔排序；
+归并排序及其优化；
+快速排序及其优化；
+堆排序；
+
+下面开始正文：
+冒泡排序冒泡排序可能是我们学习某种编程语言（大多数都是 C）之后，接触到的第一个排序算法。我在网上找了很多的博客之类的介绍冒泡排序的，但总是总是有点纰漏，比如 分析的和写的例子不一致（😂😂😂），很尴尬。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="二哥的博客" type="application/atom+xml">
+    
+    
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="二哥的博客">二哥的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/03/05/bubble-sort/" title="排序算法之冒泡排序和选择排序" itemprop="url">排序算法之冒泡排序和选择排序</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="夏二飞" target="_blank" itemprop="author">夏二飞</a>
+		
+  <p class="article-time">
+    <time datetime="2017-03-05T14:28:11.000Z" itemprop="datePublished"> 发布于 2017-03-05</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#排序算法之冒泡排序和选择排序"><span class="toc-number">1.</span> <span class="toc-text">排序算法之冒泡排序和选择排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#冒泡排序"><span class="toc-number">1.1.</span> <span class="toc-text">冒泡排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#冒泡排序的优化"><span class="toc-number">1.2.</span> <span class="toc-text">冒泡排序的优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#选择排序"><span class="toc-number">1.3.</span> <span class="toc-text">选择排序</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<hr>
+<h1 id="排序算法之冒泡排序和选择排序">排序算法之冒泡排序和选择排序</h1><p>从这周开始，每周我将写一些工作中常用的算法如下：</p>
+<ol>
+<li>冒泡排序和选择排序；</li>
+<li>插入排序和希尔排序；</li>
+<li>归并排序及其优化；</li>
+<li>快速排序及其优化；</li>
+<li>堆排序；</li>
+</ol>
+<p>下面开始正文：</p>
+<h2 id="冒泡排序">冒泡排序</h2><p>冒泡排序可能是我们学习某种编程语言（大多数都是 C）之后，接触到的第一个排序算法。我在网上找了很多的博客之类的介绍冒泡排序的，但总是总是有点纰漏，比如 分析的和写的例子不一致（😂😂😂），很尴尬。下面我们详细来分析一下冒泡排序的过程：</p>
+<p>待排序数组为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="number">6</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span> &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>冒泡排序的原理是：<code>临近的``数字两两进行比较</code>,按照<code>从小到大</code>或者<code>从大到小</code>的顺序进行交换。</strong></p>
+<p><strong>这里注意：是临近的两个数字两两进行比较，如果非，那就不是冒泡排序。</strong></p>
+<p>起始数组如下：</p>
+<p><img src="./Image/F6D4FD2A-DE16-4CBE-A331-49B9A5912C4D.png" alt="起始数组"></p>
+<ol>
+<li>第一趟排序</li>
+</ol>
+<p>第一次比较： <code>6 &gt; 2</code>  6 大于 2 进行交换，交换后：</p>
+<p><img src="./Image/2ECCA823-E2AE-40EA-86C9-95E16ED895A9.png" alt="00"></p>
+<p>第二次比较： <code>6 &gt; 4</code>  6 大于 4 进行交换，交换后：</p>
+<p><img src="./Image/DD3D9F80-D28D-424D-9BFC-9AEEFCBE9DAC.png" alt=""></p>
+<p>第三次比较： <code>6 &gt; 1</code>  6 大于 1 进行交换，交换后：</p>
+<p><img src="./Image/8734EF00-3EBB-480F-B312-B23ADFE1948C.png" alt=""></p>
+<p>第四次比较： <code>6 &gt; 5</code> 6 大于 5 进行交换，交换后：</p>
+<p><img src="./Image/6A8F031B-4B70-4465-B3C7-DAB81746EB4B.png" alt=""></p>
+<p>第五次比较： <code>6 &lt; 9</code> 6 小于 9 不进行交换：</p>
+<p><img src="./Image/6A8F031B-4B70-4465-B3C7-DAB81746EB4B.png" alt=""></p>
+<p><strong>后面的第二、三、四、五、六的过程和上面的一样，最终如下面：</strong></p>
+<p><img src="./Image/122BF3F3-8654-47BF-B009-DE267657D701.png" alt=""></p>
+<p><strong>注意：第二次比较的时候，最后一位就不参与了，因为最大的已经冒了出来，第三次比较，倒数第二位不参与了，以此类推。</strong></p>
+<p>至此，程序就很容易写出来了：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n ; i ++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n-i; j ++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[j-<span class="number">1</span>]) &#123;</span><br><span class="line">                swap(&amp;arr[j], &amp;arr[j-<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="冒泡排序的优化">冒泡排序的优化</h2><p>我们看一下 每次排序的结果：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">第一次：<span class="number">2</span> <span class="number">4</span> <span class="number">1</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第二次：<span class="number">2</span> <span class="number">1</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第三次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第四次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第五次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第六次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span></span><br></pre></td></tr></table></figure>
+<p>从中我们发现第三次的时候，已经排好序了，第四、五、六次没必要执行了，这就是我们要对冒泡排序进行优化的地方。</p>
+<p>我们可以设置一个flag ，当没有发生交换的时候，记录一下，这时候数组已经有序了。</p>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort2</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> flag = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n &amp;&amp; flag ; i ++) &#123;</span><br><span class="line">        flag = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n - i; j ++) &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[j-<span class="number">1</span>]) &#123;</span><br><span class="line">                flag = <span class="number">1</span>;</span><br><span class="line">                swap(&amp;arr[j], &amp;arr[j-<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然，还有其他的优化方案，大家不妨搜下。</p>
+<h2 id="选择排序">选择排序</h2><p>理解的前面的冒泡排序，选择排序是很容易理解的。选择排序顾名思义，每次循环要找出一个最小的值，然后再交换。</p>
+<p>测试用例还是之前的：</p>
+<p><img src="./Image/F6D4FD2A-DE16-4CBE-A331-49B9A5912C4D.png" alt="起始数组"></p>
+<p>第一次大循环找到最小的值 <code>1</code> 然后和 <code>第0位</code>的交换，交换后：</p>
+<p><img src="./Image/C60E4FC9-B327-4E5E-BF49-A04F3386F794.png" alt=""></p>
+<p>第二次大循环找到最小的值 <code>2</code> 然后和 <code>第1位</code>的交换，交换后：</p>
+<p><img src="./Image/C60E4FC9-B327-4E5E-BF49-A04F3386F794.png" alt=""></p>
+<p>当然第三次大循环和第二次一样</p>
+<p>第四次大循环找到最小的值 <code>5</code> 然后和 <code>第3位</code>的交换，交换后：</p>
+<p><img src="./Image/0BA71528-D5FC-486A-8417-BFEF28809073.png" alt=""></p>
+<p>后面的就已经排序好了。</p>
+<p><strong>从上面可以看出，选择排序是一个不断寻找最小值的排序方法。</strong></p>
+<p>所以代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">selectSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> minIndex = i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; n; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[minIndex]) &#123;</span><br><span class="line">                minIndex = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        swap(&amp;arr[i], &amp;arr[minIndex]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>是不是很简单 😁😁😁！</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2017/03/05/bubble-sort/" data-title="排序算法之冒泡排序和选择排序 | 二哥的博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2017/02/14/Multi-thread/"  title="iOS多线程">
+ <strong>下一篇：</strong><br/> 
+ <span>iOS多线程
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2017/03/05/bubble-sort/" data-title="排序算法之冒泡排序和选择排序" data-url="http://yoursite.com/2017/03/05/bubble-sort/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#排序算法之冒泡排序和选择排序"><span class="toc-number">1.</span> <span class="toc-text">排序算法之冒泡排序和选择排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#冒泡排序"><span class="toc-number">1.1.</span> <span class="toc-text">冒泡排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#冒泡排序的优化"><span class="toc-number">1.2.</span> <span class="toc-text">冒泡排序的优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#选择排序"><span class="toc-number">1.3.</span> <span class="toc-text">选择排序</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.sina.com.cn/s/articlelist_2774672495_0_1.html" target="_blank" title="浪漫的zerlinda的博客">浪漫的zerlinda的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2371405300" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/https://github.com/xiaerfei" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="夏二飞">夏二飞</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"xiaerfei"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
