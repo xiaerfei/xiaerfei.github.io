@@ -35,18 +35,18 @@
 
 下面开始正文：
 冒泡排序冒泡排序可能是我们学习某种编程语言（大多数都是 C）之后，接触到的第一个排序算法。我在网上找了很多的博客之类的介绍冒泡排序的，但总是总是有点纰漏，比如 分析的和写的例子不一致（😂😂😂），很尴尬。下面我们详细来分析一下冒泡排">
-<meta property="og:image" content="http://yoursite.com/img/bubble/F6D4FD2A-DE16-4CBE-A331-49B9A5912C4D.png">
-<meta property="og:image" content="http://yoursite.com/img/bubble/2ECCA823-E2AE-40EA-86C9-95E16ED895A9.png">
-<meta property="og:image" content="http://yoursite.com/./Image/DD3D9F80-D28D-424D-9BFC-9AEEFCBE9DAC.png">
-<meta property="og:image" content="http://yoursite.com/./Image/8734EF00-3EBB-480F-B312-B23ADFE1948C.png">
-<meta property="og:image" content="http://yoursite.com/./Image/6A8F031B-4B70-4465-B3C7-DAB81746EB4B.png">
-<meta property="og:image" content="http://yoursite.com/./Image/6A8F031B-4B70-4465-B3C7-DAB81746EB4B.png">
-<meta property="og:image" content="http://yoursite.com/./Image/122BF3F3-8654-47BF-B009-DE267657D701.png">
-<meta property="og:image" content="http://yoursite.com/./Image/F6D4FD2A-DE16-4CBE-A331-49B9A5912C4D.png">
-<meta property="og:image" content="http://yoursite.com/./Image/C60E4FC9-B327-4E5E-BF49-A04F3386F794.png">
-<meta property="og:image" content="http://yoursite.com/./Image/C60E4FC9-B327-4E5E-BF49-A04F3386F794.png">
-<meta property="og:image" content="http://yoursite.com/./Image/0BA71528-D5FC-486A-8417-BFEF28809073.png">
-<meta property="og:updated_time" content="2017-03-30T22:51:51.000Z">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E8%B5%B7%E5%A7%8B%E6%95%B0%E7%BB%84.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%AF%94%E8%BE%83.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%AF%94%E8%BE%83.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%AF%94%E8%BE%83.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E5%9B%9B%E6%AC%A1%E6%AF%94%E8%BE%83.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%BA%94%E6%AC%A1%E6%AF%94%E8%BE%83.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E6%9C%80%E7%BB%88%E6%8E%92%E5%BA%8F.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E8%B5%B7%E5%A7%8B%E6%95%B0%E7%BB%84.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E9%80%89%E6%8B%A9-%E7%AC%AC%E4%B8%80%E6%AC%A1.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E9%80%89%E6%8B%A9-%E7%AC%AC%E4%B8%80%E6%AC%A1.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E6%9C%80%E7%BB%88%E6%8E%92%E5%BA%8F.png">
+<meta property="og:updated_time" content="2017-05-30T09:10:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排序算法之冒泡排序和选择排序">
 <meta name="twitter:description" content="从这周开始，每周我将写一些工作中常用的算法如下：
@@ -129,8 +129,7 @@
 		
 		</div>
 		
-		<hr>
-<p>从这周开始，每周我将写一些工作中常用的算法如下：</p>
+		<p>从这周开始，每周我将写一些工作中常用的算法如下：</p>
 <ol>
 <li>冒泡排序和选择排序；</li>
 <li>插入排序和希尔排序；</li>
@@ -145,22 +144,22 @@
 <p><strong>冒泡排序的原理是：<code>临近的``数字两两进行比较</code>,按照<code>从小到大</code>或者<code>从大到小</code>的顺序进行交换。</strong></p>
 <p><strong>这里注意：是临近的两个数字两两进行比较，如果非，那就不是冒泡排序。</strong></p>
 <p>起始数组如下：</p>
-<p><img src="/img/bubble/F6D4FD2A-DE16-4CBE-A331-49B9A5912C4D.png" alt="起始数组"></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E8%B5%B7%E5%A7%8B%E6%95%B0%E7%BB%84.png" alt="起始数组"></p>
 <ol>
 <li>第一趟排序</li>
 </ol>
 <p>第一次比较： <code>6 &gt; 2</code>  6 大于 2 进行交换，交换后：</p>
-<p><img src="/img/bubble/2ECCA823-E2AE-40EA-86C9-95E16ED895A9.png" alt="00"></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt="00"></p>
 <p>第二次比较： <code>6 &gt; 4</code>  6 大于 4 进行交换，交换后：</p>
-<p><img src="./Image/DD3D9F80-D28D-424D-9BFC-9AEEFCBE9DAC.png" alt=""></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
 <p>第三次比较： <code>6 &gt; 1</code>  6 大于 1 进行交换，交换后：</p>
-<p><img src="./Image/8734EF00-3EBB-480F-B312-B23ADFE1948C.png" alt=""></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
 <p>第四次比较： <code>6 &gt; 5</code> 6 大于 5 进行交换，交换后：</p>
-<p><img src="./Image/6A8F031B-4B70-4465-B3C7-DAB81746EB4B.png" alt=""></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E5%9B%9B%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
 <p>第五次比较： <code>6 &lt; 9</code> 6 小于 9 不进行交换：</p>
-<p><img src="./Image/6A8F031B-4B70-4465-B3C7-DAB81746EB4B.png" alt=""></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%BA%94%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
 <p><strong>后面的第二、三、四、五、六的过程和上面的一样，最终如下面：</strong></p>
-<p><img src="./Image/122BF3F3-8654-47BF-B009-DE267657D701.png" alt=""></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E6%9C%80%E7%BB%88%E6%8E%92%E5%BA%8F.png" alt=""></p>
 <p><strong>注意：第二次比较的时候，最后一位就不参与了，因为最大的已经冒了出来，第三次比较，倒数第二位不参与了，以此类推。</strong></p>
 <p>至此，程序就很容易写出来了：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n ; i ++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n-i; j ++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[j-<span class="number">1</span>]) &#123;</span><br><span class="line">                swap(&amp;arr[j], &amp;arr[j-<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -173,15 +172,14 @@
 <p>当然，还有其他的优化方案，大家不妨搜下。</p>
 <h2 id="选择排序">选择排序</h2><p>理解的前面的冒泡排序，选择排序是很容易理解的。选择排序顾名思义，每次循环要找出一个最小的值，然后再交换。</p>
 <p>测试用例还是之前的：</p>
-<p><img src="./Image/F6D4FD2A-DE16-4CBE-A331-49B9A5912C4D.png" alt="起始数组"></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E8%B5%B7%E5%A7%8B%E6%95%B0%E7%BB%84.png" alt="起始数组"></p>
 <p>第一次大循环找到最小的值 <code>1</code> 然后和 <code>第0位</code>的交换，交换后：</p>
-<p><img src="./Image/C60E4FC9-B327-4E5E-BF49-A04F3386F794.png" alt=""></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E9%80%89%E6%8B%A9-%E7%AC%AC%E4%B8%80%E6%AC%A1.png" alt=""></p>
 <p>第二次大循环找到最小的值 <code>2</code> 然后和 <code>第1位</code>的交换，交换后：</p>
-<p><img src="./Image/C60E4FC9-B327-4E5E-BF49-A04F3386F794.png" alt=""></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E9%80%89%E6%8B%A9-%E7%AC%AC%E4%B8%80%E6%AC%A1.png" alt=""></p>
 <p>当然第三次大循环和第二次一样</p>
 <p>第四次大循环找到最小的值 <code>5</code> 然后和 <code>第3位</code>的交换，交换后：</p>
-<p><img src="./Image/0BA71528-D5FC-486A-8417-BFEF28809073.png" alt=""></p>
-<p>后面的就已经排序好了。</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E6%9C%80%E7%BB%88%E6%8E%92%E5%BA%8F.png" alt=""><br>后面的就已经排序好了。</p>
 <p><strong>从上面可以看出，选择排序是一个不断寻找最小值的排序方法。</strong></p>
 <p>所以代码如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">selectSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> minIndex = i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; n; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[minIndex]) &#123;</span><br><span class="line">                minIndex = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        swap(&amp;arr[i], &amp;arr[minIndex]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
