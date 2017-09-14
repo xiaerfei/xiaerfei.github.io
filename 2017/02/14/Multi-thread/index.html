@@ -1,97 +1,197 @@
-
- <!DOCTYPE HTML>
-<html lang="zh-Hans">
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
 <head>
-  <meta charset="UTF-8">
   
-    <title>iOS多线程 | 二哥的博客</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
-    
-    <meta name="author" content="夏二飞">
-    
 
-    
-    <meta name="description" content="iOS多线程前言在这篇文章中我整理了iOS多线程开发需要的一些知识点、方法和事项。本文主要讲述三部分 NSThread、Operation 和 GCD。本文不算是原创，是一些我觉得写的比较有质量文章的综合，文中摘抄了这些文章中的部分内容，在文中和文章末尾我已标注出处，之所以要摘抄是因为在需要之时，打开URL 是404 😂😂😂。我综合了这些文中给自己学习之用，也给大家方便查看之用，如有错误之处">
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="just do it !" />
+
+
+
+  <meta name="keywords" content="Hexo,next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="iOS多线程前言在这篇文章中我整理了iOS多线程开发需要的一些知识点、方法和事项。本文主要讲述三部分 NSThread、Operation 和 GCD。本文不算是原创，是一些我觉得写的比较有质量文章的综合，文中摘抄了这些文章中的部分内容，在文中和文章末尾我已标注出处，之所以要摘抄是因为在需要之时，打开URL 是404 😂😂😂。我综合了这些文中给自己学习之用，也给大家方便查看之用，如有错误之处">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS多线程">
 <meta property="og:url" content="http://yoursite.com/2017/02/14/Multi-thread/index.html">
-<meta property="og:site_name" content="二哥的博客">
+<meta property="og:site_name" content="吾生也有涯，而知也无涯">
 <meta property="og:description" content="iOS多线程前言在这篇文章中我整理了iOS多线程开发需要的一些知识点、方法和事项。本文主要讲述三部分 NSThread、Operation 和 GCD。本文不算是原创，是一些我觉得写的比较有质量文章的综合，文中摘抄了这些文章中的部分内容，在文中和文章末尾我已标注出处，之所以要摘抄是因为在需要之时，打开URL 是404 😂😂😂。我综合了这些文中给自己学习之用，也给大家方便查看之用，如有错误之处">
 <meta property="og:updated_time" content="2017-02-14T07:00:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS多线程">
 <meta name="twitter:description" content="iOS多线程前言在这篇文章中我整理了iOS多线程开发需要的一些知识点、方法和事项。本文主要讲述三部分 NSThread、Operation 和 GCD。本文不算是原创，是一些我觉得写的比较有质量文章的综合，文中摘抄了这些文章中的部分内容，在文中和文章末尾我已标注出处，之所以要摘抄是因为在需要之时，打开URL 是404 😂😂😂。我综合了这些文中给自己学习之用，也给大家方便查看之用，如有错误之处">
 
-    
-    <link rel="alternative" href="/atom.xml" title="二哥的博客" type="application/atom+xml">
-    
-    
-    
-    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+
+
+  <title> iOS多线程 | 吾生也有涯，而知也无涯 </title>
 </head>
 
-  <body>
-    <header>
-      
-<div>
-		
-			<div id="textlogo">
-				<h1 class="site-name"><a href="/" title="二哥的博客">二哥的博客</a></h1>
-				<h2 class="blog-motto"></h2>
-			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
-			</a></div>
-			<nav class="animated">
-				<ul>
-					<ul>
-					 
-						<li><a href="/">Home</a></li>
-					
-						<li><a href="/archives">Archives</a></li>
-					
-						<li><a href="/about">About</a></li>
-					
-					<li>
- 					
-					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
-						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
-						<input type="hidden" name="q" value="site:yoursite.com">
-					</form>
-					
-					</li>
-				</ul>
-			</nav>			
-</div>
-    </header>
-    <div id="container">
-      <div id="main" class="post" itemscope itemprop="blogPost">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
   
-	<article itemprop="articleBody"> 
-		<header class="article-info clearfix">
-  <h1 itemprop="name">
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">吾生也有涯，而知也无涯</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
     
-      <a href="/2017/02/14/Multi-thread/" title="iOS多线程" itemprop="url">iOS多线程</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="夏二飞" target="_blank" itemprop="author">夏二飞</a>
-		
-  <p class="article-time">
-    <time datetime="2017-02-14T07:00:40.000Z" itemprop="datePublished"> 发布于 2017-02-14</time>
-    
-  </p>
-</header>
-	<div class="article-content">
-		
-		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
-		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS多线程"><span class="toc-number">1.</span> <span class="toc-text">iOS多线程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基本概念"><span class="toc-number">1.2.</span> <span class="toc-text">基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#串行_和_并发"><span class="toc-number">1.2.1.</span> <span class="toc-text">串行 和 并发</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#同步_和_异步"><span class="toc-number">1.2.2.</span> <span class="toc-text">同步 和 异步</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#队列_和_线程"><span class="toc-number">1.2.3.</span> <span class="toc-text">队列 和 线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#iOS中的几种多线程类型"><span class="toc-number">1.2.4.</span> <span class="toc-text">iOS中的几种多线程类型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pthreads"><span class="toc-number">1.3.</span> <span class="toc-text">Pthreads</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NSThread"><span class="toc-number">1.4.</span> <span class="toc-text">NSThread</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#线程的创建"><span class="toc-number">1.4.1.</span> <span class="toc-text">线程的创建</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#线程操作"><span class="toc-number">1.4.2.</span> <span class="toc-text">线程操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#启动"><span class="toc-number">1.4.3.</span> <span class="toc-text">启动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#睡眠"><span class="toc-number">1.4.4.</span> <span class="toc-text">睡眠</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#取消"><span class="toc-number">1.4.5.</span> <span class="toc-text">取消</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#退出"><span class="toc-number">1.4.6.</span> <span class="toc-text">退出</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#主线程和当前线程"><span class="toc-number">1.4.7.</span> <span class="toc-text">主线程和当前线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#线程优先级"><span class="toc-number">1.4.8.</span> <span class="toc-text">线程优先级</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#线程通讯"><span class="toc-number">1.4.9.</span> <span class="toc-text">线程通讯</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#线程通知"><span class="toc-number">1.4.10.</span> <span class="toc-text">线程通知</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NSThread的简单使用"><span class="toc-number">1.4.11.</span> <span class="toc-text">NSThread的简单使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#结束线程"><span class="toc-number">1.4.12.</span> <span class="toc-text">结束线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NSThread的一个小例子"><span class="toc-number">1.4.13.</span> <span class="toc-text">NSThread的一个小例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NSOperation"><span class="toc-number">1.5.</span> <span class="toc-text">NSOperation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#NSInvocationOperation"><span class="toc-number">1.5.1.</span> <span class="toc-text">NSInvocationOperation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NSBlockOperation"><span class="toc-number">1.5.2.</span> <span class="toc-text">NSBlockOperation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NSOperationQueue"><span class="toc-number">1.5.3.</span> <span class="toc-text">NSOperationQueue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#自定义Operation"><span class="toc-number">1.5.4.</span> <span class="toc-text">自定义Operation</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GCD"><span class="toc-number">1.6.</span> <span class="toc-text">GCD</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#创建队列"><span class="toc-number">1.6.1.</span> <span class="toc-text">创建队列</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#主队列"><span class="toc-number">1.6.1.1.</span> <span class="toc-text">主队列</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#自定义的队列"><span class="toc-number">1.6.1.2.</span> <span class="toc-text">自定义的队列</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#创建任务"><span class="toc-number">1.6.1.3.</span> <span class="toc-text">创建任务</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#队列组"><span class="toc-number">1.6.2.</span> <span class="toc-text">队列组</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#创建队列-1"><span class="toc-number">1.6.2.1.</span> <span class="toc-text">创建队列</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#监听任务组事件的执行完毕"><span class="toc-number">1.6.2.2.</span> <span class="toc-text">监听任务组事件的执行完毕</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dispatch_once"><span class="toc-number">1.6.2.3.</span> <span class="toc-text">dispatch_once</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dispatch_after"><span class="toc-number">1.6.2.4.</span> <span class="toc-text">dispatch_after</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dispatch_apply"><span class="toc-number">1.6.2.5.</span> <span class="toc-text">dispatch_apply</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dispatch_barrier_async"><span class="toc-number">1.6.2.6.</span> <span class="toc-text">dispatch_barrier_async</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#暂停与恢复"><span class="toc-number">1.6.2.7.</span> <span class="toc-text">暂停与恢复</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Dispatch_Source_（信号源)"><span class="toc-number">1.6.3.</span> <span class="toc-text">Dispatch Source （信号源)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Dispatch_Semaphore_信号量"><span class="toc-number">1.6.4.</span> <span class="toc-text">Dispatch Semaphore 信号量</span></a></li></ol></li></ol></li></ol>
-		
-		</div>
-		
-		<h2 id="iOS多线程">iOS多线程</h2><h3 id="前言">前言</h3><p>在这篇文章中我整理了iOS多线程开发需要的一些知识点、方法和事项。本文主要讲述三部分 NSThread、Operation 和 GCD。<br><br>本文不算是原创，是一些我觉得写的比较有质量文章的综合，文中摘抄了这些文章中的部分内容，在文中和文章末尾我已标注出处，之所以要摘抄是因为在需要之时，打开URL 是404 😂😂😂。我综合了这些文中给自己学习之用，也给大家方便查看之用，如有错误之处，见谅，不过欢迎指出。</p>
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              iOS多线程
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-02-14T15:00:40+08:00" content="2017-02-14">
+            2017-02-14
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="iOS多线程">iOS多线程</h2><h3 id="前言">前言</h3><p>在这篇文章中我整理了iOS多线程开发需要的一些知识点、方法和事项。本文主要讲述三部分 NSThread、Operation 和 GCD。<br><br>本文不算是原创，是一些我觉得写的比较有质量文章的综合，文中摘抄了这些文章中的部分内容，在文中和文章末尾我已标注出处，之所以要摘抄是因为在需要之时，打开URL 是404 😂😂😂。我综合了这些文中给自己学习之用，也给大家方便查看之用，如有错误之处，见谅，不过欢迎指出。</p>
 <h3 id="基本概念">基本概念</h3><p>我们先了解一线iOS多线程的一些基本概念(<a href="http://blog.leichunfeng.com/blog/2015/07/29/ios-concurrency-programming-operation-queues/#jtss-tsina" target="_blank" rel="external">这些基本概念参考了这里</a>)：</p>
 <ul>
 <li>进程（process）:指的是一个正在运行中的可执行文件。每一个进程都拥有独立的虚拟内存空间和系统资源，包括端口权限等，且至少包含一个主线程和任意数量的辅助线程（说白了就是：用于指代一个可执行程序，他可以包含多个线程）。另外，当一个进程的主线程退出时，这个进程就结束了；</li>
@@ -513,334 +613,407 @@ dispatch_semaphore_wait的返回值也为<span class="keyword">long</span>型。
 <p><a href="http://blog.leichunfeng.com/blog/2015/07/29/ios-concurrency-programming-operation-queues/#jtss-tsina" target="_blank" rel="external">iOS 并发编程之 Operation Queues</a></p>
 <p><a href="http://www.jianshu.com/p/0b0d9b1f1f19" target="_blank" rel="external">关于iOS多线程，你看我就够了</a></p>
 <p><a href="http://www.jianshu.com/p/8ed06312d8bd" target="_blank" rel="external">小笨狼漫谈多线程：NSThread</a></p>
-  
-	</div>
-		<footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-	<div class="article-share" id="share">
-	
-	  <div data-url="http://yoursite.com/2017/02/14/Multi-thread/" data-title="iOS多线程 | 二哥的博客" data-tsina="null" class="share clearfix">
-	  </div>
-	
-	</div>
-
-
-</footer>
-
-   	       
-	</article>
-	
-<nav class="article-nav clearfix">
- 
- <div class="prev" >
- <a href="/2017/03/05/bubble-sort/" title="排序算法之冒泡排序和选择排序">
-  <strong>上一篇：</strong><br/>
-  <span>
-  排序算法之冒泡排序和选择排序</span>
-</a>
-</div>
-
-
-<div class="next">
-<a href="/2016/08/16/RegularExpression/"  title="iOS 正则表达式">
- <strong>下一篇：</strong><br/> 
- <span>iOS 正则表达式
 </span>
-</a>
-</div>
+      
+    </div>
 
-</nav>
+    <footer class="post-footer">
+      
 
-	
-<section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2017/02/14/Multi-thread/" data-title="iOS多线程" data-url="http://yoursite.com/2017/02/14/Multi-thread/"></div>
-</section>
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/05/bubble-sort/" rel="prev">排序算法之冒泡排序和选择排序</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/16/RegularExpression/" rel="next">iOS 正则表达式</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
 
 
-</div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
-  <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
- 
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS多线程"><span class="toc-number">1.</span> <span class="toc-text">iOS多线程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基本概念"><span class="toc-number">1.2.</span> <span class="toc-text">基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#串行_和_并发"><span class="toc-number">1.2.1.</span> <span class="toc-text">串行 和 并发</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#同步_和_异步"><span class="toc-number">1.2.2.</span> <span class="toc-text">同步 和 异步</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#队列_和_线程"><span class="toc-number">1.2.3.</span> <span class="toc-text">队列 和 线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#iOS中的几种多线程类型"><span class="toc-number">1.2.4.</span> <span class="toc-text">iOS中的几种多线程类型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pthreads"><span class="toc-number">1.3.</span> <span class="toc-text">Pthreads</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NSThread"><span class="toc-number">1.4.</span> <span class="toc-text">NSThread</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#线程的创建"><span class="toc-number">1.4.1.</span> <span class="toc-text">线程的创建</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#线程操作"><span class="toc-number">1.4.2.</span> <span class="toc-text">线程操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#启动"><span class="toc-number">1.4.3.</span> <span class="toc-text">启动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#睡眠"><span class="toc-number">1.4.4.</span> <span class="toc-text">睡眠</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#取消"><span class="toc-number">1.4.5.</span> <span class="toc-text">取消</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#退出"><span class="toc-number">1.4.6.</span> <span class="toc-text">退出</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#主线程和当前线程"><span class="toc-number">1.4.7.</span> <span class="toc-text">主线程和当前线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#线程优先级"><span class="toc-number">1.4.8.</span> <span class="toc-text">线程优先级</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#线程通讯"><span class="toc-number">1.4.9.</span> <span class="toc-text">线程通讯</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#线程通知"><span class="toc-number">1.4.10.</span> <span class="toc-text">线程通知</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NSThread的简单使用"><span class="toc-number">1.4.11.</span> <span class="toc-text">NSThread的简单使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#结束线程"><span class="toc-number">1.4.12.</span> <span class="toc-text">结束线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NSThread的一个小例子"><span class="toc-number">1.4.13.</span> <span class="toc-text">NSThread的一个小例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NSOperation"><span class="toc-number">1.5.</span> <span class="toc-text">NSOperation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#NSInvocationOperation"><span class="toc-number">1.5.1.</span> <span class="toc-text">NSInvocationOperation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NSBlockOperation"><span class="toc-number">1.5.2.</span> <span class="toc-text">NSBlockOperation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NSOperationQueue"><span class="toc-number">1.5.3.</span> <span class="toc-text">NSOperationQueue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#自定义Operation"><span class="toc-number">1.5.4.</span> <span class="toc-text">自定义Operation</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GCD"><span class="toc-number">1.6.</span> <span class="toc-text">GCD</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#创建队列"><span class="toc-number">1.6.1.</span> <span class="toc-text">创建队列</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#主队列"><span class="toc-number">1.6.1.1.</span> <span class="toc-text">主队列</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#自定义的队列"><span class="toc-number">1.6.1.2.</span> <span class="toc-text">自定义的队列</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#创建任务"><span class="toc-number">1.6.1.3.</span> <span class="toc-text">创建任务</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#队列组"><span class="toc-number">1.6.2.</span> <span class="toc-text">队列组</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#创建队列-1"><span class="toc-number">1.6.2.1.</span> <span class="toc-text">创建队列</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#监听任务组事件的执行完毕"><span class="toc-number">1.6.2.2.</span> <span class="toc-text">监听任务组事件的执行完毕</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dispatch_once"><span class="toc-number">1.6.2.3.</span> <span class="toc-text">dispatch_once</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dispatch_after"><span class="toc-number">1.6.2.4.</span> <span class="toc-text">dispatch_after</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dispatch_apply"><span class="toc-number">1.6.2.5.</span> <span class="toc-text">dispatch_apply</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dispatch_barrier_async"><span class="toc-number">1.6.2.6.</span> <span class="toc-text">dispatch_barrier_async</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#暂停与恢复"><span class="toc-number">1.6.2.7.</span> <span class="toc-text">暂停与恢复</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Dispatch_Source_（信号源)"><span class="toc-number">1.6.3.</span> <span class="toc-text">Dispatch Source （信号源)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Dispatch_Semaphore_信号量"><span class="toc-number">1.6.4.</span> <span class="toc-text">Dispatch Semaphore 信号量</span></a></li></ol></li></ol></li></ol>
- 
+    <div class="post-spread">
+      
+    </div>
   </div>
 
-<div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
-<aside class="clearfix">
+ </div>
 
-  
-
-  
-
-  <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
-    <ul>
         
-          <li>
-            
-            	<a href="http://blog.sina.com.cn/s/articlelist_2774672495_0_1.html" target="_blank" title="浪漫的zerlinda的博客">浪漫的zerlinda的博客</a>
-            
-          </li>
+
         
-    </ul>
-</div>
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
 
-  <div class="weiboshow">
-  <p class="asidetitle">微博</p>
-    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
-</div>
-
-
-</aside>
-</div>
-    </div>
-    <footer><div id="footer" >
-	
-	
-	<div class="social-font" class="clearfix">
-		
-		<a href="http://weibo.com/2371405300" target="_blank" class="icon-weibo" title="微博"></a>
-		
-		
-		<a href="https://github.com/https://github.com/xiaerfei" target="_blank" class="icon-github" title="github"></a>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</div>
-			
-		
-
-		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
-		
-		<a href="/about" target="_blank" title="夏二飞">夏二飞</a>
-		
-		
-		</p>
-</div>
-</footer>
-    <script src="/js/jquery-2.0.3.min.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
-<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
-
-<script type="text/javascript">
-$(document).ready(function(){ 
-  $('.navbar').click(function(){
-    $('header nav').toggleClass('shownav');
-  });
-  var myWidth = 0;
-  function getSize(){
-    if( typeof( window.innerWidth ) == 'number' ) {
-      myWidth = window.innerWidth;
-    } else if( document.documentElement && document.documentElement.clientWidth) {
-      myWidth = document.documentElement.clientWidth;
-    };
-  };
-  var m = $('#main'),
-      a = $('#asidepart'),
-      c = $('.closeaside'),
-      o = $('.openaside');
-  c.click(function(){
-    a.addClass('fadeOut').css('display', 'none');
-    o.css('display', 'block').addClass('fadeIn');
-    m.addClass('moveMain');
-  });
-  o.click(function(){
-    o.css('display', 'none').removeClass('beforeFadeIn');
-    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
-    m.removeClass('moveMain');
-  });
-  $(window).scroll(function(){
-    o.css("top",Math.max(80,260-$(this).scrollTop()));
-  });
-  
-  $(window).resize(function(){
-    getSize(); 
-    if (myWidth >= 1024) {
-      $('header nav').removeClass('shownav');
-    }else{
-      m.removeClass('moveMain');
-      a.css('display', 'block').removeClass('fadeOut');
-      o.css('display', 'none');
       
-      $('#toc.toc-aside').css('display', 'none');
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Share" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Share</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">just do it !</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
         
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS多线程"><span class="nav-number">1.</span> <span class="nav-text">iOS多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">1.2.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#串行_和_并发"><span class="nav-number">1.2.1.</span> <span class="nav-text">串行 和 并发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#同步_和_异步"><span class="nav-number">1.2.2.</span> <span class="nav-text">同步 和 异步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#队列_和_线程"><span class="nav-number">1.2.3.</span> <span class="nav-text">队列 和 线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iOS中的几种多线程类型"><span class="nav-number">1.2.4.</span> <span class="nav-text">iOS中的几种多线程类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pthreads"><span class="nav-number">1.3.</span> <span class="nav-text">Pthreads</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSThread"><span class="nav-number">1.4.</span> <span class="nav-text">NSThread</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程的创建"><span class="nav-number">1.4.1.</span> <span class="nav-text">线程的创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程操作"><span class="nav-number">1.4.2.</span> <span class="nav-text">线程操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动"><span class="nav-number">1.4.3.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#睡眠"><span class="nav-number">1.4.4.</span> <span class="nav-text">睡眠</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#取消"><span class="nav-number">1.4.5.</span> <span class="nav-text">取消</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#退出"><span class="nav-number">1.4.6.</span> <span class="nav-text">退出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主线程和当前线程"><span class="nav-number">1.4.7.</span> <span class="nav-text">主线程和当前线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程优先级"><span class="nav-number">1.4.8.</span> <span class="nav-text">线程优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程通讯"><span class="nav-number">1.4.9.</span> <span class="nav-text">线程通讯</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程通知"><span class="nav-number">1.4.10.</span> <span class="nav-text">线程通知</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSThread的简单使用"><span class="nav-number">1.4.11.</span> <span class="nav-text">NSThread的简单使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结束线程"><span class="nav-number">1.4.12.</span> <span class="nav-text">结束线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSThread的一个小例子"><span class="nav-number">1.4.13.</span> <span class="nav-text">NSThread的一个小例子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSOperation"><span class="nav-number">1.5.</span> <span class="nav-text">NSOperation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NSInvocationOperation"><span class="nav-number">1.5.1.</span> <span class="nav-text">NSInvocationOperation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSBlockOperation"><span class="nav-number">1.5.2.</span> <span class="nav-text">NSBlockOperation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSOperationQueue"><span class="nav-number">1.5.3.</span> <span class="nav-text">NSOperationQueue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义Operation"><span class="nav-number">1.5.4.</span> <span class="nav-text">自定义Operation</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GCD"><span class="nav-number">1.6.</span> <span class="nav-text">GCD</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建队列"><span class="nav-number">1.6.1.</span> <span class="nav-text">创建队列</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#主队列"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">主队列</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自定义的队列"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">自定义的队列</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建任务"><span class="nav-number">1.6.1.3.</span> <span class="nav-text">创建任务</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#队列组"><span class="nav-number">1.6.2.</span> <span class="nav-text">队列组</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建队列-1"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">创建队列</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#监听任务组事件的执行完毕"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">监听任务组事件的执行完毕</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dispatch_once"><span class="nav-number">1.6.2.3.</span> <span class="nav-text">dispatch_once</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dispatch_after"><span class="nav-number">1.6.2.4.</span> <span class="nav-text">dispatch_after</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dispatch_apply"><span class="nav-number">1.6.2.5.</span> <span class="nav-text">dispatch_apply</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dispatch_barrier_async"><span class="nav-number">1.6.2.6.</span> <span class="nav-text">dispatch_barrier_async</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#暂停与恢复"><span class="nav-number">1.6.2.7.</span> <span class="nav-text">暂停与恢复</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dispatch_Source_（信号源)"><span class="nav-number">1.6.3.</span> <span class="nav-text">Dispatch Source （信号源)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dispatch_Semaphore_信号量"><span class="nav-number">1.6.4.</span> <span class="nav-text">Dispatch Semaphore 信号量</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Share</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
     }
   });
-});
-</script>
-
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var ai = $('.article-content>iframe'),
-      ae = $('.article-content>embed'),
-      t  = $('#toc'),
-      ta = $('#toc.toc-aside'),
-      o  = $('.openaside'),
-      c  = $('.closeaside');
-  if(ai.length>0){
-    ai.wrap('<div class="video-container" />');
-  };
-  if(ae.length>0){
-   ae.wrap('<div class="video-container" />');
-  };
-  c.click(function(){
-    ta.css('display', 'block').addClass('fadeIn');
-  });
-  o.click(function(){
-    ta.css('display', 'none');
-  });
-  $(window).scroll(function(){
-    ta.css("top",Math.max(140,320-$(this).scrollTop()));
-  });
-});
-</script>
-
-
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var $this = $('.share'),
-      url = $this.attr('data-url'),
-      encodedUrl = encodeURIComponent(url),
-      title = $this.attr('data-title'),
-      tsina = $this.attr('data-tsina'),
-      description = $this.attr('description');
-  var html = [
-  '<div class="hoverqrcode clearfix"></div>',
-  '<a class="overlay" id="qrcode"></a>',
-  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
-  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
-  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
-  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
-  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
-  '<span title="Share to"></span>'
-  ].join('');
-  $this.append(html);
-
-  $('.hoverqrcode').hide();
-
-  var myWidth = 0;
-  function updatehoverqrcode(){
-    if( typeof( window.innerWidth ) == 'number' ) {
-      myWidth = window.innerWidth;
-    } else if( document.documentElement && document.documentElement.clientWidth) {
-      myWidth = document.documentElement.clientWidth;
-    };
-    var qrsize = myWidth > 1024 ? 200:100;
-    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
-    var p = $('.article-share-qrcode').position();
-    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
-                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
-                          .qrcode(options);
-  };
-  $(window).resize(function(){
-    $('.hoverqrcode').hide();
-  });
-  $('.article-share-qrcode').click(function(){
-    updatehoverqrcode();
-    $('.hoverqrcode').toggle();
-  });
-  $('.article-share-qrcode').hover(function(){}, function(){
-      $('.hoverqrcode').hide();
-  });
-});   
 </script>
 
 
 
-<script type="text/javascript">
-  var duoshuoQuery = {short_name:"xiaerfei"};
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] 
-    || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
-</script> 
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){ 
-  $('.article-content').each(function(i){
-    $(this).find('img').each(function(){
-      if ($(this).parent().hasClass('fancybox')) return;
-      var alt = this.alt;
-      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
-      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
     });
-    $(this).find('.fancybox').each(function(){
-      $(this).attr('rel', 'article' + i);
-    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
   });
-  if($.fancybox){
-    $('.fancybox').fancybox();
-  }
-}); 
 </script>
 
-
-
-<!-- Analytics Begin -->
-
-
-
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
 </script>
 
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 
-<!-- Analytics End -->
+  
+  
 
-<!-- Totop Begin -->
-
-	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
-	</div>
-	<script src="/js/totop.js"></script>
-
-<!-- Totop End -->
-
-<!-- MathJax Begin -->
-<!-- mathjax config similar to math.stackexchange -->
-
-
-<!-- MathJax End -->
-
-<!-- Tiny_search Begin -->
-
-<!-- Tiny_search End -->
-
-  </body>
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
 </html>
