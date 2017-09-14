@@ -39,20 +39,17 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="Chris Lattner 做客 Realm WWDC 2017 Swift panel。这里是我觉得有趣的并将其简明扼要编辑下来的一些复述（这里我仅仅关注了Chris Lattner，但是其他的一些小组成员-Kamilah Taylor, Kevin Ballard, and Jesse Squires 也谈论了一些非常有趣的事情。如果你想要听的话，点击这里）。
-在辩论会上讨论开放 Swift">
+<meta name="description" content="函数的参数是如何传递的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Chris Lattner on the Realm WWDC 2017 Swift panel">
-<meta property="og:url" content="http://yoursite.com/2017/07/02/Chris Lattner on the Realm WWDC 2017 Swift panel/index.html">
+<meta property="og:title" content="函数的参数是如何传递的">
+<meta property="og:url" content="http://yoursite.com/2017/07/02/function-stack/index.html">
 <meta property="og:site_name" content="吾生也有涯，而知也无涯">
-<meta property="og:description" content="Chris Lattner 做客 Realm WWDC 2017 Swift panel。这里是我觉得有趣的并将其简明扼要编辑下来的一些复述（这里我仅仅关注了Chris Lattner，但是其他的一些小组成员-Kamilah Taylor, Kevin Ballard, and Jesse Squires 也谈论了一些非常有趣的事情。如果你想要听的话，点击这里）。
-在辩论会上讨论开放 Swift">
+<meta property="og:description" content="函数的参数是如何传递的">
 <meta property="og:image" content="http://pic.qqtn.com/file/2013/2015-5/2015050609100347328.jpg">
-<meta property="og:updated_time" content="2017-07-02T05:24:56.000Z">
+<meta property="og:updated_time" content="2017-09-14T12:41:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Chris Lattner on the Realm WWDC 2017 Swift panel">
-<meta name="twitter:description" content="Chris Lattner 做客 Realm WWDC 2017 Swift panel。这里是我觉得有趣的并将其简明扼要编辑下来的一些复述（这里我仅仅关注了Chris Lattner，但是其他的一些小组成员-Kamilah Taylor, Kevin Ballard, and Jesse Squires 也谈论了一些非常有趣的事情。如果你想要听的话，点击这里）。
-在辩论会上讨论开放 Swift">
+<meta name="twitter:title" content="函数的参数是如何传递的">
+<meta name="twitter:description" content="函数的参数是如何传递的">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -64,7 +61,7 @@
 
 
 
-  <title> Chris Lattner on the Realm WWDC 2017 Swift panel | 吾生也有涯，而知也无涯 </title>
+  <title> 函数的参数是如何传递的 | 吾生也有涯，而知也无涯 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -166,7 +163,7 @@
           
           
             
-              Chris Lattner on the Realm WWDC 2017 Swift panel
+              函数的参数是如何传递的
             
           
         </h1>
@@ -195,18 +192,8 @@
       
 
       
-        <span itemprop="articleBody"><p>Chris Lattner 做客 <a href="https://news.realm.io/news/wwdc-2017-swift-panel/" target="_blank" rel="external">Realm WWDC 2017 Swift panel</a>。这里是我觉得有趣的并将其简明扼要编辑下来的一些复述（这里我仅仅关注了Chris Lattner，但是其他的一些小组成员-Kamilah Taylor, Kevin Ballard, and Jesse Squires 也谈论了一些非常有趣的事情。如果你想要听的话，<a href="https://news.realm.io/news/wwdc-2017-swift-panel/" target="_blank" rel="external">点击这里</a>）。</p>
-<h2 id="在辩论会上讨论开放_Swift_evolution_的开发过程_是否是一件好事">在辩论会上讨论开放 Swift evolution 的开发过程 是否是一件好事</h2><p>Chris Lattner：我认为这里面既有好又有坏。我想这种方式是非常好的（指开源），Swift团队确实从大家获得了很多有价值的反馈。但是有时很沮丧，在大家来来回回的争吵中明白什么是权衡设计优化。</p>
-<p><code>很多的语言设计都权衡设计优化。这得益于有一个真正能提出不同异议的社区。</code></p>
-<p>许多语言的设计都是关于权衡和平衡。没有一个人能提出一个多方位完美答案。你必须选择一些在某些方面很好但在其他方面不好的一点。这就是权衡利弊。除非大家真正能提出不同异议，否则你就做不到这些。这非常棒！</p>
-<p>对我而言，令我沮丧的是，当核心团队出来时说，“我们不会谈论改变关键字”，但事实是疯狂的讨论是否改变关键字。这不是最有效的，但至少容易忽视。</p>
-<h2 id="比较Swift_4版本与Swift_3版本">比较Swift 4版本与Swift 3版本</h2><p>Chris Lattner：Swift 3开始出现了一大堆的目标，但随着时间的流逝，这些目标被打折扣。<br>这是我的锅！<img src="http://pic.qqtn.com/file/2013/2015-5/2015050609100347328.jpg" alt="二哈"><br>管理软件很难，计划很难，然后开源，成千上万的人在项目的版本上下降中感觉没有任何的计划。嗯，确实没有什么计划！</p>
-<p>Swift 3大约在一半左右，主要目标从ABI稳定性转变为源码稳定性。我认为这是最正确的事情。我们在Swift 3开发大约在一半左右的一段时间内意识到，随着社区的壮大，大家编写越来越多的代码，代码的不可破坏性变得非常重要。说Swift源码不稳定的原因之一是，在开放源代码发布之前，大家没有去大量的争论，讨论，争吵和主要的一些问题。你真的需要这样做，才能够更好。</p>
-<h2 id="离开苹果">离开苹果</h2><p>Chris Lattner：一个积极的代码提交者转向Swift对我来说是一个艰难的决定。我还是非常喜欢Swift，对我来非常重要，这也是我为什么在这里和参与核心小组会议以及Swift的进展。</p>
-<p>Swift团队真的很棒。我怎么会说这个没有听起来很奇怪？失去我并不是一个很大的损失，因为大家有像Doug Gregor，Joe Groff和John McCall以及无数的其他人。许多人不知道Ted的事情是，他已经经营很长时间了。所以在很多方面来说，就是理所当然的发生了。Ted是很多事情的策划者。所以，苹果的Swift团队非常的棒。我确定你们已经看到了，所以某种意义上已经不需要我了。</p>
-<p>现在他们是一个伟大的团队，有许多伟大的人，发挥自己的才能，但现在是时候继续前进。</p>
-<h2 id="Swift作为一个服务器开发语言">Swift作为一个服务器开发语言</h2><p>Chris Lattner：从技术角度来看，Swift提供很多功能。如果将它与Go，Node.js，Ruby，PHP等进行比较，那么它们在计算方面：Swift代码运行速度更快。如果构建云应用程序，那么你将为CPU利用率付费，您通常也会为内存利用率付费。Swift不但跑得快、表现好、低内存，还能为你省钱。</p>
-<p>Java的运行速度也是非常快的的。这是一个超级成熟的生态系统，虚拟机真的很好。这不是关于Java使用CPU利用率的问题，更重要的是，一个类似的Swift应用程序通常会使用大约三或四倍的内存。这可能是一个重要的问题。</p>
+        <span itemprop="articleBody"><p>函数的参数是如何传递的</p>
+<p><img src="http://pic.qqtn.com/file/2013/2015-5/2015050609100347328.jpg" alt=""></p>
 </span>
       
     </div>
@@ -326,7 +313,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#在辩论会上讨论开放_Swift_evolution_的开发过程_是否是一件好事"><span class="nav-number">1.</span> <span class="nav-text">在辩论会上讨论开放 Swift evolution 的开发过程 是否是一件好事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比较Swift_4版本与Swift_3版本"><span class="nav-number">2.</span> <span class="nav-text">比较Swift 4版本与Swift 3版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#离开苹果"><span class="nav-number">3.</span> <span class="nav-text">离开苹果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Swift作为一个服务器开发语言"><span class="nav-number">4.</span> <span class="nav-text">Swift作为一个服务器开发语言</span></a></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
