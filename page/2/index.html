@@ -163,6 +163,96 @@
           
           
             
+              <a class="post-title-link" href="/2016/04/23/JSPatch-stduy/" itemprop="url">
+                JSPatch 学习
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-04-23T21:14:30+08:00" content="2016-04-23">
+            2016-04-23
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="引言">引言</h3><p>好久前就已经了解到JSPatch（JSPatch是iOS平台的热修复框架，能够及时的修复线上的一些小bug，iOS应用审核时间之长，大家都懂得），一直以来都没有抽出时间去学习，今天抽出时间来学习下，突然又发现只有官方的一些教程，自己照着写写满满都是泪（崩溃的次数多）。学JSPatch写法，首先大家需要先补一下JavaScript的知识。</p>
+<h3 id="基础用法">基础用法</h3><p>关于基础的用法大家可以先看<a href="https://github.com/bang590/JSPatch/wiki/JSPatch-基础用法" target="_blank" rel="external">官方的Wiki</a>,大致有13个知识点，我这里直接就上用法了。<br></p>
+<h4 id="require">require</h4><p>首先，用到哪个类就需要require一下，否则会崩溃，比如UIView、UILabel等等，中间逗号隔开</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'UILabel,UIView'</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="调用OC的方法">调用OC的方法</h4><p>因为JavaScript是链式语法，所以说和写OC有很大的不同,写的时候要注意</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'UIView, UIColor'</span>);</span><br><span class="line"><span class="keyword">var</span> view = UIView.alloc().init();<span class="comment">//实例方法</span></span><br><span class="line"><span class="keyword">var</span> red = UIColor.redColor();<span class="comment">//类方法</span></span><br></pre></td></tr></table></figure>
+<p>UIView 有很多的Property，这些Property如何调用呢？<br><br>等于调用这个 Property 的 getter / setter 方法，获取时记得加 (),如：</p>
+<figure class="highlight sml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">require(<span class="symbol">'UIView</span>, <span class="type">UIColor'</span>);</span><br><span class="line">var view = <span class="type">UIView</span>.alloc<span class="literal">()</span>.init<span class="literal">()</span>;</span><br><span class="line">view.setBackgroundColor(<span class="type">UIColor</span>.grayColor<span class="literal">()</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="常量、枚举、宏、全局变量">常量、枚举、宏、全局变量</h4><p>Objective-C 里的常量/枚举不能直接在 JS 上使用，可以直接在 JS 上用具体值代替：</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="keyword">label</span> = UILabel.alloc().init();</span><br><span class="line"><span class="keyword">label</span>.setTextAlignment(<span class="number">1</span>);<span class="comment">//这里需要写具体的值</span></span><br></pre></td></tr></table></figure>
+<p>宏也不使用，若定义的宏是一个值，可以在 JS 定义同样的全局变量代替，若定义的宏是程序，可以在JS展开宏</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">define</span> TABBAR_HEIGHT <span class="number">40</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> SCREEN_WIDTH [[UIScreen mainScreen] bounds].size.height</span></span><br><span class="line">[view setWidth:SCREEN_WIDTH height:TABBAR_HEIGHT];</span><br><span class="line"><span class="comment">//JS</span></span><br><span class="line">view.setWidth_height(<span class="number">40</span>, UIScreen.mainScreen().bounds().height);</span><br></pre></td></tr></table></figure>
+<p>若宏的值是某些在底层才能获取到的值，例如 CGFLOAT_MIN，可以通过在某个类或实例方法里将它返回，或者用添加扩展的方式提供支持，</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">JPMacroSupport</span></span></span><br><span class="line">+ (<span class="keyword">void</span>)main:(JSContext *)context</span><br><span class="line">&#123;</span><br><span class="line">  context[<span class="string">@"CGFLOAT_MIN"</span>] = ^<span class="built_in">CGFloat</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">CGFLOAT_MIN</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">require(<span class="string">'JPEngine'</span>).addExtensions([<span class="string">'JPMacroSupport'</span>])</span><br><span class="line">var <span class="built_in">float</span>M<span class="keyword">in</span> = CGFLOAT_MIN();</span><br></pre></td></tr></table></figure>
+<p>当然全局变量也是如此：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">NSString</span> *name;</span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">JPTestObject</span></span></span><br><span class="line">+ (<span class="built_in">NSString</span> *)name &#123;</span><br><span class="line">  <span class="keyword">return</span> name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">var</span> name = JPTestObject.<span class="function"><span class="title">name</span><span class="params">()</span></span> <span class="comment">//拿到全局变量值</span></span><br></pre></td></tr></table></figure>
+<h4 id="defineClass">defineClass</h4><p>在 defineClass 里定义 OC 已存在的方法即可覆盖:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">defineClass</span>(<span class="string">'ViewController'</span>, &#123;</span><br><span class="line">    <span class="tag">viewDidLoad</span>: <span class="tag">function</span>() &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>如果想调用原方法，在方法名前加 ORIG 即可调用未覆盖前的 OC 原方法:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">defineClass(<span class="string">'ViewController'</span>, &#123;</span><br><span class="line">    viewDidLoad: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">self</span>.ORIGviewDidLoad();</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>下面是一个UILabel添加到View上的例子：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">require<span class="list">(<span class="quoted">'UILabel</span>,UIView,UIColor,UIFont')</span><span class="comment">;</span></span><br><span class="line">defineClass<span class="list">(<span class="quoted">'ViewController</span>', &#123;</span><br><span class="line">    viewDidLoad: function<span class="list">()</span> &#123;</span><br><span class="line">        self.ORIGviewDidLoad<span class="list">()</span><span class="comment">;</span></span><br><span class="line">        var view = self.view<span class="list">()</span><span class="comment">;</span></span><br><span class="line">        var label = UILabel.alloc<span class="list">()</span>.initWithFrame<span class="list">(&#123;x:<span class="number">100</span>, y:<span class="number">200</span>, width:<span class="number">100</span>, height:<span class="number">100</span>&#125;)</span><span class="comment">;</span></span><br><span class="line">        label.setFont<span class="list">(<span class="keyword">UIFont</span>.systemFontOfSize<span class="list">(<span class="number">10</span>)</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setTextAlignment<span class="list">(<span class="number">1</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setText<span class="list">(<span class="string">"你好 ！"</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setBackgroundColor<span class="list">(<span class="keyword">UIColor</span>.grayColor<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">        view.addSubview<span class="list">(<span class="keyword">label</span>)</span><span class="comment">;</span></span><br><span class="line">        var background = UIView.alloc<span class="list">()</span>.initWithFrame<span class="list">(&#123;x:<span class="number">100</span>,y:<span class="number">350</span>,width:<span class="number">100</span>,height:<span class="number">100</span>&#125;)</span><span class="comment">;</span></span><br><span class="line">        background.setBackgroundColor<span class="list">(<span class="keyword">UIColor</span>.grayColor<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">        self.setBackgroundView<span class="list">(<span class="keyword">background</span>)</span><span class="comment">;</span></span><br><span class="line">        view.addSubview<span class="list">(<span class="keyword">self</span>.backgroundView<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>开始的时候一直不知道OC中的“self.view”在JavaScript中怎么调用，试了好久直接调用“self.view()”就行了。</p>
+<p><br><br><br></p>
+<hr>
+<p>参考：<br><br><a href="https://github.com/bang590/JSPatch/wiki" target="_blank" rel="external">官方的Wiki</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/03/27/studytask/" itemprop="url">
                 学习资料总结
               </a>
@@ -384,7 +474,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

@@ -163,6 +163,226 @@
           
           
             
+              <a class="post-title-link" href="/2017/10/24/data-communication-base/" itemprop="url">
+                计算机网络基础-数据通信基础
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-10-24T20:22:00+08:00" content="2017-10-24">
+            2017-10-24
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h2 id="数据传输系统">数据传输系统</h2><p>学习内容有一下几点：</p>
+<ul>
+<li>[x] 系统组成</li>
+<li>[x] 系统功能</li>
+<li>[x] 信道连接结点的方式</li>
+<li>[x] 数据通信方式 </li>
+</ul>
+<h3 id="系统组成">系统组成</h3><p>数据传输系统由结点、收发器和信道组成</p>
+<ul>
+<li><p><code>结点:</code>可以是终端、服务器和交换机等设备</p>
+<p>  ▷ 用于产生需要传输的二进制位流<br>  ▷ 或是接收二进制位流</p>
+</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E7%BB%93%E7%82%B9.png" alt=""></p>
+<ul>
+<li><p><code>收发器:</code></p>
+<p>  ▷ 连接发送端的收发器实现将数据转换成信号的过程<br>  ▷ 连接接收端的收发器实现将信号还原成数据的过程</p>
+</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E6%94%B6%E5%8F%91%E5%99%A8.png" alt=""></p>
+<ul>
+<li><p><code>信道:</code>信号传播通道</p>
+<p>  ▷ 传播光信号信道、传播电信号信道<br>  ▷ 有线信道、无线信道<br>  ▷ 单段物理链路信道、多段物理链路组合信道</p>
+</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E4%BF%A1%E9%81%93-1.png" alt=""></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E4%BF%A1%E9%81%93-2.png" alt=""></p>
+<h3 id="系统功能">系统功能</h3><p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E7%B3%BB%E7%BB%9F%E5%8A%9F%E8%83%BD.png" alt=""></p>
+<h3 id="信道连接结点方式">信道连接结点方式</h3><p>根据同一信道连接设备的多少可以把信道连接设备的方式<br>分为点对点连接方式和多点连接方式</p>
+<ul>
+<li>点对点连接方式  只连接两个设备 </li>
+<li>多点连接方式 连接三个及三个以上设备</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E4%BF%A1%E9%81%93%E8%BF%9E%E6%8E%A5%E7%BB%93%E7%82%B9%E6%96%B9%E5%BC%8F.png" alt=""></p>
+<h3 id="数据通信方式">数据通信方式</h3><ul>
+<li><p><code>半双工通信:</code>又称双向交替通信，指数据允许沿两个方向传输，任一时刻只能沿一个方向传输数据</p>
+<p>  ▷ 两端设备都允许发送、接收数据，但任一时刻不能同时既发送又接收数据。</p>
+</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E5%8D%8A%E5%8F%8C%E5%B7%A5%E9%80%9A%E4%BF%A1.png" alt=""></p>
+<ul>
+<li><p><code>全双工通信:</code>又称双向同时通信，指允许同时沿两个方向传输 数据，这种通信方式下，两端设备之间必须同时存在两个方向 的信道。</p>
+<p>  ▷ 一般情况下，采用全双工通信方式的数据传输系统，信道连接 方式为点对点连接方式，且两个设备由双向信道(允许同时双 向通信的信道)互连。</p>
+</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E5%85%A8%E5%8F%8C%E5%B7%A5%E9%80%9A%E4%BF%A1.png" alt=""></p>
+<h2 id="信号">信号</h2><p>学习内容有一下几点：</p>
+<ul>
+<li>[x] 正弦波信号</li>
+<li>[x] 数字信号</li>
+<li>[x] 模拟信号</li>
+<li>[x] 信号的失真和还原 </li>
+</ul>
+<h3 id="正弦波信号">正弦波信号</h3><p>周期性的数字信号和模拟信号可以用一组不同频率的正弦波信号表示</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7.png" alt=""></p>
+<p>三个参数:</p>
+<ul>
+<li>幅度:A</li>
+<li>频率 :1/T</li>
+<li>初始相位(简称相位): φ</li>
+</ul>
+<h3 id="数字信号">数字信号</h3><p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B71.png" alt=""></p>
+<ul>
+<li><code>数字信号:</code>幅度为有限离散值的信号数字信号改变幅度时，直接从一种幅度跳变到另一种幅度</li>
+<li><code>基带信号:</code>幅度只有两种离散值的数字信号 基带信号为最常用的表示二进制位流的数字信号</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B72.png" alt=""></p>
+<ul>
+<li><code>谐波:</code>用于合成周期性数字信号的不同频率的正弦波信号</li>
+<li><code>拟合周期性数字信号:</code>由有限次谐波合成的接近原始周期性数字信号的信号</li>
+<li><code>带宽:</code>用于形成拟合周期性数字信号的各次谐波的频率范围</li>
+</ul>
+<h3 id="模拟信号">模拟信号</h3><p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7%E5%B9%85%E5%BA%A6%E8%BF%9E%E7%BB%AD.png" alt=""></p>
+<ul>
+<li><code>拟合周期性模拟信号:</code>由有限次不同频率正弦波信号合成 的接近原周期性模拟信号的信号</li>
+<li><code>模拟信号的带宽:</code>用于形成“拟合周期性模拟信号”的一 组不同频率的正弦波信号的频率范围</li>
+</ul>
+<h3 id="信号的失真和还原">信号的失真和还原</h3><p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7%E5%A4%B1%E7%9C%9F.png" alt=""></p>
+<ul>
+<li><p>数字信号和模拟信号都会引发失真</p>
+<p>  ▷ <code>阻抗:</code>物理链路存在阻抗，阻抗与物理链路长度成正比<br>  ▷ <code>阻抗具有频率相关性:</code>相同物理链路对不同频率的信号呈现不同的<br>阻抗，不同频率的信号经过相同物理链路，有着不同的衰减程度</p>
+</li>
+<li><p>失真是因为相同物理链路上，不同频率的正弦波信号的衰减不同</p>
+</li>
+</ul>
+<h4 id="数字信号还原">数字信号还原</h4><ul>
+<li>幅度还原:通过设置阈值来还原幅度</li>
+<li>宽度还原:通过时钟同步实现</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E8%BF%98%E5%8E%9F.png" alt=""></p>
+<p>基带信号不能还原的情况:</p>
+<ul>
+<li>失真后的低电平高于阈值:噪音</li>
+<li>失真后的高电平低于阈值:衰减</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E4%B8%8D%E8%83%BD%E8%BF%98%E5%8E%9F.png" alt=""></p>
+<h4 id="模拟信号还原原理">模拟信号还原原理</h4><ul>
+<li>幅度连续的信号只能通过放大信号来弥补信号衰减</li>
+<li>构成模拟信号的各次谐波的衰减程度不同</li>
+<li>必须对各次谐波单独设置放大电路</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7%E8%BF%98%E5%8E%9F%E5%8E%9F%E7%90%86.png" alt=""></p>
+<h4 id="模拟信号还原复杂性">模拟信号还原复杂性</h4><ul>
+<li>由于模拟信号是由无数谐波所组成的，为各次谐波单独设置放大电路是不可行的</li>
+<li>为模拟信号设置单个统一的放大电路反而加剧失真 严重程度</li>
+</ul>
+<h3 id="小结">小结</h3><ul>
+<li>数字信号和模拟信号都是由多次谐波组成的</li>
+<li>数字信号和模拟信号通过物理链路传输都会引发失真</li>
+<li>数字信号失真容易还原，模拟信号不容易还原</li>
+</ul>
+<h2 id="调制">调制</h2><p>学习内容有一下几点：</p>
+<ul>
+<li>[x] 调制技术</li>
+<li>[x] 模拟信号中码元的定义</li>
+<li>[x] 奈奎斯特准则和香农定理</li>
+</ul>
+<h3 id="调制技术">调制技术</h3><ul>
+<li>调制是将正弦波信号(或余弦波信号)转换成表示二进制位流的模拟 信号的过程</li>
+<li>解调是从调制后的模拟信号中还原出二进制位流的过程</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E8%B0%83%E5%88%B6%E6%8A%80%E6%9C%AF-%E8%B0%83%E5%88%B6%E8%A7%A3%E8%B0%83.png" alt=""></p>
+<h4 id="振幅键控调制技术">振幅键控调制技术</h4><p>振幅键控调制技术(Amplitude Shift Keying，ASK):用两种 不同幅度的载波信号来表示两个不同的二进制数值，通常一种 幅度为0，另一种幅度采用正常值。</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E6%8C%AF%E5%B9%85%E9%94%AE%E6%8E%A7%E8%B0%83%E5%88%B6%E6%8A%80%E6%9C%AF.png" alt=""></p>
+<h4 id="移频键控调制技术">移频键控调制技术</h4><p>移频键控调制技术(Frequency Shift Keying，FSK)用两种不同频率的信号来表示两个不同的二进制数值</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%A7%BB%E9%A2%91%E9%94%AE%E6%8E%A7%E8%B0%83%E5%88%B6%E6%8A%80%E6%9C%AF.png" alt=""></p>
+<h4 id="移相键控调制技术">移相键控调制技术</h4><ul>
+<li>移相键控调制技术(Phase Shift Keying，PSK):通过改变 载波的相位来表示不同的二进制数值:相对移相和绝对移相</li>
+<li>相对移相:二进制数0的信号和前面信号相同相位，二进制数1 的信号和前面信号相反相位(相差180°)</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%A7%BB%E7%9B%B8%E9%94%AE%E6%8E%A7%E8%B0%83%E5%88%B6%E6%8A%80%E6%9C%AF.png" alt=""></p>
+<ul>
+<li>移相键控调制技术(Phase Shift Keying，PSK):通过改变载波的相位来表示不同的二进制数值</li>
+<li>绝对移相:二进制数0和二进制数1分别用两种不同的相反相位<br>(相差180°)的载波信号表示<img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%BB%9D%E5%AF%B9%E7%A7%BB%E7%9B%B8.png" alt=""></li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%A7%BB%E7%9B%B8%E9%94%AE%E6%8E%A7%E8%B0%83%E5%88%B6%E6%8A%80%E6%9C%AF.png" alt=""></p>
+<h3 id="码元的定义">码元的定义</h3><ul>
+<li>码元长度:指维持正弦波信号(或余弦波信号)幅度、频率和相位不变的最短时间长度</li>
+<li>码  元:如果将信号以码元长度为单位分隔，每一段码元长度内的信号</li>
+</ul>
+<p>码元是调制后用于表示二进制位流的模拟信号的基本信号单位</p>
+<ul>
+<li>波 特 率:单位时间内传输的码元数量</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%A0%81%E5%85%83%E7%9A%84%E5%AE%9A%E4%B9%89.png" alt=""></p>
+<h3 id="奈奎斯特准则和香农定理">奈奎斯特准则和香农定理</h3><h4 id="奈奎斯特准则">奈奎斯特准则</h4><p>奈奎斯特准则(理想信道):</p>
+<ul>
+<li>最大波特率 RP=2×BW(BW为信道带宽)</li>
+<li>最大传输速率 RS=2×BW×log2n(n为信号的状态数)</li>
+<li>最大传输速率也称为信道容量</li>
+</ul>
+<p>信道容量取决于信道带宽和经过信道传播的信号状态数</p>
+<h4 id="香农定理">香农定理</h4><p>香农定理(随机热噪声的信道):</p>
+<ul>
+<li>最大传输速率 RS=BW×log2(1+S/N)(BW为信道带宽、S/N为信号信噪比)</li>
+<li>香农定理表明，存在随机热噪声的信道中，信道最大传输速率取决于信道带宽和经过信道传播的信号的信噪比，与信号的编码或调制技术 无关。</li>
+<li>奈奎斯特准则和香农定理给出了在指定信道的情况下获得较高数据传输速率的途径。</li>
+</ul>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/07/02/function-stack/" itemprop="url">
                 函数的参数是如何传递的
               </a>
@@ -1610,96 +1830,6 @@ dispatch_semaphore_wait的返回值也为<span class="keyword">long</span>型。
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/04/23/JSPatch-stduy/" itemprop="url">
-                JSPatch 学习
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-04-23T21:14:30+08:00" content="2016-04-23">
-            2016-04-23
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="引言">引言</h3><p>好久前就已经了解到JSPatch（JSPatch是iOS平台的热修复框架，能够及时的修复线上的一些小bug，iOS应用审核时间之长，大家都懂得），一直以来都没有抽出时间去学习，今天抽出时间来学习下，突然又发现只有官方的一些教程，自己照着写写满满都是泪（崩溃的次数多）。学JSPatch写法，首先大家需要先补一下JavaScript的知识。</p>
-<h3 id="基础用法">基础用法</h3><p>关于基础的用法大家可以先看<a href="https://github.com/bang590/JSPatch/wiki/JSPatch-基础用法" target="_blank" rel="external">官方的Wiki</a>,大致有13个知识点，我这里直接就上用法了。<br></p>
-<h4 id="require">require</h4><p>首先，用到哪个类就需要require一下，否则会崩溃，比如UIView、UILabel等等，中间逗号隔开</p>
-<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'UILabel,UIView'</span>);</span><br></pre></td></tr></table></figure>
-<h4 id="调用OC的方法">调用OC的方法</h4><p>因为JavaScript是链式语法，所以说和写OC有很大的不同,写的时候要注意</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'UIView, UIColor'</span>);</span><br><span class="line"><span class="keyword">var</span> view = UIView.alloc().init();<span class="comment">//实例方法</span></span><br><span class="line"><span class="keyword">var</span> red = UIColor.redColor();<span class="comment">//类方法</span></span><br></pre></td></tr></table></figure>
-<p>UIView 有很多的Property，这些Property如何调用呢？<br><br>等于调用这个 Property 的 getter / setter 方法，获取时记得加 (),如：</p>
-<figure class="highlight sml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">require(<span class="symbol">'UIView</span>, <span class="type">UIColor'</span>);</span><br><span class="line">var view = <span class="type">UIView</span>.alloc<span class="literal">()</span>.init<span class="literal">()</span>;</span><br><span class="line">view.setBackgroundColor(<span class="type">UIColor</span>.grayColor<span class="literal">()</span>);</span><br></pre></td></tr></table></figure>
-<h4 id="常量、枚举、宏、全局变量">常量、枚举、宏、全局变量</h4><p>Objective-C 里的常量/枚举不能直接在 JS 上使用，可以直接在 JS 上用具体值代替：</p>
-<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="keyword">label</span> = UILabel.alloc().init();</span><br><span class="line"><span class="keyword">label</span>.setTextAlignment(<span class="number">1</span>);<span class="comment">//这里需要写具体的值</span></span><br></pre></td></tr></table></figure>
-<p>宏也不使用，若定义的宏是一个值，可以在 JS 定义同样的全局变量代替，若定义的宏是程序，可以在JS展开宏</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">define</span> TABBAR_HEIGHT <span class="number">40</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> SCREEN_WIDTH [[UIScreen mainScreen] bounds].size.height</span></span><br><span class="line">[view setWidth:SCREEN_WIDTH height:TABBAR_HEIGHT];</span><br><span class="line"><span class="comment">//JS</span></span><br><span class="line">view.setWidth_height(<span class="number">40</span>, UIScreen.mainScreen().bounds().height);</span><br></pre></td></tr></table></figure>
-<p>若宏的值是某些在底层才能获取到的值，例如 CGFLOAT_MIN，可以通过在某个类或实例方法里将它返回，或者用添加扩展的方式提供支持，</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">JPMacroSupport</span></span></span><br><span class="line">+ (<span class="keyword">void</span>)main:(JSContext *)context</span><br><span class="line">&#123;</span><br><span class="line">  context[<span class="string">@"CGFLOAT_MIN"</span>] = ^<span class="built_in">CGFloat</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">CGFLOAT_MIN</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">require(<span class="string">'JPEngine'</span>).addExtensions([<span class="string">'JPMacroSupport'</span>])</span><br><span class="line">var <span class="built_in">float</span>M<span class="keyword">in</span> = CGFLOAT_MIN();</span><br></pre></td></tr></table></figure>
-<p>当然全局变量也是如此：</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">NSString</span> *name;</span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">JPTestObject</span></span></span><br><span class="line">+ (<span class="built_in">NSString</span> *)name &#123;</span><br><span class="line">  <span class="keyword">return</span> name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">var</span> name = JPTestObject.<span class="function"><span class="title">name</span><span class="params">()</span></span> <span class="comment">//拿到全局变量值</span></span><br></pre></td></tr></table></figure>
-<h4 id="defineClass">defineClass</h4><p>在 defineClass 里定义 OC 已存在的方法即可覆盖:</p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">defineClass</span>(<span class="string">'ViewController'</span>, &#123;</span><br><span class="line">    <span class="tag">viewDidLoad</span>: <span class="tag">function</span>() &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>如果想调用原方法，在方法名前加 ORIG 即可调用未覆盖前的 OC 原方法:</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">defineClass(<span class="string">'ViewController'</span>, &#123;</span><br><span class="line">    viewDidLoad: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">self</span>.ORIGviewDidLoad();</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>下面是一个UILabel添加到View上的例子：</p>
-<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">require<span class="list">(<span class="quoted">'UILabel</span>,UIView,UIColor,UIFont')</span><span class="comment">;</span></span><br><span class="line">defineClass<span class="list">(<span class="quoted">'ViewController</span>', &#123;</span><br><span class="line">    viewDidLoad: function<span class="list">()</span> &#123;</span><br><span class="line">        self.ORIGviewDidLoad<span class="list">()</span><span class="comment">;</span></span><br><span class="line">        var view = self.view<span class="list">()</span><span class="comment">;</span></span><br><span class="line">        var label = UILabel.alloc<span class="list">()</span>.initWithFrame<span class="list">(&#123;x:<span class="number">100</span>, y:<span class="number">200</span>, width:<span class="number">100</span>, height:<span class="number">100</span>&#125;)</span><span class="comment">;</span></span><br><span class="line">        label.setFont<span class="list">(<span class="keyword">UIFont</span>.systemFontOfSize<span class="list">(<span class="number">10</span>)</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setTextAlignment<span class="list">(<span class="number">1</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setText<span class="list">(<span class="string">"你好 ！"</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setBackgroundColor<span class="list">(<span class="keyword">UIColor</span>.grayColor<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">        view.addSubview<span class="list">(<span class="keyword">label</span>)</span><span class="comment">;</span></span><br><span class="line">        var background = UIView.alloc<span class="list">()</span>.initWithFrame<span class="list">(&#123;x:<span class="number">100</span>,y:<span class="number">350</span>,width:<span class="number">100</span>,height:<span class="number">100</span>&#125;)</span><span class="comment">;</span></span><br><span class="line">        background.setBackgroundColor<span class="list">(<span class="keyword">UIColor</span>.grayColor<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">        self.setBackgroundView<span class="list">(<span class="keyword">background</span>)</span><span class="comment">;</span></span><br><span class="line">        view.addSubview<span class="list">(<span class="keyword">self</span>.backgroundView<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
-<p>开始的时候一直不知道OC中的“self.view”在JavaScript中怎么调用，试了好久直接调用“self.view()”就行了。</p>
-<p><br><br><br></p>
-<hr>
-<p>参考：<br><br><a href="https://github.com/bang590/JSPatch/wiki" target="_blank" rel="external">官方的Wiki</a></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1738,7 +1868,7 @@ dispatch_semaphore_wait的返回值也为<span class="keyword">long</span>型。
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
