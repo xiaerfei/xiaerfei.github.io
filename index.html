@@ -241,6 +241,7 @@
 </li>
 </ul>
 <p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E5%85%A8%E5%8F%8C%E5%B7%A5%E9%80%9A%E4%BF%A1.png" alt=""></p>
+<hr>
 <h2 id="信号">信号</h2><p>学习内容有一下几点：</p>
 <ul>
 <li>[x] 正弦波信号</li>
@@ -306,6 +307,7 @@
 <li>数字信号和模拟信号通过物理链路传输都会引发失真</li>
 <li>数字信号失真容易还原，模拟信号不容易还原</li>
 </ul>
+<hr>
 <h2 id="调制">调制</h2><p>学习内容有一下几点：</p>
 <ul>
 <li>[x] 调制技术</li>
@@ -353,6 +355,180 @@
 <li>香农定理表明，存在随机热噪声的信道中，信道最大传输速率取决于信道带宽和经过信道传播的信号的信噪比，与信号的编码或调制技术 无关。</li>
 <li>奈奎斯特准则和香农定理给出了在指定信道的情况下获得较高数据传输速率的途径。</li>
 </ul>
+<hr>
+<h2 id="差错控制_—_检错码">差错控制 — 检错码</h2><p>学习内容有一下几点：</p>
+<ul>
+<li>[x] 出错现象和原因</li>
+<li>[x] 检错码</li>
+</ul>
+<h3 id="出错的现象和原因">出错的现象和原因</h3><ul>
+<li>出错:发送端发送的二进制位流与接收端接收到的二进制位流不一致</li>
+<li>出错的二进制位可能是一位，可能是随机多位，也可能是连续多位</li>
+<li><p>计算机网络中</p>
+<p>  ▷ 出错的二进制位往往是连续多位二进制位<br>  ▷ 出错的二进制位的起始位置是随机的</p>
+</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E5%87%BA%E9%94%99%E7%9A%84%E7%8E%B0%E8%B1%A1%E5%92%8C%E5%8E%9F%E5%9B%A0.png" alt=""></p>
+<ul>
+<li>二进制位流从发送端到接收端经历的每一个步骤都有可能出错。</li>
+<li><p>提高数据传输速率增加出错概率</p>
+<p>  ▷ 对于数字传输系统，往往通过增加幅度的离散值的数量来提高每<br>一位码元表示的二进制数位数。<br>  ▷ 对于模拟传输系统，往往通过增加信号的状态数来提高每一位码<br>元表示的二进制数位数。</p>
+</li>
+</ul>
+<h3 id="检错码">检错码</h3><ul>
+<li>检错码:为了使得接收端能够检测出数据传输过程中发生的错误而添加的附加信息。 </li>
+</ul>
+<blockquote>
+<p>如果数据是D，检错码是C :C=f(D)</p>
+</blockquote>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E6%A3%80%E9%94%99%E7%A0%81.png" alt=""></p>
+<ul>
+<li><p>计算检错码C的函数f最好具备以下特点:</p>
+<p>  ▷ 不同的数据D对应着不同的C<br>  ▷ C的位数远小于D且固定<br>  ▷ 函数f计算过程简单</p>
+</li>
+<li><p>选择计算检错码C的函数f时，需要在函数f的计算复杂性、检错 码C的位数和传输出错检测能力这三方面进行综合平衡。</p>
+<h4 id="检验和">检验和</h4><p>检验和根据数据D计算检错码C的计算过程:</p>
+</li>
+</ul>
+<ol>
+<li>将数据分为长度固定(一般是字节的整数倍)的数据段</li>
+<li>根据反码运算规则累加分段后产生的每一段数据</li>
+<li>将累加结果取反作为检错码C</li>
+</ol>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E6%A3%80%E9%AA%8C%E5%92%8C.png" alt=""></p>
+<ul>
+<li>检验和方法简单，能检测出单段数据中连续多位二进制数错误</li>
+<li>对于分布在多段数据中的二进制数错误，有可能无法检测出</li>
+<li>检验和算法在计算机网络中常常被用来作为检错技术</li>
+<li>为了提高传输网络的检错能力，需要和其他检错技术一起使用</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E6%A3%80%E9%AA%8C%E5%92%8Cbug.png" alt=""></p>
+<h4 id="循环冗余检验">循环冗余检验</h4><p>循环冗余检验(Cyclic Redundancy Check，CRC)的检错机制如下:</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E5%BE%AA%E7%8E%AF%E5%86%97%E4%BD%99%E6%A3%80%E9%AA%8C.png" alt=""></p>
+<p>循环冗余码特点:</p>
+<ul>
+<li>通过精心挑选最高阶数为r的生成多项式G(X)</li>
+<li>循环冗余检验可以检测出所有奇数位二进制数错，所有长度≤r的连续位错，和大多数长度≥r+1的连续位错。</li>
+<li>目前Internet中常用的检错码是检验和与循环冗余检验(CRC)，CRC的检错能力远大于检验和。</li>
+</ul>
+<hr>
+<h2 id="差错控制_—_确认和重传">差错控制 — 确认和重传</h2><p>学习内容有一下几点：</p>
+<ul>
+<li>[x] 数据传输和确认过程</li>
+<li>[x] 重传机制</li>
+<li>[x] 避免重复接收方法</li>
+</ul>
+<h3 id="数据传输和确认过程">数据传输和确认过程</h3><ul>
+<li>发送端发送的数据帧由数据和检错码组成</li>
+<li>接收端用检错码判别数据是否传输出错</li>
+<li>在数据传输正确的情况下，接收端向发送 端发送确认应答(ACK)帧</li>
+<li>发送端只有接收到接收端发送的确认应答 帧，才能确认数据帧正确传输。</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E6%AD%A3%E5%B8%B8%E4%BC%A0%E8%BE%93%E8%BF%87%E7%A8%8B.png" alt=""></p>
+<h3 id="重传机制">重传机制</h3><ul>
+<li>接收端用检错码检测出数据传 输出错，不再发送确认应答帧</li>
+<li>发送端在规定时间内没有接收 到确认应答帧，再次发送数据帧</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%87%BA%E9%94%99.png" alt=""></p>
+<h3 id="序号和避免重复接收">序号和避免重复接收</h3><ul>
+<li>确认应答帧在传输过程中出错</li>
+<li>经过规定时间，发送端再次发送数据帧，接收端将重复接收数据帧。</li>
+</ul>
+<p><em>解决接收端重复接收数据帧问题的 方法是在发送的数据帧中增加序号</em></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E6%95%B0%E6%8D%AE%E9%87%8D%E5%A4%8D%E4%BC%A0%E8%BE%93.png" alt=""></p>
+<ul>
+<li>确认应答帧也需要携带确认序号n</li>
+<li>确认序号为n说明小于n 的数据帧都已经正确接收</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E9%81%BF%E5%85%8D%E9%87%8D%E5%A4%8D%E6%8E%A5%E6%94%B6.png" alt=""></p>
+<ul>
+<li>连续发送:在前一个数据确认之前可以发送下一个数据</li>
+<li>累积确认:确认序号n 就确认了所有序号小于 n的数据帧。</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E8%BF%9E%E7%BB%AD%E5%8F%91%E9%80%81%E5%92%8C%E7%B4%AF%E7%A7%AF%E7%A1%AE%E8%AE%A4.png" alt=""></p>
+<ul>
+<li>序号位数有限，比如2位</li>
+<li><p>重复使用序号:</p>
+<p>  ▷ 序号相同的没有被确认的 数据帧只能有一帧<br>  ▷ 接收端能够区分序号相同的不同数据帧</p>
+</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E9%87%8D%E5%A4%8D%E4%BD%BF%E7%94%A8%E5%BA%8F%E5%8F%B7.png" alt=""></p>
+<h3 id="小结-1">小结</h3><ul>
+<li>检错码:接收端判别数据是否正确</li>
+<li>确认应答:发送端判别数据是否被正确接收</li>
+<li>重传:出错数据必须重新发送</li>
+<li>序号:避免接收端重复接收数据</li>
+</ul>
+<hr>
+<h2 id="传输媒体">传输媒体</h2><p>学习内容有一下几点：</p>
+<ul>
+<li>[x] 同轴电缆</li>
+<li>[x] 双绞线</li>
+<li>[x] 光纤</li>
+</ul>
+<h3 id="同轴电缆">同轴电缆</h3><p>传输媒体也称为传输介质或传输媒介，用于构成数据传输系统中两个收<br>发器之间的信道。</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93%E5%88%86%E7%B1%BB.png" alt=""></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E5%90%8C%E8%BD%B4%E7%94%B5%E7%BC%86%E7%BB%93%E6%9E%84.png" alt=""></p>
+<p><strong>粗同轴电缆:</strong></p>
+<ul>
+<li>粗缆采用一种类似夹板的Tap装置进行安装</li>
+<li>利用Tap上的引导针穿透电缆的绝缘层,直接与 导体相连</li>
+<li>有一个外置收发器</li>
+<li>可靠性好，抗干扰能力强</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E7%B2%97%E5%90%8C%E8%BD%B4%E7%94%B5%E7%BC%86.png" alt=""></p>
+<p><strong>细同轴电缆:</strong></p>
+<ul>
+<li>可靠性稍差</li>
+<li>无外置收发器</li>
+<li>轻便、灵活、成本较低</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E7%BB%86%E5%90%8C%E8%BD%B4%E7%94%B5%E7%BC%86.png" alt=""></p>
+<h3 id="双绞线">双绞线</h3><ul>
+<li>双绞线由两根具有绝缘保护层的铜导线组成</li>
+<li>把两根绝缘的铜导线按一定密度互相绞在一起，因此得名</li>
+<li>实际使用时，双绞线是由多对双绞线一起包在一个绝缘电缆套管里的。</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E5%8F%8C%E7%BB%9E%E7%BA%BF.png" alt=""></p>
+<p><em>双绞线电缆的主要特性是线 路规格、扭绞间距、绝缘类型、 阻抗特性和外套材料</em></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E5%8F%8C%E7%BB%9E%E7%BA%BF%E7%A7%8D%E7%B1%BB.png" alt=""></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E5%8F%8C%E7%BB%9E%E7%BA%BF%E6%A0%87%E8%AF%86.png" alt=""></p>
+<p><strong>优点:</strong></p>
+<ol>
+<li>可以实现全双工通信</li>
+<li>价格便宜</li>
+<li>柔软性好，容易布线</li>
+</ol>
+<p><strong>缺点:</strong></p>
+<ol>
+<li>频率特性不及同轴电缆</li>
+<li>抗干扰能力差</li>
+</ol>
+<h3 id="光纤">光纤</h3><ul>
+<li>光纤是光导纤维的简写，是一种由玻璃或塑料制成的纤维</li>
+<li>光纤通信是指利用光纤传播光脉冲进行的通信过程。有光 脉冲相当于数字信号1，没有光脉冲相当于数字信号0。</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E5%85%89%E7%BA%A4.png" alt=""></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E5%85%89%E7%BA%A4%E7%A7%8D%E7%B1%BB.png" alt=""></p>
+<p><strong>优点:</strong></p>
+<ol>
+<li>容易布线</li>
+<li>传输速率高</li>
+<li>传输距离远</li>
+<li>抗干扰性好</li>
+<li>价格比同轴电缆便宜</li>
+</ol>
+<p><strong>缺点:</strong></p>
+<ol>
+<li>光端口成本高，尤其是单模光纤光端口</li>
+</ol>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E5%85%89%E7%BA%A4%E4%BD%BF%E7%94%A8.png" alt=""></p>
+<h3 id="小结-2">小结</h3><ul>
+<li>双绞线和光纤是互补性很强的两种传输媒体</li>
+<li>双绞线和光纤成为主流的传输媒体</li>
+<li>同轴电缆在网络通信中逐渐被淘汰</li>
+</ul>
+<h2 id="结束">结束</h2><p>好了，到这里科普知识结束了，下节开始以太网的学习。</p>
 </span>
         
       
