@@ -163,6 +163,183 @@
           
           
             
+              <a class="post-title-link" href="/2017/12/15/从“0”实现一个JSPatch/" itemprop="url">
+                从“0”实现一个JSPatch
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-12-15T12:19:20+08:00" content="2017-12-15">
+            2017-12-15
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h2 id="引言">引言</h2><p>之前写了一篇 <a href="http://xiaerfei.github.io/2016/04/23/JSPatch-stduy/" target="_blank" rel="external">JSPatch 学习</a> 的基础教程。时过一年之后，JSPatch 已经被 Apple 封杀，周围同事已经很少再使用了。但当下动态化部署十分火热(RN、Weex)，研究一下 JSPatch 的源码对我们的帮助很大。</p>
+<p>本篇并不是给大家分析 JSPatch 的源码</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2017/10/27/data-communication-etherNet/" itemprop="url">
+                计算机网络基础-以太网
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-10-27T05:28:00+08:00" content="2017-10-27">
+            2017-10-27
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h2 id="总线形以太网">总线形以太网</h2><p>学习内容有一下几点：</p>
+<ul>
+<li>[x] 总线形以太网拓扑结构</li>
+<li>[x] 总线形以太网功能需求</li>
+<li>[x] 总线形以太网体系结构</li>
+</ul>
+<h3 id="拓扑结构">拓扑结构</h3><p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E6%9C%80%E6%97%A9%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91%E8%AE%BE%E8%AE%A1%E5%9B%BE.png" alt=""></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E6%80%BB%E7%BA%BF%E4%BB%A5%E5%A4%AA%E7%BD%91%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84.png" alt=""></p>
+<p>为了防止总线两端的反射信号，在总线两端各接一个匹配阻抗。任何终端向总线上发送信号，信号都会迅速向总线的两端传播。</p>
+<p><strong>距离问题:互联起来的终端，他们之间的距离有什么要求?</strong><br>我们都知道，信号的传播随着距离的增加会衰减，然后变形、失真，所有要在适当的距离增加一个中继器，把变形的信号还原为原来发送的信号。</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E4%B8%AD%E7%BB%A7%E5%99%A8%E4%BD%9C%E7%94%A8.png" alt=""></p>
+<p><strong>距离问题:互联起来的终端，他们之间的距离有什么要求?</strong></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E6%80%BB%E7%BA%BF%E9%95%BF%E5%BA%A6.png" alt=""></p>
+<p><em>从信号传播角度来说，只要不断增加中继器，总线的长度是无限的</em></p>
+<h3 id="功能需求">功能需求</h3><p>要实现两个终端之间的数据通信，必须解决这样一些问题:</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82%E9%97%AE%E9%A2%98.png" alt=""></p>
+<h4 id="数据封装">数据封装</h4><p><strong>解决发什么?收什么?</strong></p>
+<p>发送端发送数据，接收端要想接到数据，除数据外还要增加一些辅助信息，比如地址、数据类型等等，这就形成了一个<code>帧</code></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E8%BE%85%E5%8A%A9%E4%BF%A1%E6%81%AF.png" alt=""></p>
+<p><em>发送端以帧为单位发送，接收端以帧为单位接收</em></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E5%B8%A7.png" alt=""></p>
+<h3 id="数据与信号转换">数据与信号转换</h3><p><strong>解决怎么发?怎么收?</strong></p>
+<p><code>发送终端:</code> 把构成帧的二进制位流转换成信号<br><code>接收终端:</code> 把从总线上接收到的信号转换成一串二进制位流</p>
+<h3 id="帧对界">帧对界</h3><p><strong>解决怎么收?</strong></p>
+<p><code>接收终端:</code> 从一串二进制位流中正确提取出每一帧</p>
+<h3 id="检测总线状态">检测总线状态</h3><p><strong>解决什么时候发?什么时候收?</strong></p>
+<p><code>传输媒体:</code> 同轴电缆<br><code>信息交换的方式:</code> 半双工通信</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E6%A3%80%E6%B5%8B%E6%80%BB%E7%BA%BF%E7%8A%B6%E6%80%81.png" alt=""></p>
+<p><em>总线状态空闲仅仅是发送数据的前提</em></p>
+<h3 id="公平竞争总线的机制">公平竞争总线的机制</h3><p><strong>解决什么时候发 ?</strong></p>
+<p><em>需要有一种机制保证只有一个终端能够 成功发送数据，而且每一个终端成功发送数 据的几率还要是均等的</em></p>
+<h3 id="寻址">寻址</h3><p><strong>解决由谁来收 ?</strong></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E5%AF%BB%E5%9D%80.png" alt=""></p>
+<p><em>每一个终端能够判别自己是否是数据 的接收者，当确定自己是数据接收者 的时候才接收。</em></p>
+<h2 id="基带传输和曼彻斯特编码">基带传输和曼彻斯特编码</h2><p>学习内容有一下几点：</p>
+<ul>
+<li>[x] 什么是基带传输</li>
+<li>[x] 如何用基带信号表示和还原数据</li>
+<li>[x] 什么是曼彻斯特编码</li>
+<li>[x] 如何用曼彻斯特编码实现位同步</li>
+</ul>
+<h3 id="什么是基带传输">什么是基带传输</h3><p><strong>基带传输就是用基带信号实现数据传输的方式</strong><br>什么叫基带信号?<br>    ▷ 基带信号就是幅度只有两种离散值的数字信号</p>
+<p><img src="" alt="基带信号表示"></p>
+<h3 id="如何用基带信号表示和还原数据?">如何用基带信号表示和还原数据?</h3><p><strong>基带传输需要解决什么问题?</strong><br>    ▷ 如何用基带信号表示和还原数据</p>
+<p>二进制数的单位是二进制位，基带信号的单位是码元。对基 带信号来说，码元就是一个二进制位所对应的信号。</p>
+<p><img src="" alt="基带信号参数"></p>
+<p><strong>码元长度与数据传输速率有关</strong></p>
+<p>数据传输速率:10Mbps<br>每秒传输10M位二进制位<br>基带信号每秒产生10M个码元<br>码元长度=1/(10×10^6)s</p>
+<p><img src="" alt="时钟周期"><br><img src="" alt="时钟周期等于码元长度"></p>
+<p><strong>数据传输速率与时钟频率之间的关系</strong></p>
+<p>数据传输速率:10Mbps<br>码元长度=1/(10×10^6)s<br>时钟周期=1/(10×10^6)s<br>时钟频率=1/时钟周期=10MHz</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/10/24/data-communication-base/" itemprop="url">
                 计算机网络基础-数据通信基础
               </a>
@@ -594,6 +771,68 @@
           <span itemprop="articleBody"><p>函数的参数是如何传递的</p>
 <p><img src="http://pic.qqtn.com/file/2013/2015-5/2015050609100347328.jpg" alt=""></p>
 </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2017/03/10/union-found/" itemprop="url">
+                数据结构与算法---> 并查集
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-03-10T11:32:05+08:00" content="2017-03-10">
+            2017-03-10
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"></span>
         
       
     </div>
@@ -1632,380 +1871,6 @@ dispatch_semaphore_wait的返回值也为<span class="keyword">long</span>型。
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/06/30/CAKeyframeAnimation/" itemprop="url">
-                CAKeyframeAnimation 关键帧动画
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-06-30T07:34:33+08:00" content="2016-06-30">
-            2016-06-30
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>CAKeyframeAnimation（关键帧动画）<br><br>      关键帧动画就是在动画控制过程中开发者指定主要的动画状态，至于各个状态间动画如何进行则由系统自动运算补充（每两个关键帧之间系统形成的动画称为“补间动画”），这种动画的好处就是开发者不用逐个控制每个动画帧，而只要关心几个关键帧的状态即可。<br>      关键帧动画开发分为两种形式：一种是通过设置不同的属性值进行关键帧控制，另一种是通过绘制路径进行关键帧控制。后者优先级高于前者，如果设置了路径则属性值就不再起作用。</p>
-<p>看下面的代码，简单的用法：</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CAKeyframeAnimation</span> *keyAnimation = [<span class="built_in">CAKeyframeAnimation</span> animationWithKeyPath:@“position”];</span><br><span class="line"><span class="comment">//设置关键点</span></span><br><span class="line"><span class="built_in">NSValue</span> *key1 = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:_layer<span class="variable">.position</span>];</span><br><span class="line"><span class="built_in">NSValue</span> *key2 = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">300</span>, <span class="number">220</span>)];</span><br><span class="line"><span class="built_in">NSValue</span> *key3 = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">100</span>, <span class="number">300</span>)];</span><br><span class="line"><span class="built_in">NSValue</span> *key4 = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">300</span>, <span class="number">400</span>)];</span><br><span class="line">keyAnimation<span class="variable">.duration</span> = <span class="number">5.0</span>f;</span><br><span class="line">[<span class="keyword">self</span><span class="variable">.layer</span> addAnimation:keyAnimation forKey:<span class="string">@"key"</span>];</span><br></pre></td></tr></table></figure>
-<p>当然页可以换成路径：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//2.设置路径</span></span><br><span class="line"><span class="comment">//绘制贝塞尔曲线</span></span><br><span class="line">CGMutablePathRef path = CGPathCreateMutable();</span><br><span class="line"><span class="comment">//移动到起始点</span></span><br><span class="line">CGPathMoveToPoint(path, <span class="literal">NULL</span>, _layer.position.x, _layer.position.y);</span><br><span class="line"><span class="comment">//绘制二次贝塞尔曲线</span></span><br><span class="line">CGPathAddCurveToPoint(path, <span class="literal">NULL</span>, <span class="number">160</span>, <span class="number">280</span>, -<span class="number">30</span>, <span class="number">300</span>, <span class="number">55</span>, <span class="number">400</span>);</span><br><span class="line"><span class="comment">//设置path属性</span></span><br><span class="line">keyAnimation.path=path;</span><br><span class="line"><span class="comment">//释放路径对象</span></span><br><span class="line">CGPathRelease(path);</span><br></pre></td></tr></table></figure>
-<p>(1) values属性<br>        values属性指明整个动画过程中的关键帧点，例如上例中的key1-key2就是通过values指定的。需要注意的是，起点必须作为values的第一个值。</p>
-<p>(2)path属性<br>        作用与values属性一样，同样是用于指定整个动画所经过的路径的。需要注意的是，values与path是互斥的，当values与path同时指定时，path会覆盖values，即values属性将被忽略。</p>
-<p>(3)keyTimes<br>     keyTimes：各个关键帧的时间控制，如果你没有显式地对keyTimes进行设置，则系统会默认每条子路径的时间为：ti=duration/(5-1)，即每条子路径的duration相等，都为duration的1\4。当然，我们也可以传个数组让物体快慢结合。前面使用values设置了四个关键帧，默认情况下每两帧之间的间隔为:8/(4-1)秒。如果想要控制动画从第一帧到第二针占用时间4秒，从第二帧到第三帧时间为2秒，而从第三帧到第四帧时间2秒的话，就可以通过keyTimes进行设置。keyTimes中存储的是时间占用比例点，此时可以设置keyTimes的值为0.0，0.5，0.75，1.0（当然必须转换为NSNumber，其中首尾必须分别是0和1），也就是说1到2帧运行到总时间的50%，2到3帧运行到总时间的75%，3到4帧运行到8秒结束。</p>
-<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keyAnimation.keyTimes = <span class="variable">@[</span><span class="variable">@(</span><span class="number">0</span>),<span class="variable">@(</span><span class="number">0.3</span>),<span class="variable">@(</span><span class="number">0.8</span>),<span class="variable">@(</span><span class="number">1</span>)];</span><br></pre></td></tr></table></figure>
-<p>(3) calculationMode属性</p>
-<table>
-<thead>
-<tr>
-<th>calculationMode keys</th>
-<th>说明                                                                                                                                       </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>kCAAnimationLinear</td>
-<td>calculationMode的默认值,表示当关键帧为座标点的时候,关键帧之间直接直线相连进行插值计算;                                                                                                                                   </td>
-</tr>
-<tr>
-<td>kCAAnimationDiscrete</td>
-<td>离散的,就是不进行插值计算,所有关键帧直接逐个进行显示;                                                                                                                                    </td>
-</tr>
-<tr>
-<td>kCAAnimationPaced</td>
-<td>使得动画均匀进行,而不是按keyTimes设置的或者按关键帧平分时间,此时keyTimes和timingFunctions无效;   </td>
-</tr>
-<tr>
-<td>kCAAnimationCubic</td>
-<td>对关键帧为座标点的关键帧进行圆滑曲线相连后插值计算,对于曲线的形状还可以通过tensionValues,continuityValues,biasValues来进行调整自定义,这里的数学原理是Kochanek–Bartels spline,这里的主要目的是使得运行的轨迹变得圆滑;</td>
-</tr>
-<tr>
-<td>kCAAnimationCubicPaced</td>
-<td>看这个名字就知道和kCAAnimationCubic有一定联系,其实就是在kCAAnimationCubic的基础上使得动画运行变得均匀,就是系统时间内运动的距离相同,此时keyTimes以及timingFunctions也是无效的.      </td>
-</tr>
-</tbody>
-</table>
-<h5 id="感谢一下博客：">感谢一下博客：</h5><p><a href="http://www.cnblogs.com/kenshincui/p/3972100.html#autoid-3-1-0" target="_blank" rel="external">http://www.cnblogs.com/kenshincui/p/3972100.html#autoid-3-1-0</a><br><br><a href="http://www.cnblogs.com/wengzilin/p/4256468.html" target="_blank" rel="external">http://www.cnblogs.com/wengzilin/p/4256468.html</a><br><br><a href="http://blog.jobbole.com/69111/" target="_blank" rel="external">http://blog.jobbole.com/69111/</a></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/06/30/Core-Animation/" itemprop="url">
-                Core Animation 基础知识
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-06-30T07:18:00+08:00" content="2016-06-30">
-            2016-06-30
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h5 id="一、简介">一、简介</h5><p>CAAnimation的一些基础的知识，复习备用</p>
-<h5 id="二、使用步骤">二、使用步骤</h5><p>1.使用它需要先添加QuartzCore.framework框架和引入主头文件 QuartzCore/QuartzCore.h (Xcode 6 不需要);</p>
-<p>2.初始化一个CAAnimation对象，设置相应的属性;</p>
-<p>3.通过调用CALayer的addAnimation:forKey:方法增加CAAnimation对象到CALayer中，这样就能开始执行动画了;</p>
-<p>4.通过调用CALayer的removeAnimationForKey:方法可以停止CALayer中的动画.</p>
-<hr>
-<h5 id="三、CAAnimation_继承关系与核心类">三、CAAnimation 继承关系与核心类</h5><p>一般情况下，我们使用的是CAAnimation的子类(CABasicAnimation、CAKeyframeAnimation、CAAnimationGroup、CATransition)</p>
-<p><img src="http://img.blog.csdn.net/20150706193857613" alt="CAAnimation classes"></p>
-<p>CAAnimation：核心动画的基础类，不能直接使用，负责动画运行时间、速度的控制，本身实现了CAMediaTiming协议;</p>
-<p>CAPropertyAnimation：属性动画的基类（通过属性进行动画设置，注意是可动画属性），不能直接使用;</p>
-<p>CAAnimationGroup：动画组，动画组是一种组合模式设计，可以通过动画组来进行所有动画行为的统一控制，组中所有动画效果可以并发执行;<br>CATransition：转场动画，主要通过滤镜进行动画效果设置;<br>CABasicAnimation：基础动画，通过属性修改进行动画参数控制，只有初始状态和结束状态;<br>CAKeyframeAnimation：关键帧动画，同样是通过属性进行动画参数控制，但是同基础动画不同的是它可以有多个状态控制;</p>
-<p>基础动画、关键帧动画都属于属性动画，就是通过修改属性值产生动画效果，开发人员只需要设置初始值和结束值，中间的过程动画（又叫“补间动画”）由系统自动计算产生。和基础动画不同的是关键帧动画可以设置多个属性值，每两个属性中间的补间动画由系统自动完成，因此从这个角度而言基础动画又可以看成是有两个关键帧的关键帧动画。</p>
-<hr>
-<h5 id="四、常用属性">四、常用属性</h5><p>1.duration:它设定开始值到结束值花费的时间。期间会被速度的属性所影响;<br><br>2.speed:默认的值为 1.0.这意味着动画播放按照默认的速度。如果你改变这个值为 2.0,动画会用 2 倍的速度播放。这样的影响就是使持续时间减半。如果你指定的持续时间为6秒,速度为2.0,动画就会播放 3 秒钟,一半的 持续时间;<br><br>3.removedOnCompletion:这个属性默认为 YES,那意味着,在指定的时间段完成后,动画就自动的从层上移除了。这个一般不用。假如你想要再次用这个动画时,你需要设定这个属性为 NO。这样的话,下次你在通过-set 方法设定动画的属性时,它将再次使用你的动画,而非默认的动画;<br><br>4.fillMode:fillMode的作用就是决定当前对象过了非active时间段的行为. 比如动画开始之前,动画结束之后。如果是一个动画CAAnimation,则需要将其removedOnCompletion设置为NO,要不然fillMode不起作用. 下面来讲各个fillMode的意义:<br></p>
-<ul>
-<li>kCAFillModeRemoved 这个是默认值,也就是说当动画开始前和动画结束后,动画对layer都没有影响,动画结束后,layer会恢复到之前的状态;<br></li>
-<li>kCAFillModeForwards 当动画结束后,layer会一直保持着动画最后的状态;<br></li>
-<li>kCAFillModeBackwards 这个和kCAFillModeForwards是相对的,就是在动画开始前,你只要将动画加入了一个layer,layer便立即进入动画的初始状态并等待动画开始.你可以这样设定测试代码,将一个动画加入一个layer的时候延迟5秒执行.然后就会发现在动画没有开始的时候,只要动画被加入了layer,layer便处于动画初始状态;<br></li>
-<li>kCAFillModeBoth 理解了上面两个,这个就很好理解了,这个其实就是上面两个的合成.动画加入后开始之前,layer便处于动画初始状态,动画结束后layer保持动画最后的状态;<br><br>5.timingFunction可选的值有：<ul>
-<li>kCAMediaTimingFunctionLinear（线性）：匀速，给你一个相对静态的感觉</li>
-<li>kCAMediaTimingFunctionEaseIn（渐进）：动画缓慢进入，然后加速离开</li>
-<li>kCAMediaTimingFunctionEaseOut（渐出）：动画全速进入，然后减速的到达目的地</li>
-<li>kCAMediaTimingFunctionEaseInEaseOut（渐进渐出）：动画缓慢的进入，中间加速，然后减速的到达目的地。这个是默认的动画行为.</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">baseAnimation<span class="variable">.timingFunction</span> = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:k<span class="built_in">CAMediaTimingFunctionEaseOut</span>];</span><br></pre></td></tr></table></figure>
-<p>6.autoreverses:当你设定这个属性为 YES 时,在它到达目的地之后,再原路返回开始值。<br><br>7.timeOffset:动画从偏移的地方开始动画，但结束的地方是偏移的地方<br><br>8.repeatCount:默认的是 0,意味着动画只会播放一次。如果指定一个无限大的重复次数,使用 1e100f。这个不能和repeatDration属性一块使用。<br></p>
-<p>9.repeatDuration:这个属性指定了动画应该被重复多久。动画会一直重复,直到设定的时间流逝完。它不能和repeatCount一起使用。<br><br>10.additive:这个属性根据当前的渲染层的值加上value生成新的渲染的值，也就是动画时present layer的值。</p>
-<p><a href="http://blog.csdn.net/growinggiant/article/details/45535587" target="_blank" rel="external">下边的代码的动画效果是一样的，对比下values会有个明确的认识：</a></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)change</span><br><span class="line">&#123;</span><br><span class="line">    CAKeyframeAnimation* animation = [CAKeyframeAnimation animationWithKeyPath:@<span class="string">"position.x"</span>];</span><br><span class="line">    animation.values = @[@<span class="number">0</span>,@<span class="number">100</span>,@(-<span class="number">100</span>),@<span class="number">100</span>,@<span class="number">0</span>];</span><br><span class="line">    animation.keyTimes = @[@<span class="number">0</span>,@(<span class="number">1</span>/<span class="number">6.</span>),@(<span class="number">3</span>/<span class="number">6.</span>),@(<span class="number">5</span>/<span class="number">6.</span>),@<span class="number">1</span>];</span><br><span class="line">    animation.duration = <span class="number">2.f</span>;</span><br><span class="line">    animation.additive = YES; <span class="comment">//YES把更改的值追加到当前的present层中 keypath+=value ，NO是把更改的值设置成当前present层的值keypath = value</span></span><br><span class="line">    [self.ly.layer addAnimation:animation forKey:@<span class="string">"shaking"</span>];</span><br><span class="line">    ---------</span><br><span class="line">	CAKeyframeAnimation* animation1 = [CAKeyframeAnimation animationWithKeyPath:@<span class="string">"position.x"</span>];</span><br><span class="line">    animation1.values = @[@(self.ly1.center.x),@(self.ly1.center.x + <span class="number">100</span>),@(self.ly1.center.x - <span class="number">100</span>),@(self.ly1.center.x + <span class="number">100</span>),@(self.ly1.center.x)];</span><br><span class="line">    animation1.keyTimes = @[@<span class="number">0</span>,@(<span class="number">1</span>/<span class="number">6.</span>),@(<span class="number">3</span>/<span class="number">6.</span>),@(<span class="number">5</span>/<span class="number">6.</span>),@<span class="number">1</span>];</span><br><span class="line">    animation1.duration = <span class="number">2.f</span>;</span><br><span class="line">    animation1.additive = NO; <span class="comment">//YES把更改的值追加到当前的model层中 keypath+=value ，NO是把更改的值设置成当前present层的值keypath = value</span></span><br><span class="line">    [self.ly1.layer addAnimation:animation1 forKey:@<span class="string">"shaking"</span>];</span><br><span class="line">    [button animateWithType:arc4random()%<span class="number">3</span>];</span><br><span class="line">    [self performSelector:@selector(change) withObject:nil afterDelay:<span class="number">3.f</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>11.<a href="http://geeklu.com/2012/09/animation-in-ios/" target="_blank" rel="external">beginTime</a><br>无论是图层还是动画,都有一个时间线Timeline的概念,他们的beginTime是相对于父级对象的开始时间. 虽然苹果的文档中没有指明,但是通过代码测试可以发现,默认情况下所有的CALayer图层的时间线都是一致的,他们的beginTime都是0,绝对时间转换到当前Layer中的时间大小就是绝对时间的大小.所以对于图层而言,虽然创建有先后,但是他们的时间线都是一致的(只要不主动去修改某个图层的beginTime),所以我们可以想象成所有的图层默认都是从系统重启后开始了他们的时间线的计时.</p>
-<p>但是动画的时间线的情况就不同了,当一个动画创建好,被加入到某个Layer的时候,会先被拷贝一份出来用于加入当前的图层,在CA事务被提交的时候,如果图层中的动画的beginTime为0,则beginTime会被设定为当前图层的当前时间,使得动画立即开始.如果你想某个直接加入图层的动画稍后执行,可以通过手动设置这个动画的beginTime,但需要注意的是这个beginTime需要为 CACurrentMediaTime()+延迟的秒数,因为beginTime是指其父级对象的时间线上的某个时间,这个时候动画的父级对象为加入的这个图层,图层当前的时间其实为[layer convertTime:CACurrentMediaTime() fromLayer:nil],其实就等于CACurrentMediaTime(),那么再在这个layer的时间线上往后延迟一定的秒数便得到上面的那个结果.</p>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">baseAnimation.beginTime </span>= CACurrentMediaTime() + <span class="number">1</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
-<p>12.delegate：动画代理，用来监听动画的执行过程</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span> (<span class="title">CAAnimationDelegate</span>)</span></span><br><span class="line"><span class="comment">// 动画开始执行的时候触发这个方法</span></span><br><span class="line">- (<span class="keyword">void</span>)animationDidStart:(<span class="built_in">CAAnimation</span> *)anim;</span><br><span class="line"><span class="comment">// 动画执行完毕的时候触发这个方法</span></span><br><span class="line">- (<span class="keyword">void</span>)animationDidStop:(<span class="built_in">CAAnimation</span> *)anim finished:(<span class="built_in">BOOL</span>)flag;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<p>以上是做动画时常用的属性（当然也包括不常用的）；</p>
-<h5 id="五、动画类">五、动画类</h5><p>1.CABasicAnimation<br>下面是一些简单的使用方法（看一眼就OK了）：</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CABasicAnimation</span> *baseAnimation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"position"</span>];</span><br><span class="line">baseAnimation<span class="variable">.delegate</span> = <span class="keyword">self</span>;</span><br><span class="line">baseAnimation<span class="variable">.toValue</span> = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">150</span>, <span class="number">450</span>)];</span><br><span class="line">baseAnimation<span class="variable">.duration</span> = <span class="number">5.0</span>f;</span><br><span class="line">baseAnimation<span class="variable">.removedOnCompletion</span> = <span class="literal">NO</span>;</span><br><span class="line">baseAnimation<span class="variable">.speed</span> = <span class="number">2.0</span>f;</span><br><span class="line">baseAnimation<span class="variable">.fillMode</span> = k<span class="built_in">CAFillModeForwards</span>;</span><br><span class="line">baseAnimation<span class="variable">.timingFunction</span> = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:k<span class="built_in">CAMediaTimingFunctionEaseOut</span>];</span><br><span class="line">[<span class="keyword">self</span><span class="variable">.layer</span> addAnimation:baseAnimation forKey:<span class="string">@"haha"</span>];</span><br></pre></td></tr></table></figure>
-<p>CABasicAnimation 中使用比较多的是KeyPath，下面列出了一些（当然可以通过Xcode 帮助文档搜索“animatable properties“）<br><img src="http://img.blog.csdn.net/20150707111318433" alt="keyPath"></p>
-<p>2.CAAnimationGroup<br>GroupAnimation可以实现多种动画的组合，在GroupAnimation中的各个动画类型是同时进行的。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//缩放动画</span></span><br><span class="line"><span class="built_in">CABasicAnimation</span> *scale = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"transform"</span>];</span><br><span class="line">scale<span class="variable">.fromValue</span> = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CATransform3D</span>:<span class="built_in">CATransform3DIdentity</span>];</span><br><span class="line">scale<span class="variable">.toValue</span>   = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CATransform3D</span>:<span class="built_in">CATransform3DMakeScale</span>(<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">1</span>)];</span><br><span class="line"></span><br><span class="line"><span class="comment">//平移</span></span><br><span class="line"><span class="built_in">CABasicAnimation</span> *position = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"position"</span>];</span><br><span class="line">position<span class="variable">.toValue</span> = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">150</span>, <span class="number">450</span>)];</span><br><span class="line"></span><br><span class="line"><span class="comment">//旋转</span></span><br><span class="line"><span class="built_in">CABasicAnimation</span> *rotation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"transform.rotation.z"</span>];</span><br><span class="line">rotation<span class="variable">.toValue</span> = [<span class="built_in">NSNumber</span> numberWithFloat:M_PI_2];</span><br><span class="line"></span><br><span class="line"><span class="built_in">CAAnimationGroup</span> *group = [<span class="built_in">CAAnimationGroup</span> animation];</span><br><span class="line">group<span class="variable">.duration</span> = <span class="number">5</span>;</span><br><span class="line">group<span class="variable">.speed</span>    = <span class="number">1</span>;</span><br><span class="line">group<span class="variable">.animations</span> = @[scale,rotation,position];</span><br><span class="line">group<span class="variable">.removedOnCompletion</span> = <span class="literal">NO</span>;</span><br><span class="line">group<span class="variable">.fillMode</span> = k<span class="built_in">CAFillModeForwards</span>;</span><br><span class="line">[<span class="keyword">self</span><span class="variable">.layer</span> addAnimation:group forKey:<span class="string">@"group"</span>];</span><br></pre></td></tr></table></figure>
-<h5 id="六、最后感谢一下引用的博客">六、最后感谢一下引用的博客</h5><p><a href="http://geeklu.com/2012/09/animation-in-ios/" target="_blank" rel="external">http://geeklu.com/2012/09/animation-in-ios/</a><br><br><a href="http://www.cnblogs.com/wengzilin/p/4256468.html" target="_blank" rel="external">http://www.cnblogs.com/wengzilin/p/4256468.html</a><br><br><a href="http://www.cnblogs.com/mjios/archive/2013/04/15/3021039.html" target="_blank" rel="external">http://www.cnblogs.com/mjios/archive/2013/04/15/3021039.html</a></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/05/21/ios-date/" itemprop="url">
-                iOS 日期处理
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-05-21T17:04:42+08:00" content="2016-05-21">
-            2016-05-21
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>前几天在开发的时候遇到了日期方面的处理，花费了不少时间，踩了点坑，今天就把遇到的写一下.</p>
-<h3 id="本文内容">本文内容</h3><ol>
-<li>时间格式</li>
-<li>时间差（两个日期之间的天数、月数、年数差）计算</li>
-</ol>
-<h3 id="时间格式">时间格式</h3><p>在iOS中 <font color="#B22222" size="3">NSDateFormatter</font> 处理时间格式的东东，上次有个需求，就是获取网络请求中cookie的时间<br><br>cookie中的时间是这个酱子的：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Date:Sat, <span class="number">21</span> May <span class="number">2016</span> <span class="number">07</span>:<span class="number">57</span>:<span class="number">20</span> GMT</span><br></pre></td></tr></table></figure>
-<p>NSDateFormatter 中有一下格式：</p>
-<table>
-<thead>
-<tr>
-<th>格式</th>
-<th style="text-align:center">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>G</td>
-<td style="text-align:center">公元时代，例如AD公元</td>
-</tr>
-<tr>
-<td>yy</td>
-<td style="text-align:center">年的后2位 如：2016 中的 16</td>
-</tr>
-<tr>
-<td>yyyy</td>
-<td style="text-align:center">完整年 如：2016</td>
-</tr>
-<tr>
-<td>MM</td>
-<td style="text-align:center">月，显示为1-12</td>
-</tr>
-<tr>
-<td>MMM</td>
-<td style="text-align:center">月，显示为英文月份简写,如 Jan</td>
-</tr>
-<tr>
-<td>MMMM</td>
-<td style="text-align:center">月，显示为英文月份全称，如 Janualy</td>
-</tr>
-<tr>
-<td>dd</td>
-<td style="text-align:center">日，2位数表示，如02</td>
-</tr>
-<tr>
-<td>d</td>
-<td style="text-align:center">日，1-2位显示，如 2</td>
-</tr>
-<tr>
-<td>EEE</td>
-<td style="text-align:center">简写星期几，如Sun</td>
-</tr>
-<tr>
-<td>EEEE</td>
-<td style="text-align:center">全写星期几，如Sunday</td>
-</tr>
-<tr>
-<td>aa</td>
-<td style="text-align:center">上下午，AM/PM</td>
-</tr>
-<tr>
-<td>H</td>
-<td style="text-align:center">时，24小时制，0-23</td>
-</tr>
-<tr>
-<td>K</td>
-<td style="text-align:center">时，12小时制，0-11</td>
-</tr>
-<tr>
-<td>m</td>
-<td style="text-align:center">分，1-2位 ( 0-9 是一位 )</td>
-</tr>
-<tr>
-<td>mm</td>
-<td style="text-align:center">分，2位</td>
-</tr>
-<tr>
-<td>s</td>
-<td style="text-align:center">秒，1-2位</td>
-</tr>
-<tr>
-<td>ss</td>
-<td style="text-align:center">秒，2位</td>
-</tr>
-<tr>
-<td>S</td>
-<td style="text-align:center">毫秒</td>
-</tr>
-<tr>
-<td>Z</td>
-<td style="text-align:center">GMT</td>
-</tr>
-</tbody>
-</table>
-<p>了解了上面的格式，那就容易多了，故格式是：<font color="#B22222" size="3">EEE, dd MMM yyyy HH:mm:ss Z</font></p>
-<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="name">NSDateFormatter</span> *<span class="atom">formatter</span> = [[<span class="name">NSDateFormatter</span> <span class="atom">alloc</span>] <span class="atom">init</span>];</span><br><span class="line">[<span class="atom">formatter</span> <span class="atom">setDateFormat</span>:@<span class="string">"EEE, dd MMM yyyy HH:mm:ss Z"</span>];</span><br><span class="line"></span><br><span class="line"><span class="name">NSDate</span> *<span class="atom">date</span> = [<span class="atom">formatter</span> <span class="atom">dateFromString</span>:@<span class="string">"Sat, 21 May 2016 07:57:20 GMT"</span>];</span><br></pre></td></tr></table></figure>
-<p>但是上面的代码 得出的 date 可能是 nil,后面查了下原来是少设置了<font color="#B22222" size="3">NSLocale (区域设置)</font></p>
-<p>因为时间格式是英文的，所以：</p>
-<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="name">NSDateFormatter</span> *<span class="atom">formatter</span> = [[<span class="name">NSDateFormatter</span> <span class="atom">alloc</span>] <span class="atom">init</span>];</span><br><span class="line">[<span class="atom">formatter</span> <span class="atom">setDateFormat</span>:@<span class="string">"EEE, dd MMM yyyy HH:mm:ss Z"</span>];</span><br><span class="line">[<span class="atom">formatter</span> <span class="atom">setLocale</span>:[[<span class="name">NSLocale</span> <span class="atom">alloc</span>] <span class="atom">initWithLocaleIdentifier</span>:@<span class="string">"en_US"</span>]];</span><br><span class="line"><span class="name">NSDate</span> *<span class="atom">date</span> = [<span class="atom">formatter</span> <span class="atom">dateFromString</span>:@<span class="string">"Sat, 21 May 2016 07:57:20 GMT"</span>];</span><br></pre></td></tr></table></figure>
-<p>另外，关于是使用  <font color="#B22222" size="3">en_US_POSIX还是en_US</font> 可以看<a href="http://www.lidaren.com/archives/811" target="_blank" rel="external">这篇文章</a><br><br>当然，你设置成了  <font color="#B22222" size="3">zh_CN</font> ，那格式出来的是中文了，如“EEE, dd MMM yyyy HH:mm:ss Z”格式出来的：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">周六, <span class="number">21</span> <span class="number">5</span>月 <span class="number">2016</span> <span class="number">16</span>:<span class="number">37</span>:<span class="number">57</span> +<span class="number">0800</span></span><br></pre></td></tr></table></figure>
-<h3 id="时间差计算">时间差计算</h3><p>要计算两个日期的有多少天，多少个月，如果要自己计算的话，那就爽歪歪了，不过所幸 iOS的日历功能( <font color="#B22222" size="3">NSCalendar</font> )可以给我们提供一些便利。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSDate</span> *date1 = [formatter dateFromString:<span class="string">@"2016-05-21"</span>];</span><br><span class="line"><span class="built_in">NSDate</span> *date2 = [formatter dateFromString:<span class="string">@"2013-11-25"</span>];</span><br><span class="line"><span class="built_in">NSCalendar</span> *gregorian = [[<span class="built_in">NSCalendar</span> alloc] initWithCalendarIdentifier:<span class="built_in">NSCalendarIdentifierGregorian</span>];</span><br><span class="line"><span class="built_in">NSDateComponents</span> *components = [gregorian components:<span class="built_in">NSCalendarUnitYear</span> | <span class="built_in">NSCalendarUnitMonth</span> | <span class="built_in">NSCalendarUnitDay</span> fromDate:date2 toDate:date1 options:<span class="number">0</span>];</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"year = %ld month = %ld day = %ld"</span>,components<span class="variable">.year</span>,components<span class="variable">.month</span>,components<span class="variable">.day</span>);</span><br></pre></td></tr></table></figure>
-<h3 id="参考：">参考：<br></h3><p><a href="http://blog.csdn.net/crayondeng/article/details/8755306" target="_blank" rel="external">http://blog.csdn.net/crayondeng/article/details/8755306</a><br><br><a href="http://www.125135.com/339261.htm" target="_blank" rel="external">http://www.125135.com/339261.htm</a><br><br><a href="http://www.cnblogs.com/kaysun/p/5466508.html" target="_blank" rel="external">http://www.cnblogs.com/kaysun/p/5466508.html</a></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2044,7 +1909,7 @@ dispatch_semaphore_wait的返回值也为<span class="keyword">long</span>型。
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -2092,7 +1957,7 @@ dispatch_semaphore_wait的返回值也为<span class="keyword">long</span>型。
       <div class="footer-inner"> <div class="copyright" >
   
   &copy; &nbsp;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="icon-next-heart"></i>
   </span>

@@ -39,31 +39,19 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="CATransition 转场动画转场动画就是从一个场景以动画的形式过渡到另一个场景，navigation的push就是一种转场方式（后面会介绍如何自定义）。转场动画一般分为这几个步骤：(1)初始化转场动画(2)设置转场类型属性等(3)设置转场后的新视图并添加动画到图层下表列出了常用的转场类型(注意私有API是苹果官方没有公开的动画类型，但是目前通过仍然可以使用)：
-公开API
-
-
-动画类型
-说明">
+<meta name="description" content="引言之前写了一篇 JSPatch 学习 的基础教程。时过一年之后，JSPatch 已经被 Apple 封杀，周围同事已经很少再使用了。但当下动态化部署十分火热(RN、Weex)，研究一下 JSPatch 的源码对我们的帮助很大。
+本篇并不是给大家分析 JSPatch 的源码">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CATransition 转场动画">
-<meta property="og:url" content="http://yoursite.com/2016/06/30/CATransition/index.html">
+<meta property="og:title" content="从“0”实现一个JSPatch">
+<meta property="og:url" content="http://yoursite.com/2017/12/15/从“0”实现一个JSPatch/index.html">
 <meta property="og:site_name" content="吾生也有涯，而知也无涯">
-<meta property="og:description" content="CATransition 转场动画转场动画就是从一个场景以动画的形式过渡到另一个场景，navigation的push就是一种转场方式（后面会介绍如何自定义）。转场动画一般分为这几个步骤：(1)初始化转场动画(2)设置转场类型属性等(3)设置转场后的新视图并添加动画到图层下表列出了常用的转场类型(注意私有API是苹果官方没有公开的动画类型，但是目前通过仍然可以使用)：
-公开API
-
-
-动画类型
-说明">
-<meta property="og:updated_time" content="2016-06-29T23:39:42.000Z">
+<meta property="og:description" content="引言之前写了一篇 JSPatch 学习 的基础教程。时过一年之后，JSPatch 已经被 Apple 封杀，周围同事已经很少再使用了。但当下动态化部署十分火热(RN、Weex)，研究一下 JSPatch 的源码对我们的帮助很大。
+本篇并不是给大家分析 JSPatch 的源码">
+<meta property="og:updated_time" content="2018-03-17T13:25:58.206Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CATransition 转场动画">
-<meta name="twitter:description" content="CATransition 转场动画转场动画就是从一个场景以动画的形式过渡到另一个场景，navigation的push就是一种转场方式（后面会介绍如何自定义）。转场动画一般分为这几个步骤：(1)初始化转场动画(2)设置转场类型属性等(3)设置转场后的新视图并添加动画到图层下表列出了常用的转场类型(注意私有API是苹果官方没有公开的动画类型，但是目前通过仍然可以使用)：
-公开API
-
-
-动画类型
-说明">
+<meta name="twitter:title" content="从“0”实现一个JSPatch">
+<meta name="twitter:description" content="引言之前写了一篇 JSPatch 学习 的基础教程。时过一年之后，JSPatch 已经被 Apple 封杀，周围同事已经很少再使用了。但当下动态化部署十分火热(RN、Weex)，研究一下 JSPatch 的源码对我们的帮助很大。
+本篇并不是给大家分析 JSPatch 的源码">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -75,7 +63,7 @@
 
 
 
-  <title> CATransition 转场动画 | 吾生也有涯，而知也无涯 </title>
+  <title> 从“0”实现一个JSPatch | 吾生也有涯，而知也无涯 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -177,7 +165,7 @@
           
           
             
-              CATransition 转场动画
+              从“0”实现一个JSPatch
             
           
         </h1>
@@ -186,8 +174,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2016-06-30T07:39:42+08:00" content="2016-06-30">
-            2016-06-30
+          <time itemprop="dateCreated" datetime="2017-12-15T12:19:20+08:00" content="2017-12-15">
+            2017-12-15
           </time>
         </span>
 
@@ -206,132 +194,8 @@
       
 
       
-        <span itemprop="articleBody"><h3 id="CATransition_转场动画">CATransition 转场动画</h3><p>转场动画就是从一个场景以动画的形式过渡到另一个场景，navigation的push就是一种转场方式（后面会介绍如何自定义）。<br>转场动画一般分为这几个步骤：<br>(1)初始化转场动画<br>(2)设置转场类型属性等<br>(3)设置转场后的新视图并添加动画到图层<br>下表列出了常用的转场类型(注意私有API是苹果官方没有公开的动画类型，但是目前通过仍然可以使用)：</p>
-<h5 id="公开API">公开API</h5><table>
-<thead>
-<tr>
-<th style="text-align:left">动画类型</th>
-<th style="text-align:right">说明</th>
-<th style="text-align:center">对应常量</th>
-<th>是否支持方向设置</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">fade</td>
-<td style="text-align:right">淡出效果</td>
-<td style="text-align:center">kCATransitionFade</td>
-<td>是</td>
-</tr>
-<tr>
-<td style="text-align:left">movein</td>
-<td style="text-align:right">新视图移动到旧视图上</td>
-<td style="text-align:center">kCATransitionMoveIn</td>
-<td>是</td>
-</tr>
-<tr>
-<td style="text-align:left">push</td>
-<td style="text-align:right">新视图推出旧视图</td>
-<td style="text-align:center">kCATransitionPush</td>
-<td>是</td>
-</tr>
-<tr>
-<td style="text-align:left">reveal</td>
-<td style="text-align:right">移开旧视图显示新视图</td>
-<td style="text-align:center">kCATransitionReveal</td>
-<td>是</td>
-</tr>
-</tbody>
-</table>
-<h5 id="私有API———-私有API只能通过字符串访问">私有API———-私有API只能通过字符串访问</h5><table>
-<thead>
-<tr>
-<th style="text-align:left">动画类型</th>
-<th style="text-align:right">说明</th>
-<th style="text-align:center">对应常量</th>
-<th>是否支持方向设置</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">cube</td>
-<td style="text-align:right">立方体翻转效果</td>
-<td style="text-align:center">无</td>
-<td>是</td>
-</tr>
-<tr>
-<td style="text-align:left">oglFlip</td>
-<td style="text-align:right">翻转效果</td>
-<td style="text-align:center">无</td>
-<td>是</td>
-</tr>
-<tr>
-<td style="text-align:left">suckEffect</td>
-<td style="text-align:right">收缩效果</td>
-<td style="text-align:center">无</td>
-<td>否</td>
-</tr>
-<tr>
-<td style="text-align:left">rippleEffect</td>
-<td style="text-align:right">水滴波纹效果</td>
-<td style="text-align:center">无</td>
-<td>否</td>
-</tr>
-<tr>
-<td style="text-align:left">pageCurl</td>
-<td style="text-align:right">向上翻页效果</td>
-<td style="text-align:center">无</td>
-<td>是</td>
-</tr>
-<tr>
-<td style="text-align:left">pageUnCurl</td>
-<td style="text-align:right">向下翻页效果</td>
-<td style="text-align:center">无</td>
-<td>是</td>
-</tr>
-<tr>
-<td style="text-align:left">cameralIrisHollowOpen</td>
-<td style="text-align:right">摄像头打开效果</td>
-<td style="text-align:center">无</td>
-<td>否</td>
-</tr>
-<tr>
-<td style="text-align:left">cameraIrisHollowClose</td>
-<td style="text-align:right">摄像头关闭效果</td>
-<td style="text-align:center">无</td>
-<td>否</td>
-</tr>
-</tbody>
-</table>
-<h5 id="另外对于支持方向设置的动画类型还包含子类型">另外对于支持方向设置的动画类型还包含子类型</h5><table>
-<thead>
-<tr>
-<th style="text-align:left">动画子类型</th>
-<th style="text-align:right">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">kCATransitionFromRight</td>
-<td style="text-align:right">从右侧转场</td>
-</tr>
-<tr>
-<td style="text-align:left">kCATransitionFromLeft</td>
-<td style="text-align:right">从左侧转场</td>
-</tr>
-<tr>
-<td style="text-align:left">kCATransitionFromTop</td>
-<td style="text-align:right">从顶部转场</td>
-</tr>
-<tr>
-<td style="text-align:left">kCATransitionFromBottom</td>
-<td style="text-align:right">从底部转场</td>
-</tr>
-</tbody>
-</table>
-<p>下面是一个小例子：</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CATransition</span> *transition = [<span class="built_in">CATransition</span> animation];</span><br><span class="line">transition<span class="variable">.duration</span> = <span class="number">1.0</span>f;</span><br><span class="line">transition<span class="variable">.type</span> = <span class="string">@"cube"</span>;</span><br><span class="line"></span><br><span class="line">transition<span class="variable">.subtype</span> = k<span class="built_in">CATransitionFromRight</span>;</span><br><span class="line"><span class="built_in">UIView</span> *cubeView = [[<span class="built_in">UIView</span> alloc] initWithFrame:<span class="built_in">CGRectMake</span>(<span class="number">100</span>, <span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>)];</span><br><span class="line">cubeView<span class="variable">.backgroundColor</span> = [<span class="built_in">UIColor</span> cyanColor];</span><br><span class="line">[<span class="keyword">self</span><span class="variable">.view</span><span class="variable">.layer</span> addAnimation:transition forKey:<span class="string">@"cubeView"</span>];</span><br><span class="line">[<span class="keyword">self</span><span class="variable">.view</span> addSubview:cubeView];</span><br></pre></td></tr></table></figure>
-<h4 id="感谢一下博客">感谢一下博客</h4><p><a href="http://www.cnblogs.com/kenshincui/p/3972100.html#autoid-3-3-0" target="_blank" rel="external">http://www.cnblogs.com/kenshincui/p/3972100.html#autoid-3-3-0</a></p>
+        <span itemprop="articleBody"><h2 id="引言">引言</h2><p>之前写了一篇 <a href="http://xiaerfei.github.io/2016/04/23/JSPatch-stduy/" target="_blank" rel="external">JSPatch 学习</a> 的基础教程。时过一年之后，JSPatch 已经被 Apple 封杀，周围同事已经很少再使用了。但当下动态化部署十分火热(RN、Weex)，研究一下 JSPatch 的源码对我们的帮助很大。</p>
+<p>本篇并不是给大家分析 JSPatch 的源码</p>
 </span>
       
     </div>
@@ -343,13 +207,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/08/16/RegularExpression/" rel="prev">iOS 正则表达式</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/06/30/CAKeyframeAnimation/" rel="next">CAKeyframeAnimation 关键帧动画</a>
+              <a href="/2017/10/27/data-communication-etherNet/" rel="next">计算机网络基础-以太网</a>
             
           </div>
         </div>
@@ -453,7 +315,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CATransition_转场动画"><span class="nav-number">1.</span> <span class="nav-text">CATransition 转场动画</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#公开API"><span class="nav-number">1.0.1.</span> <span class="nav-text">公开API</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#私有API———-私有API只能通过字符串访问"><span class="nav-number">1.0.2.</span> <span class="nav-text">私有API———-私有API只能通过字符串访问</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#另外对于支持方向设置的动画类型还包含子类型"><span class="nav-number">1.0.3.</span> <span class="nav-text">另外对于支持方向设置的动画类型还包含子类型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#感谢一下博客"><span class="nav-number">1.1.</span> <span class="nav-text">感谢一下博客</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
