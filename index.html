@@ -163,7 +163,7 @@
           
           
             
-              <a class="post-title-link" href="/2017/12/15/从“0”实现一个JSPatch/" itemprop="url">
+              <a class="post-title-link" href="/2017/12/15/JSPatch/" itemprop="url">
                 从“0”实现一个JSPatch
               </a>
             
@@ -862,6 +862,123 @@
           
           
             
+              <a class="post-title-link" href="/2017/03/05/bubble-sort/" itemprop="url">
+                排序算法之冒泡排序和选择排序
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-03-05T22:28:11+08:00" content="2017-03-05">
+            2017-03-05
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>从这周开始，每周我将写一些工作中常用的算法如下：</p>
+<ol>
+<li>冒泡排序和选择排序；</li>
+<li>插入排序和希尔排序；</li>
+<li>归并排序及其优化；</li>
+<li>快速排序及其优化；</li>
+<li>堆排序；</li>
+</ol>
+<p>下面开始正文：</p>
+<h2 id="冒泡排序">冒泡排序</h2><p>冒泡排序可能是我们学习某种编程语言（大多数都是 C）之后，接触到的第一个排序算法。我在网上找了很多的博客之类的介绍冒泡排序的，但总是总是有点纰漏，比如 分析的和写的例子不一致（😂😂😂），很尴尬。下面我们详细来分析一下冒泡排序的过程：</p>
+<p>待排序数组为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="number">6</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span> &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>冒泡排序的原理是：<code>临近的``数字两两进行比较</code>,按照<code>从小到大</code>或者<code>从大到小</code>的顺序进行交换。</strong></p>
+<p><strong>这里注意：是临近的两个数字两两进行比较，如果非，那就不是冒泡排序。</strong></p>
+<p>起始数组如下：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E8%B5%B7%E5%A7%8B%E6%95%B0%E7%BB%84.png" alt="起始数组"></p>
+<ol>
+<li>第一趟排序</li>
+</ol>
+<p>第一次比较： <code>6 &gt; 2</code>  6 大于 2 进行交换，交换后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt="00"></p>
+<p>第二次比较： <code>6 &gt; 4</code>  6 大于 4 进行交换，交换后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
+<p>第三次比较： <code>6 &gt; 1</code>  6 大于 1 进行交换，交换后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
+<p>第四次比较： <code>6 &gt; 5</code> 6 大于 5 进行交换，交换后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E5%9B%9B%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
+<p>第五次比较： <code>6 &lt; 9</code> 6 小于 9 不进行交换：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%BA%94%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
+<p><strong>后面的第二、三、四、五、六的过程和上面的一样，最终如下面：</strong></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E6%9C%80%E7%BB%88%E6%8E%92%E5%BA%8F.png" alt=""></p>
+<p><strong>注意：第二次比较的时候，最后一位就不参与了，因为最大的已经冒了出来，第三次比较，倒数第二位不参与了，以此类推。</strong></p>
+<p>至此，程序就很容易写出来了：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n ; i ++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n-i; j ++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[j-<span class="number">1</span>]) &#123;</span><br><span class="line">                swap(&amp;arr[j], &amp;arr[j-<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="冒泡排序的优化">冒泡排序的优化</h2><p>我们看一下 每次排序的结果：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">第一次：<span class="number">2</span> <span class="number">4</span> <span class="number">1</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第二次：<span class="number">2</span> <span class="number">1</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第三次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第四次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第五次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第六次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span></span><br></pre></td></tr></table></figure>
+<p>从中我们发现第三次的时候，已经排好序了，第四、五、六次没必要执行了，这就是我们要对冒泡排序进行优化的地方。</p>
+<p>我们可以设置一个flag ，当没有发生交换的时候，记录一下，这时候数组已经有序了。</p>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort2</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> flag = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n &amp;&amp; flag ; i ++) &#123;</span><br><span class="line">        flag = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n - i; j ++) &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[j-<span class="number">1</span>]) &#123;</span><br><span class="line">                flag = <span class="number">1</span>;</span><br><span class="line">                swap(&amp;arr[j], &amp;arr[j-<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然，还有其他的优化方案，大家不妨搜下。</p>
+<h2 id="选择排序">选择排序</h2><p>理解的前面的冒泡排序，选择排序是很容易理解的。选择排序顾名思义，每次循环要找出一个最小的值，然后再交换。</p>
+<p>测试用例还是之前的：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E8%B5%B7%E5%A7%8B%E6%95%B0%E7%BB%84.png" alt="起始数组"></p>
+<p>第一次大循环找到最小的值 <code>1</code> 然后和 <code>第0位</code>的交换，交换后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E9%80%89%E6%8B%A9-%E7%AC%AC%E4%B8%80%E6%AC%A1.png" alt=""></p>
+<p>第二次大循环找到最小的值 <code>2</code> 然后和 <code>第1位</code>的交换，交换后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E9%80%89%E6%8B%A9-%E7%AC%AC%E4%B8%80%E6%AC%A1.png" alt=""></p>
+<p>当然第三次大循环和第二次一样</p>
+<p>第四次大循环找到最小的值 <code>5</code> 然后和 <code>第3位</code>的交换，交换后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E6%9C%80%E7%BB%88%E6%8E%92%E5%BA%8F.png" alt=""><br>后面的就已经排序好了。</p>
+<p><strong>从上面可以看出，选择排序是一个不断寻找最小值的排序方法。</strong></p>
+<p>所以代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">selectSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> minIndex = i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; n; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[minIndex]) &#123;</span><br><span class="line">                minIndex = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        swap(&amp;arr[i], &amp;arr[minIndex]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>是不是很简单 😁😁😁！</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/03/05/insert-sort/" itemprop="url">
                 排序算法之插入排序
               </a>
@@ -960,123 +1077,6 @@
 <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 0.000647s</span><br><span class="line">sortname:插入排序优化	 sorttime: 0.000554s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>近乎有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 0.051551s</span><br><span class="line">sortname:插入排序优化	 sorttime: 0.025874s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>随机<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 18.110468s</span><br><span class="line">sortname:插入排序优化	 sorttime: 8.335453s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>倒叙<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 36.259288s</span><br><span class="line">sortname:插入排序优化	 sorttime: 16.780035s</span><br></pre></td></tr></table></figure>
 <p>看看测试时间，这个优化还是有明显的提高的！！！</p>
 <p>不知道这一节你掌握了么？😜😜😜</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/03/05/bubble-sort/" itemprop="url">
-                排序算法之冒泡排序和选择排序
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-03-05T22:28:11+08:00" content="2017-03-05">
-            2017-03-05
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>从这周开始，每周我将写一些工作中常用的算法如下：</p>
-<ol>
-<li>冒泡排序和选择排序；</li>
-<li>插入排序和希尔排序；</li>
-<li>归并排序及其优化；</li>
-<li>快速排序及其优化；</li>
-<li>堆排序；</li>
-</ol>
-<p>下面开始正文：</p>
-<h2 id="冒泡排序">冒泡排序</h2><p>冒泡排序可能是我们学习某种编程语言（大多数都是 C）之后，接触到的第一个排序算法。我在网上找了很多的博客之类的介绍冒泡排序的，但总是总是有点纰漏，比如 分析的和写的例子不一致（😂😂😂），很尴尬。下面我们详细来分析一下冒泡排序的过程：</p>
-<p>待排序数组为：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="number">6</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span> &#125;</span><br></pre></td></tr></table></figure>
-<p><strong>冒泡排序的原理是：<code>临近的``数字两两进行比较</code>,按照<code>从小到大</code>或者<code>从大到小</code>的顺序进行交换。</strong></p>
-<p><strong>这里注意：是临近的两个数字两两进行比较，如果非，那就不是冒泡排序。</strong></p>
-<p>起始数组如下：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E8%B5%B7%E5%A7%8B%E6%95%B0%E7%BB%84.png" alt="起始数组"></p>
-<ol>
-<li>第一趟排序</li>
-</ol>
-<p>第一次比较： <code>6 &gt; 2</code>  6 大于 2 进行交换，交换后：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt="00"></p>
-<p>第二次比较： <code>6 &gt; 4</code>  6 大于 4 进行交换，交换后：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
-<p>第三次比较： <code>6 &gt; 1</code>  6 大于 1 进行交换，交换后：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
-<p>第四次比较： <code>6 &gt; 5</code> 6 大于 5 进行交换，交换后：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E5%9B%9B%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
-<p>第五次比较： <code>6 &lt; 9</code> 6 小于 9 不进行交换：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%BA%94%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
-<p><strong>后面的第二、三、四、五、六的过程和上面的一样，最终如下面：</strong></p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E6%9C%80%E7%BB%88%E6%8E%92%E5%BA%8F.png" alt=""></p>
-<p><strong>注意：第二次比较的时候，最后一位就不参与了，因为最大的已经冒了出来，第三次比较，倒数第二位不参与了，以此类推。</strong></p>
-<p>至此，程序就很容易写出来了：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n ; i ++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n-i; j ++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[j-<span class="number">1</span>]) &#123;</span><br><span class="line">                swap(&amp;arr[j], &amp;arr[j-<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="冒泡排序的优化">冒泡排序的优化</h2><p>我们看一下 每次排序的结果：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">第一次：<span class="number">2</span> <span class="number">4</span> <span class="number">1</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第二次：<span class="number">2</span> <span class="number">1</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第三次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第四次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第五次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第六次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span></span><br></pre></td></tr></table></figure>
-<p>从中我们发现第三次的时候，已经排好序了，第四、五、六次没必要执行了，这就是我们要对冒泡排序进行优化的地方。</p>
-<p>我们可以设置一个flag ，当没有发生交换的时候，记录一下，这时候数组已经有序了。</p>
-<p>代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort2</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> flag = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n &amp;&amp; flag ; i ++) &#123;</span><br><span class="line">        flag = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n - i; j ++) &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[j-<span class="number">1</span>]) &#123;</span><br><span class="line">                flag = <span class="number">1</span>;</span><br><span class="line">                swap(&amp;arr[j], &amp;arr[j-<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当然，还有其他的优化方案，大家不妨搜下。</p>
-<h2 id="选择排序">选择排序</h2><p>理解的前面的冒泡排序，选择排序是很容易理解的。选择排序顾名思义，每次循环要找出一个最小的值，然后再交换。</p>
-<p>测试用例还是之前的：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E8%B5%B7%E5%A7%8B%E6%95%B0%E7%BB%84.png" alt="起始数组"></p>
-<p>第一次大循环找到最小的值 <code>1</code> 然后和 <code>第0位</code>的交换，交换后：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E9%80%89%E6%8B%A9-%E7%AC%AC%E4%B8%80%E6%AC%A1.png" alt=""></p>
-<p>第二次大循环找到最小的值 <code>2</code> 然后和 <code>第1位</code>的交换，交换后：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E9%80%89%E6%8B%A9-%E7%AC%AC%E4%B8%80%E6%AC%A1.png" alt=""></p>
-<p>当然第三次大循环和第二次一样</p>
-<p>第四次大循环找到最小的值 <code>5</code> 然后和 <code>第3位</code>的交换，交换后：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E6%9C%80%E7%BB%88%E6%8E%92%E5%BA%8F.png" alt=""><br>后面的就已经排序好了。</p>
-<p><strong>从上面可以看出，选择排序是一个不断寻找最小值的排序方法。</strong></p>
-<p>所以代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">selectSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> minIndex = i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; n; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[minIndex]) &#123;</span><br><span class="line">                minIndex = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        swap(&amp;arr[i], &amp;arr[minIndex]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>是不是很简单 😁😁😁！</p>
 </span>
         
       
