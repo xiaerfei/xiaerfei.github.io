@@ -163,822 +163,6 @@
           
           
             
-              <a class="post-title-link" href="/2017/12/15/JSPatch/" itemprop="url">
-                从“0”实现一个JSPatch
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-12-15T12:19:20+08:00" content="2017-12-15">
-            2017-12-15
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h2 id="引言">引言</h2><p>之前写了一篇 <a href="http://xiaerfei.github.io/2016/04/23/JSPatch-stduy/" target="_blank" rel="external">JSPatch 学习</a> 的基础教程。时过一年之后，JSPatch 已经被 Apple 封杀，周围同事已经很少再使用了。但当下动态化部署十分火热(RN、Weex)，研究一下 JSPatch 的源码对我们的帮助很大。</p>
-<p>本篇并不是给大家分析 JSPatch 的源码</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/10/27/data-communication-etherNet/" itemprop="url">
-                计算机网络基础-以太网
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-10-27T05:28:00+08:00" content="2017-10-27">
-            2017-10-27
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h2 id="总线形以太网">总线形以太网</h2><p>学习内容有一下几点：</p>
-<ul>
-<li>[x] 总线形以太网拓扑结构</li>
-<li>[x] 总线形以太网功能需求</li>
-<li>[x] 总线形以太网体系结构</li>
-</ul>
-<h3 id="拓扑结构">拓扑结构</h3><p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E6%9C%80%E6%97%A9%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91%E8%AE%BE%E8%AE%A1%E5%9B%BE.png" alt=""></p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E6%80%BB%E7%BA%BF%E4%BB%A5%E5%A4%AA%E7%BD%91%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84.png" alt=""></p>
-<p>为了防止总线两端的反射信号，在总线两端各接一个匹配阻抗。任何终端向总线上发送信号，信号都会迅速向总线的两端传播。</p>
-<p><strong>距离问题:互联起来的终端，他们之间的距离有什么要求?</strong><br>我们都知道，信号的传播随着距离的增加会衰减，然后变形、失真，所有要在适当的距离增加一个中继器，把变形的信号还原为原来发送的信号。</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E4%B8%AD%E7%BB%A7%E5%99%A8%E4%BD%9C%E7%94%A8.png" alt=""></p>
-<p><strong>距离问题:互联起来的终端，他们之间的距离有什么要求?</strong></p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E6%80%BB%E7%BA%BF%E9%95%BF%E5%BA%A6.png" alt=""></p>
-<p><em>从信号传播角度来说，只要不断增加中继器，总线的长度是无限的</em></p>
-<h3 id="功能需求">功能需求</h3><p>要实现两个终端之间的数据通信，必须解决这样一些问题:</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82%E9%97%AE%E9%A2%98.png" alt=""></p>
-<h4 id="数据封装">数据封装</h4><p><strong>解决发什么?收什么?</strong></p>
-<p>发送端发送数据，接收端要想接到数据，除数据外还要增加一些辅助信息，比如地址、数据类型等等，这就形成了一个<code>帧</code></p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E8%BE%85%E5%8A%A9%E4%BF%A1%E6%81%AF.png" alt=""></p>
-<p><em>发送端以帧为单位发送，接收端以帧为单位接收</em></p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E5%B8%A7.png" alt=""></p>
-<h3 id="数据与信号转换">数据与信号转换</h3><p><strong>解决怎么发?怎么收?</strong></p>
-<p><code>发送终端:</code> 把构成帧的二进制位流转换成信号<br><code>接收终端:</code> 把从总线上接收到的信号转换成一串二进制位流</p>
-<h3 id="帧对界">帧对界</h3><p><strong>解决怎么收?</strong></p>
-<p><code>接收终端:</code> 从一串二进制位流中正确提取出每一帧</p>
-<h3 id="检测总线状态">检测总线状态</h3><p><strong>解决什么时候发?什么时候收?</strong></p>
-<p><code>传输媒体:</code> 同轴电缆<br><code>信息交换的方式:</code> 半双工通信</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E6%A3%80%E6%B5%8B%E6%80%BB%E7%BA%BF%E7%8A%B6%E6%80%81.png" alt=""></p>
-<p><em>总线状态空闲仅仅是发送数据的前提</em></p>
-<h3 id="公平竞争总线的机制">公平竞争总线的机制</h3><p><strong>解决什么时候发 ?</strong></p>
-<p><em>需要有一种机制保证只有一个终端能够 成功发送数据，而且每一个终端成功发送数 据的几率还要是均等的</em></p>
-<h3 id="寻址">寻址</h3><p><strong>解决由谁来收 ?</strong></p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BB%A5%E5%A4%AA%E7%BD%91-%E5%AF%BB%E5%9D%80.png" alt=""></p>
-<p><em>每一个终端能够判别自己是否是数据 的接收者，当确定自己是数据接收者 的时候才接收。</em></p>
-<h2 id="基带传输和曼彻斯特编码">基带传输和曼彻斯特编码</h2><p>学习内容有一下几点：</p>
-<ul>
-<li>[x] 什么是基带传输</li>
-<li>[x] 如何用基带信号表示和还原数据</li>
-<li>[x] 什么是曼彻斯特编码</li>
-<li>[x] 如何用曼彻斯特编码实现位同步</li>
-</ul>
-<h3 id="什么是基带传输">什么是基带传输</h3><p><strong>基带传输就是用基带信号实现数据传输的方式</strong><br>什么叫基带信号?<br>    ▷ 基带信号就是幅度只有两种离散值的数字信号</p>
-<p><img src="" alt="基带信号表示"></p>
-<h3 id="如何用基带信号表示和还原数据?">如何用基带信号表示和还原数据?</h3><p><strong>基带传输需要解决什么问题?</strong><br>    ▷ 如何用基带信号表示和还原数据</p>
-<p>二进制数的单位是二进制位，基带信号的单位是码元。对基 带信号来说，码元就是一个二进制位所对应的信号。</p>
-<p><img src="" alt="基带信号参数"></p>
-<p><strong>码元长度与数据传输速率有关</strong></p>
-<p>数据传输速率:10Mbps<br>每秒传输10M位二进制位<br>基带信号每秒产生10M个码元<br>码元长度=1/(10×10^6)s</p>
-<p><img src="" alt="时钟周期"><br><img src="" alt="时钟周期等于码元长度"></p>
-<p><strong>数据传输速率与时钟频率之间的关系</strong></p>
-<p>数据传输速率:10Mbps<br>码元长度=1/(10×10^6)s<br>时钟周期=1/(10×10^6)s<br>时钟频率=1/时钟周期=10MHz</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/10/24/data-communication-base/" itemprop="url">
-                计算机网络基础-数据通信基础
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-10-24T20:22:00+08:00" content="2017-10-24">
-            2017-10-24
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h2 id="数据传输系统">数据传输系统</h2><p>学习内容有一下几点：</p>
-<ul>
-<li>[x] 系统组成</li>
-<li>[x] 系统功能</li>
-<li>[x] 信道连接结点的方式</li>
-<li>[x] 数据通信方式 </li>
-</ul>
-<h3 id="系统组成">系统组成</h3><p>数据传输系统由结点、收发器和信道组成</p>
-<ul>
-<li><p><code>结点:</code>可以是终端、服务器和交换机等设备</p>
-<p>  ▷ 用于产生需要传输的二进制位流<br>  ▷ 或是接收二进制位流</p>
-</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E7%BB%93%E7%82%B9.png" alt=""></p>
-<ul>
-<li><p><code>收发器:</code></p>
-<p>  ▷ 连接发送端的收发器实现将数据转换成信号的过程<br>  ▷ 连接接收端的收发器实现将信号还原成数据的过程</p>
-</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E6%94%B6%E5%8F%91%E5%99%A8.png" alt=""></p>
-<ul>
-<li><p><code>信道:</code>信号传播通道</p>
-<p>  ▷ 传播光信号信道、传播电信号信道<br>  ▷ 有线信道、无线信道<br>  ▷ 单段物理链路信道、多段物理链路组合信道</p>
-</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E4%BF%A1%E9%81%93-1.png" alt=""></p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E4%BF%A1%E9%81%93-2.png" alt=""></p>
-<h3 id="系统功能">系统功能</h3><p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E7%B3%BB%E7%BB%9F%E5%8A%9F%E8%83%BD.png" alt=""></p>
-<h3 id="信道连接结点方式">信道连接结点方式</h3><p>根据同一信道连接设备的多少可以把信道连接设备的方式<br>分为点对点连接方式和多点连接方式</p>
-<ul>
-<li>点对点连接方式  只连接两个设备 </li>
-<li>多点连接方式 连接三个及三个以上设备</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E4%BF%A1%E9%81%93%E8%BF%9E%E6%8E%A5%E7%BB%93%E7%82%B9%E6%96%B9%E5%BC%8F.png" alt=""></p>
-<h3 id="数据通信方式">数据通信方式</h3><ul>
-<li><p><code>半双工通信:</code>又称双向交替通信，指数据允许沿两个方向传输，任一时刻只能沿一个方向传输数据</p>
-<p>  ▷ 两端设备都允许发送、接收数据，但任一时刻不能同时既发送又接收数据。</p>
-</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E5%8D%8A%E5%8F%8C%E5%B7%A5%E9%80%9A%E4%BF%A1.png" alt=""></p>
-<ul>
-<li><p><code>全双工通信:</code>又称双向同时通信，指允许同时沿两个方向传输 数据，这种通信方式下，两端设备之间必须同时存在两个方向 的信道。</p>
-<p>  ▷ 一般情况下，采用全双工通信方式的数据传输系统，信道连接 方式为点对点连接方式，且两个设备由双向信道(允许同时双 向通信的信道)互连。</p>
-</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90-%E5%85%A8%E5%8F%8C%E5%B7%A5%E9%80%9A%E4%BF%A1.png" alt=""></p>
-<hr>
-<h2 id="信号">信号</h2><p>学习内容有一下几点：</p>
-<ul>
-<li>[x] 正弦波信号</li>
-<li>[x] 数字信号</li>
-<li>[x] 模拟信号</li>
-<li>[x] 信号的失真和还原 </li>
-</ul>
-<h3 id="正弦波信号">正弦波信号</h3><p>周期性的数字信号和模拟信号可以用一组不同频率的正弦波信号表示</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7.png" alt=""></p>
-<p>三个参数:</p>
-<ul>
-<li>幅度:A</li>
-<li>频率 :1/T</li>
-<li>初始相位(简称相位): φ</li>
-</ul>
-<h3 id="数字信号">数字信号</h3><p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B71.png" alt=""></p>
-<ul>
-<li><code>数字信号:</code>幅度为有限离散值的信号数字信号改变幅度时，直接从一种幅度跳变到另一种幅度</li>
-<li><code>基带信号:</code>幅度只有两种离散值的数字信号 基带信号为最常用的表示二进制位流的数字信号</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B72.png" alt=""></p>
-<ul>
-<li><code>谐波:</code>用于合成周期性数字信号的不同频率的正弦波信号</li>
-<li><code>拟合周期性数字信号:</code>由有限次谐波合成的接近原始周期性数字信号的信号</li>
-<li><code>带宽:</code>用于形成拟合周期性数字信号的各次谐波的频率范围</li>
-</ul>
-<h3 id="模拟信号">模拟信号</h3><p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7%E5%B9%85%E5%BA%A6%E8%BF%9E%E7%BB%AD.png" alt=""></p>
-<ul>
-<li><code>拟合周期性模拟信号:</code>由有限次不同频率正弦波信号合成 的接近原周期性模拟信号的信号</li>
-<li><code>模拟信号的带宽:</code>用于形成“拟合周期性模拟信号”的一 组不同频率的正弦波信号的频率范围</li>
-</ul>
-<h3 id="信号的失真和还原">信号的失真和还原</h3><p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7%E5%A4%B1%E7%9C%9F.png" alt=""></p>
-<ul>
-<li><p>数字信号和模拟信号都会引发失真</p>
-<p>  ▷ <code>阻抗:</code>物理链路存在阻抗，阻抗与物理链路长度成正比<br>  ▷ <code>阻抗具有频率相关性:</code>相同物理链路对不同频率的信号呈现不同的<br>阻抗，不同频率的信号经过相同物理链路，有着不同的衰减程度</p>
-</li>
-<li><p>失真是因为相同物理链路上，不同频率的正弦波信号的衰减不同</p>
-</li>
-</ul>
-<h4 id="数字信号还原">数字信号还原</h4><ul>
-<li>幅度还原:通过设置阈值来还原幅度</li>
-<li>宽度还原:通过时钟同步实现</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E8%BF%98%E5%8E%9F.png" alt=""></p>
-<p>基带信号不能还原的情况:</p>
-<ul>
-<li>失真后的低电平高于阈值:噪音</li>
-<li>失真后的高电平低于阈值:衰减</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E4%B8%8D%E8%83%BD%E8%BF%98%E5%8E%9F.png" alt=""></p>
-<h4 id="模拟信号还原原理">模拟信号还原原理</h4><ul>
-<li>幅度连续的信号只能通过放大信号来弥补信号衰减</li>
-<li>构成模拟信号的各次谐波的衰减程度不同</li>
-<li>必须对各次谐波单独设置放大电路</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BF%A1%E5%8F%B7-%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7%E8%BF%98%E5%8E%9F%E5%8E%9F%E7%90%86.png" alt=""></p>
-<h4 id="模拟信号还原复杂性">模拟信号还原复杂性</h4><ul>
-<li>由于模拟信号是由无数谐波所组成的，为各次谐波单独设置放大电路是不可行的</li>
-<li>为模拟信号设置单个统一的放大电路反而加剧失真 严重程度</li>
-</ul>
-<h3 id="小结">小结</h3><ul>
-<li>数字信号和模拟信号都是由多次谐波组成的</li>
-<li>数字信号和模拟信号通过物理链路传输都会引发失真</li>
-<li>数字信号失真容易还原，模拟信号不容易还原</li>
-</ul>
-<hr>
-<h2 id="调制">调制</h2><p>学习内容有一下几点：</p>
-<ul>
-<li>[x] 调制技术</li>
-<li>[x] 模拟信号中码元的定义</li>
-<li>[x] 奈奎斯特准则和香农定理</li>
-</ul>
-<h3 id="调制技术">调制技术</h3><ul>
-<li>调制是将正弦波信号(或余弦波信号)转换成表示二进制位流的模拟 信号的过程</li>
-<li>解调是从调制后的模拟信号中还原出二进制位流的过程</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E8%B0%83%E5%88%B6%E6%8A%80%E6%9C%AF-%E8%B0%83%E5%88%B6%E8%A7%A3%E8%B0%83.png" alt=""></p>
-<h4 id="振幅键控调制技术">振幅键控调制技术</h4><p>振幅键控调制技术(Amplitude Shift Keying，ASK):用两种 不同幅度的载波信号来表示两个不同的二进制数值，通常一种 幅度为0，另一种幅度采用正常值。</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E6%8C%AF%E5%B9%85%E9%94%AE%E6%8E%A7%E8%B0%83%E5%88%B6%E6%8A%80%E6%9C%AF.png" alt=""></p>
-<h4 id="移频键控调制技术">移频键控调制技术</h4><p>移频键控调制技术(Frequency Shift Keying，FSK)用两种不同频率的信号来表示两个不同的二进制数值</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%A7%BB%E9%A2%91%E9%94%AE%E6%8E%A7%E8%B0%83%E5%88%B6%E6%8A%80%E6%9C%AF.png" alt=""></p>
-<h4 id="移相键控调制技术">移相键控调制技术</h4><ul>
-<li>移相键控调制技术(Phase Shift Keying，PSK):通过改变 载波的相位来表示不同的二进制数值:相对移相和绝对移相</li>
-<li>相对移相:二进制数0的信号和前面信号相同相位，二进制数1 的信号和前面信号相反相位(相差180°)</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%A7%BB%E7%9B%B8%E9%94%AE%E6%8E%A7%E8%B0%83%E5%88%B6%E6%8A%80%E6%9C%AF.png" alt=""></p>
-<ul>
-<li>移相键控调制技术(Phase Shift Keying，PSK):通过改变载波的相位来表示不同的二进制数值</li>
-<li>绝对移相:二进制数0和二进制数1分别用两种不同的相反相位<br>(相差180°)的载波信号表示<img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%BB%9D%E5%AF%B9%E7%A7%BB%E7%9B%B8.png" alt=""></li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%A7%BB%E7%9B%B8%E9%94%AE%E6%8E%A7%E8%B0%83%E5%88%B6%E6%8A%80%E6%9C%AF.png" alt=""></p>
-<h3 id="码元的定义">码元的定义</h3><ul>
-<li>码元长度:指维持正弦波信号(或余弦波信号)幅度、频率和相位不变的最短时间长度</li>
-<li>码  元:如果将信号以码元长度为单位分隔，每一段码元长度内的信号</li>
-</ul>
-<p>码元是调制后用于表示二进制位流的模拟信号的基本信号单位</p>
-<ul>
-<li>波 特 率:单位时间内传输的码元数量</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E7%A0%81%E5%85%83%E7%9A%84%E5%AE%9A%E4%B9%89.png" alt=""></p>
-<h3 id="奈奎斯特准则和香农定理">奈奎斯特准则和香农定理</h3><h4 id="奈奎斯特准则">奈奎斯特准则</h4><p>奈奎斯特准则(理想信道):</p>
-<ul>
-<li>最大波特率 RP=2×BW(BW为信道带宽)</li>
-<li>最大传输速率 RS=2×BW×log2n(n为信号的状态数)</li>
-<li>最大传输速率也称为信道容量</li>
-</ul>
-<p>信道容量取决于信道带宽和经过信道传播的信号状态数</p>
-<h4 id="香农定理">香农定理</h4><p>香农定理(随机热噪声的信道):</p>
-<ul>
-<li>最大传输速率 RS=BW×log2(1+S/N)(BW为信道带宽、S/N为信号信噪比)</li>
-<li>香农定理表明，存在随机热噪声的信道中，信道最大传输速率取决于信道带宽和经过信道传播的信号的信噪比，与信号的编码或调制技术 无关。</li>
-<li>奈奎斯特准则和香农定理给出了在指定信道的情况下获得较高数据传输速率的途径。</li>
-</ul>
-<hr>
-<h2 id="差错控制_—_检错码">差错控制 — 检错码</h2><p>学习内容有一下几点：</p>
-<ul>
-<li>[x] 出错现象和原因</li>
-<li>[x] 检错码</li>
-</ul>
-<h3 id="出错的现象和原因">出错的现象和原因</h3><ul>
-<li>出错:发送端发送的二进制位流与接收端接收到的二进制位流不一致</li>
-<li>出错的二进制位可能是一位，可能是随机多位，也可能是连续多位</li>
-<li><p>计算机网络中</p>
-<p>  ▷ 出错的二进制位往往是连续多位二进制位<br>  ▷ 出错的二进制位的起始位置是随机的</p>
-</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E5%87%BA%E9%94%99%E7%9A%84%E7%8E%B0%E8%B1%A1%E5%92%8C%E5%8E%9F%E5%9B%A0.png" alt=""></p>
-<ul>
-<li>二进制位流从发送端到接收端经历的每一个步骤都有可能出错。</li>
-<li><p>提高数据传输速率增加出错概率</p>
-<p>  ▷ 对于数字传输系统，往往通过增加幅度的离散值的数量来提高每<br>一位码元表示的二进制数位数。<br>  ▷ 对于模拟传输系统，往往通过增加信号的状态数来提高每一位码<br>元表示的二进制数位数。</p>
-</li>
-</ul>
-<h3 id="检错码">检错码</h3><ul>
-<li>检错码:为了使得接收端能够检测出数据传输过程中发生的错误而添加的附加信息。 </li>
-</ul>
-<blockquote>
-<p>如果数据是D，检错码是C :C=f(D)</p>
-</blockquote>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E6%A3%80%E9%94%99%E7%A0%81.png" alt=""></p>
-<ul>
-<li><p>计算检错码C的函数f最好具备以下特点:</p>
-<p>  ▷ 不同的数据D对应着不同的C<br>  ▷ C的位数远小于D且固定<br>  ▷ 函数f计算过程简单</p>
-</li>
-<li><p>选择计算检错码C的函数f时，需要在函数f的计算复杂性、检错 码C的位数和传输出错检测能力这三方面进行综合平衡。</p>
-<h4 id="检验和">检验和</h4><p>检验和根据数据D计算检错码C的计算过程:</p>
-</li>
-</ul>
-<ol>
-<li>将数据分为长度固定(一般是字节的整数倍)的数据段</li>
-<li>根据反码运算规则累加分段后产生的每一段数据</li>
-<li>将累加结果取反作为检错码C</li>
-</ol>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E6%A3%80%E9%AA%8C%E5%92%8C.png" alt=""></p>
-<ul>
-<li>检验和方法简单，能检测出单段数据中连续多位二进制数错误</li>
-<li>对于分布在多段数据中的二进制数错误，有可能无法检测出</li>
-<li>检验和算法在计算机网络中常常被用来作为检错技术</li>
-<li>为了提高传输网络的检错能力，需要和其他检错技术一起使用</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E6%A3%80%E9%AA%8C%E5%92%8Cbug.png" alt=""></p>
-<h4 id="循环冗余检验">循环冗余检验</h4><p>循环冗余检验(Cyclic Redundancy Check，CRC)的检错机制如下:</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E5%BE%AA%E7%8E%AF%E5%86%97%E4%BD%99%E6%A3%80%E9%AA%8C.png" alt=""></p>
-<p>循环冗余码特点:</p>
-<ul>
-<li>通过精心挑选最高阶数为r的生成多项式G(X)</li>
-<li>循环冗余检验可以检测出所有奇数位二进制数错，所有长度≤r的连续位错，和大多数长度≥r+1的连续位错。</li>
-<li>目前Internet中常用的检错码是检验和与循环冗余检验(CRC)，CRC的检错能力远大于检验和。</li>
-</ul>
-<hr>
-<h2 id="差错控制_—_确认和重传">差错控制 — 确认和重传</h2><p>学习内容有一下几点：</p>
-<ul>
-<li>[x] 数据传输和确认过程</li>
-<li>[x] 重传机制</li>
-<li>[x] 避免重复接收方法</li>
-</ul>
-<h3 id="数据传输和确认过程">数据传输和确认过程</h3><ul>
-<li>发送端发送的数据帧由数据和检错码组成</li>
-<li>接收端用检错码判别数据是否传输出错</li>
-<li>在数据传输正确的情况下，接收端向发送 端发送确认应答(ACK)帧</li>
-<li>发送端只有接收到接收端发送的确认应答 帧，才能确认数据帧正确传输。</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E6%AD%A3%E5%B8%B8%E4%BC%A0%E8%BE%93%E8%BF%87%E7%A8%8B.png" alt=""></p>
-<h3 id="重传机制">重传机制</h3><ul>
-<li>接收端用检错码检测出数据传 输出错，不再发送确认应答帧</li>
-<li>发送端在规定时间内没有接收 到确认应答帧，再次发送数据帧</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%87%BA%E9%94%99.png" alt=""></p>
-<h3 id="序号和避免重复接收">序号和避免重复接收</h3><ul>
-<li>确认应答帧在传输过程中出错</li>
-<li>经过规定时间，发送端再次发送数据帧，接收端将重复接收数据帧。</li>
-</ul>
-<p><em>解决接收端重复接收数据帧问题的 方法是在发送的数据帧中增加序号</em></p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E6%95%B0%E6%8D%AE%E9%87%8D%E5%A4%8D%E4%BC%A0%E8%BE%93.png" alt=""></p>
-<ul>
-<li>确认应答帧也需要携带确认序号n</li>
-<li>确认序号为n说明小于n 的数据帧都已经正确接收</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E9%81%BF%E5%85%8D%E9%87%8D%E5%A4%8D%E6%8E%A5%E6%94%B6.png" alt=""></p>
-<ul>
-<li>连续发送:在前一个数据确认之前可以发送下一个数据</li>
-<li>累积确认:确认序号n 就确认了所有序号小于 n的数据帧。</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E8%BF%9E%E7%BB%AD%E5%8F%91%E9%80%81%E5%92%8C%E7%B4%AF%E7%A7%AF%E7%A1%AE%E8%AE%A4.png" alt=""></p>
-<ul>
-<li>序号位数有限，比如2位</li>
-<li><p>重复使用序号:</p>
-<p>  ▷ 序号相同的没有被确认的 数据帧只能有一帧<br>  ▷ 接收端能够区分序号相同的不同数据帧</p>
-</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6-%E9%87%8D%E5%A4%8D%E4%BD%BF%E7%94%A8%E5%BA%8F%E5%8F%B7.png" alt=""></p>
-<h3 id="小结-1">小结</h3><ul>
-<li>检错码:接收端判别数据是否正确</li>
-<li>确认应答:发送端判别数据是否被正确接收</li>
-<li>重传:出错数据必须重新发送</li>
-<li>序号:避免接收端重复接收数据</li>
-</ul>
-<hr>
-<h2 id="传输媒体">传输媒体</h2><p>学习内容有一下几点：</p>
-<ul>
-<li>[x] 同轴电缆</li>
-<li>[x] 双绞线</li>
-<li>[x] 光纤</li>
-</ul>
-<h3 id="同轴电缆">同轴电缆</h3><p>传输媒体也称为传输介质或传输媒介，用于构成数据传输系统中两个收<br>发器之间的信道。</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93%E5%88%86%E7%B1%BB.png" alt=""></p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E5%90%8C%E8%BD%B4%E7%94%B5%E7%BC%86%E7%BB%93%E6%9E%84.png" alt=""></p>
-<p><strong>粗同轴电缆:</strong></p>
-<ul>
-<li>粗缆采用一种类似夹板的Tap装置进行安装</li>
-<li>利用Tap上的引导针穿透电缆的绝缘层,直接与 导体相连</li>
-<li>有一个外置收发器</li>
-<li>可靠性好，抗干扰能力强</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E7%B2%97%E5%90%8C%E8%BD%B4%E7%94%B5%E7%BC%86.png" alt=""></p>
-<p><strong>细同轴电缆:</strong></p>
-<ul>
-<li>可靠性稍差</li>
-<li>无外置收发器</li>
-<li>轻便、灵活、成本较低</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E7%BB%86%E5%90%8C%E8%BD%B4%E7%94%B5%E7%BC%86.png" alt=""></p>
-<h3 id="双绞线">双绞线</h3><ul>
-<li>双绞线由两根具有绝缘保护层的铜导线组成</li>
-<li>把两根绝缘的铜导线按一定密度互相绞在一起，因此得名</li>
-<li>实际使用时，双绞线是由多对双绞线一起包在一个绝缘电缆套管里的。</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E5%8F%8C%E7%BB%9E%E7%BA%BF.png" alt=""></p>
-<p><em>双绞线电缆的主要特性是线 路规格、扭绞间距、绝缘类型、 阻抗特性和外套材料</em></p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E5%8F%8C%E7%BB%9E%E7%BA%BF%E7%A7%8D%E7%B1%BB.png" alt=""></p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E5%8F%8C%E7%BB%9E%E7%BA%BF%E6%A0%87%E8%AF%86.png" alt=""></p>
-<p><strong>优点:</strong></p>
-<ol>
-<li>可以实现全双工通信</li>
-<li>价格便宜</li>
-<li>柔软性好，容易布线</li>
-</ol>
-<p><strong>缺点:</strong></p>
-<ol>
-<li>频率特性不及同轴电缆</li>
-<li>抗干扰能力差</li>
-</ol>
-<h3 id="光纤">光纤</h3><ul>
-<li>光纤是光导纤维的简写，是一种由玻璃或塑料制成的纤维</li>
-<li>光纤通信是指利用光纤传播光脉冲进行的通信过程。有光 脉冲相当于数字信号1，没有光脉冲相当于数字信号0。</li>
-</ul>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E5%85%89%E7%BA%A4.png" alt=""></p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E5%85%89%E7%BA%A4%E7%A7%8D%E7%B1%BB.png" alt=""></p>
-<p><strong>优点:</strong></p>
-<ol>
-<li>容易布线</li>
-<li>传输速率高</li>
-<li>传输距离远</li>
-<li>抗干扰性好</li>
-<li>价格比同轴电缆便宜</li>
-</ol>
-<p><strong>缺点:</strong></p>
-<ol>
-<li>光端口成本高，尤其是单模光纤光端口</li>
-</ol>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93-%E5%85%89%E7%BA%A4%E4%BD%BF%E7%94%A8.png" alt=""></p>
-<h3 id="小结-2">小结</h3><ul>
-<li>双绞线和光纤是互补性很强的两种传输媒体</li>
-<li>双绞线和光纤成为主流的传输媒体</li>
-<li>同轴电缆在网络通信中逐渐被淘汰</li>
-</ul>
-<h2 id="结束">结束</h2><p>好了，到这里科普知识结束了，下节开始以太网的学习。</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/07/02/function-stack/" itemprop="url">
-                函数的参数是如何传递的
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-07-02T22:28:11+08:00" content="2017-07-02">
-            2017-07-02
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>函数的参数是如何传递的</p>
-<p><img src="http://pic.qqtn.com/file/2013/2015-5/2015050609100347328.jpg" alt=""></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/03/10/union-found/" itemprop="url">
-                数据结构与算法---> 并查集
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-03-10T11:32:05+08:00" content="2017-03-10">
-            2017-03-10
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/03/05/bubble-sort/" itemprop="url">
-                排序算法之冒泡排序和选择排序
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-03-05T22:28:11+08:00" content="2017-03-05">
-            2017-03-05
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>从这周开始，每周我将写一些工作中常用的算法如下：</p>
-<ol>
-<li>冒泡排序和选择排序；</li>
-<li>插入排序和希尔排序；</li>
-<li>归并排序及其优化；</li>
-<li>快速排序及其优化；</li>
-<li>堆排序；</li>
-</ol>
-<p>下面开始正文：</p>
-<h2 id="冒泡排序">冒泡排序</h2><p>冒泡排序可能是我们学习某种编程语言（大多数都是 C）之后，接触到的第一个排序算法。我在网上找了很多的博客之类的介绍冒泡排序的，但总是总是有点纰漏，比如 分析的和写的例子不一致（😂😂😂），很尴尬。下面我们详细来分析一下冒泡排序的过程：</p>
-<p>待排序数组为：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="number">6</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span> &#125;</span><br></pre></td></tr></table></figure>
-<p><strong>冒泡排序的原理是：<code>临近的``数字两两进行比较</code>,按照<code>从小到大</code>或者<code>从大到小</code>的顺序进行交换。</strong></p>
-<p><strong>这里注意：是临近的两个数字两两进行比较，如果非，那就不是冒泡排序。</strong></p>
-<p>起始数组如下：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E8%B5%B7%E5%A7%8B%E6%95%B0%E7%BB%84.png" alt="起始数组"></p>
-<ol>
-<li>第一趟排序</li>
-</ol>
-<p>第一次比较： <code>6 &gt; 2</code>  6 大于 2 进行交换，交换后：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt="00"></p>
-<p>第二次比较： <code>6 &gt; 4</code>  6 大于 4 进行交换，交换后：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
-<p>第三次比较： <code>6 &gt; 1</code>  6 大于 1 进行交换，交换后：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
-<p>第四次比较： <code>6 &gt; 5</code> 6 大于 5 进行交换，交换后：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E5%9B%9B%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
-<p>第五次比较： <code>6 &lt; 9</code> 6 小于 9 不进行交换：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%BA%94%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
-<p><strong>后面的第二、三、四、五、六的过程和上面的一样，最终如下面：</strong></p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E6%9C%80%E7%BB%88%E6%8E%92%E5%BA%8F.png" alt=""></p>
-<p><strong>注意：第二次比较的时候，最后一位就不参与了，因为最大的已经冒了出来，第三次比较，倒数第二位不参与了，以此类推。</strong></p>
-<p>至此，程序就很容易写出来了：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n ; i ++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n-i; j ++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[j-<span class="number">1</span>]) &#123;</span><br><span class="line">                swap(&amp;arr[j], &amp;arr[j-<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="冒泡排序的优化">冒泡排序的优化</h2><p>我们看一下 每次排序的结果：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">第一次：<span class="number">2</span> <span class="number">4</span> <span class="number">1</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第二次：<span class="number">2</span> <span class="number">1</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第三次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第四次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第五次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第六次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span></span><br></pre></td></tr></table></figure>
-<p>从中我们发现第三次的时候，已经排好序了，第四、五、六次没必要执行了，这就是我们要对冒泡排序进行优化的地方。</p>
-<p>我们可以设置一个flag ，当没有发生交换的时候，记录一下，这时候数组已经有序了。</p>
-<p>代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort2</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> flag = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n &amp;&amp; flag ; i ++) &#123;</span><br><span class="line">        flag = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n - i; j ++) &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[j-<span class="number">1</span>]) &#123;</span><br><span class="line">                flag = <span class="number">1</span>;</span><br><span class="line">                swap(&amp;arr[j], &amp;arr[j-<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当然，还有其他的优化方案，大家不妨搜下。</p>
-<h2 id="选择排序">选择排序</h2><p>理解的前面的冒泡排序，选择排序是很容易理解的。选择排序顾名思义，每次循环要找出一个最小的值，然后再交换。</p>
-<p>测试用例还是之前的：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E8%B5%B7%E5%A7%8B%E6%95%B0%E7%BB%84.png" alt="起始数组"></p>
-<p>第一次大循环找到最小的值 <code>1</code> 然后和 <code>第0位</code>的交换，交换后：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E9%80%89%E6%8B%A9-%E7%AC%AC%E4%B8%80%E6%AC%A1.png" alt=""></p>
-<p>第二次大循环找到最小的值 <code>2</code> 然后和 <code>第1位</code>的交换，交换后：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E9%80%89%E6%8B%A9-%E7%AC%AC%E4%B8%80%E6%AC%A1.png" alt=""></p>
-<p>当然第三次大循环和第二次一样</p>
-<p>第四次大循环找到最小的值 <code>5</code> 然后和 <code>第3位</code>的交换，交换后：</p>
-<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E6%9C%80%E7%BB%88%E6%8E%92%E5%BA%8F.png" alt=""><br>后面的就已经排序好了。</p>
-<p><strong>从上面可以看出，选择排序是一个不断寻找最小值的排序方法。</strong></p>
-<p>所以代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">selectSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> minIndex = i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; n; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[minIndex]) &#123;</span><br><span class="line">                minIndex = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        swap(&amp;arr[i], &amp;arr[minIndex]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>是不是很简单 😁😁😁！</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
               <a class="post-title-link" href="/2017/03/05/insert-sort/" itemprop="url">
                 排序算法之插入排序
               </a>
@@ -1077,6 +261,123 @@
 <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 0.000647s</span><br><span class="line">sortname:插入排序优化	 sorttime: 0.000554s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>近乎有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 0.051551s</span><br><span class="line">sortname:插入排序优化	 sorttime: 0.025874s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>随机<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 18.110468s</span><br><span class="line">sortname:插入排序优化	 sorttime: 8.335453s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>倒叙<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 36.259288s</span><br><span class="line">sortname:插入排序优化	 sorttime: 16.780035s</span><br></pre></td></tr></table></figure>
 <p>看看测试时间，这个优化还是有明显的提高的！！！</p>
 <p>不知道这一节你掌握了么？😜😜😜</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2017/02/20/bubble-sort/" itemprop="url">
+                排序算法之冒泡排序和选择排序
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-02-20T22:28:11+08:00" content="2017-02-20">
+            2017-02-20
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>从这周开始，每周我将写一些工作中常用的算法如下：</p>
+<ol>
+<li>冒泡排序和选择排序；</li>
+<li>插入排序和希尔排序；</li>
+<li>归并排序及其优化；</li>
+<li>快速排序及其优化；</li>
+<li>堆排序；</li>
+</ol>
+<p>下面开始正文：</p>
+<h2 id="冒泡排序">冒泡排序</h2><p>冒泡排序可能是我们学习某种编程语言（大多数都是 C）之后，接触到的第一个排序算法。我在网上找了很多的博客之类的介绍冒泡排序的，但总是总是有点纰漏，比如 分析的和写的例子不一致（😂😂😂），很尴尬。下面我们详细来分析一下冒泡排序的过程：</p>
+<p>待排序数组为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="number">6</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span> &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>冒泡排序的原理是：<code>临近的``数字两两进行比较</code>,按照<code>从小到大</code>或者<code>从大到小</code>的顺序进行交换。</strong></p>
+<p><strong>这里注意：是临近的两个数字两两进行比较，如果非，那就不是冒泡排序。</strong></p>
+<p>起始数组如下：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E8%B5%B7%E5%A7%8B%E6%95%B0%E7%BB%84.png" alt="起始数组"></p>
+<ol>
+<li>第一趟排序</li>
+</ol>
+<p>第一次比较： <code>6 &gt; 2</code>  6 大于 2 进行交换，交换后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt="00"></p>
+<p>第二次比较： <code>6 &gt; 4</code>  6 大于 4 进行交换，交换后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
+<p>第三次比较： <code>6 &gt; 1</code>  6 大于 1 进行交换，交换后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
+<p>第四次比较： <code>6 &gt; 5</code> 6 大于 5 进行交换，交换后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E5%9B%9B%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
+<p>第五次比较： <code>6 &lt; 9</code> 6 小于 9 不进行交换：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E7%AC%AC%E4%BA%94%E6%AC%A1%E6%AF%94%E8%BE%83.png" alt=""></p>
+<p><strong>后面的第二、三、四、五、六的过程和上面的一样，最终如下面：</strong></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E6%9C%80%E7%BB%88%E6%8E%92%E5%BA%8F.png" alt=""></p>
+<p><strong>注意：第二次比较的时候，最后一位就不参与了，因为最大的已经冒了出来，第三次比较，倒数第二位不参与了，以此类推。</strong></p>
+<p>至此，程序就很容易写出来了：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n ; i ++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n-i; j ++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[j-<span class="number">1</span>]) &#123;</span><br><span class="line">                swap(&amp;arr[j], &amp;arr[j-<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="冒泡排序的优化">冒泡排序的优化</h2><p>我们看一下 每次排序的结果：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">第一次：<span class="number">2</span> <span class="number">4</span> <span class="number">1</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第二次：<span class="number">2</span> <span class="number">1</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第三次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第四次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第五次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span> </span><br><span class="line">第六次：<span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">9</span></span><br></pre></td></tr></table></figure>
+<p>从中我们发现第三次的时候，已经排好序了，第四、五、六次没必要执行了，这就是我们要对冒泡排序进行优化的地方。</p>
+<p>我们可以设置一个flag ，当没有发生交换的时候，记录一下，这时候数组已经有序了。</p>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort2</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> flag = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n &amp;&amp; flag ; i ++) &#123;</span><br><span class="line">        flag = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n - i; j ++) &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[j-<span class="number">1</span>]) &#123;</span><br><span class="line">                flag = <span class="number">1</span>;</span><br><span class="line">                swap(&amp;arr[j], &amp;arr[j-<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然，还有其他的优化方案，大家不妨搜下。</p>
+<h2 id="选择排序">选择排序</h2><p>理解的前面的冒泡排序，选择排序是很容易理解的。选择排序顾名思义，每次循环要找出一个最小的值，然后再交换。</p>
+<p>测试用例还是之前的：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E8%B5%B7%E5%A7%8B%E6%95%B0%E7%BB%84.png" alt="起始数组"></p>
+<p>第一次大循环找到最小的值 <code>1</code> 然后和 <code>第0位</code>的交换，交换后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E9%80%89%E6%8B%A9-%E7%AC%AC%E4%B8%80%E6%AC%A1.png" alt=""></p>
+<p>第二次大循环找到最小的值 <code>2</code> 然后和 <code>第1位</code>的交换，交换后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E9%80%89%E6%8B%A9-%E7%AC%AC%E4%B8%80%E6%AC%A1.png" alt=""></p>
+<p>当然第三次大循环和第二次一样</p>
+<p>第四次大循环找到最小的值 <code>5</code> 然后和 <code>第3位</code>的交换，交换后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%86%92%E6%B3%A1-%E6%9C%80%E7%BB%88%E6%8E%92%E5%BA%8F.png" alt=""><br>后面的就已经排序好了。</p>
+<p><strong>从上面可以看出，选择排序是一个不断寻找最小值的排序方法。</strong></p>
+<p>所以代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">selectSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> minIndex = i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; n; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[minIndex]) &#123;</span><br><span class="line">                minIndex = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        swap(&amp;arr[i], &amp;arr[minIndex]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>是不是很简单 😁😁😁！</p>
 </span>
         
       
@@ -1871,13 +1172,575 @@ dispatch_semaphore_wait的返回值也为<span class="keyword">long</span>型。
 
 
     
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/06/30/CAKeyframeAnimation/" itemprop="url">
+                CAKeyframeAnimation 关键帧动画
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-06-30T07:34:33+08:00" content="2016-06-30">
+            2016-06-30
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>CAKeyframeAnimation（关键帧动画）<br><br>      关键帧动画就是在动画控制过程中开发者指定主要的动画状态，至于各个状态间动画如何进行则由系统自动运算补充（每两个关键帧之间系统形成的动画称为“补间动画”），这种动画的好处就是开发者不用逐个控制每个动画帧，而只要关心几个关键帧的状态即可。<br>      关键帧动画开发分为两种形式：一种是通过设置不同的属性值进行关键帧控制，另一种是通过绘制路径进行关键帧控制。后者优先级高于前者，如果设置了路径则属性值就不再起作用。</p>
+<p>看下面的代码，简单的用法：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CAKeyframeAnimation</span> *keyAnimation = [<span class="built_in">CAKeyframeAnimation</span> animationWithKeyPath:@“position”];</span><br><span class="line"><span class="comment">//设置关键点</span></span><br><span class="line"><span class="built_in">NSValue</span> *key1 = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:_layer<span class="variable">.position</span>];</span><br><span class="line"><span class="built_in">NSValue</span> *key2 = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">300</span>, <span class="number">220</span>)];</span><br><span class="line"><span class="built_in">NSValue</span> *key3 = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">100</span>, <span class="number">300</span>)];</span><br><span class="line"><span class="built_in">NSValue</span> *key4 = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">300</span>, <span class="number">400</span>)];</span><br><span class="line">keyAnimation<span class="variable">.duration</span> = <span class="number">5.0</span>f;</span><br><span class="line">[<span class="keyword">self</span><span class="variable">.layer</span> addAnimation:keyAnimation forKey:<span class="string">@"key"</span>];</span><br></pre></td></tr></table></figure>
+<p>当然页可以换成路径：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//2.设置路径</span></span><br><span class="line"><span class="comment">//绘制贝塞尔曲线</span></span><br><span class="line">CGMutablePathRef path = CGPathCreateMutable();</span><br><span class="line"><span class="comment">//移动到起始点</span></span><br><span class="line">CGPathMoveToPoint(path, <span class="literal">NULL</span>, _layer.position.x, _layer.position.y);</span><br><span class="line"><span class="comment">//绘制二次贝塞尔曲线</span></span><br><span class="line">CGPathAddCurveToPoint(path, <span class="literal">NULL</span>, <span class="number">160</span>, <span class="number">280</span>, -<span class="number">30</span>, <span class="number">300</span>, <span class="number">55</span>, <span class="number">400</span>);</span><br><span class="line"><span class="comment">//设置path属性</span></span><br><span class="line">keyAnimation.path=path;</span><br><span class="line"><span class="comment">//释放路径对象</span></span><br><span class="line">CGPathRelease(path);</span><br></pre></td></tr></table></figure>
+<p>(1) values属性<br>        values属性指明整个动画过程中的关键帧点，例如上例中的key1-key2就是通过values指定的。需要注意的是，起点必须作为values的第一个值。</p>
+<p>(2)path属性<br>        作用与values属性一样，同样是用于指定整个动画所经过的路径的。需要注意的是，values与path是互斥的，当values与path同时指定时，path会覆盖values，即values属性将被忽略。</p>
+<p>(3)keyTimes<br>     keyTimes：各个关键帧的时间控制，如果你没有显式地对keyTimes进行设置，则系统会默认每条子路径的时间为：ti=duration/(5-1)，即每条子路径的duration相等，都为duration的1\4。当然，我们也可以传个数组让物体快慢结合。前面使用values设置了四个关键帧，默认情况下每两帧之间的间隔为:8/(4-1)秒。如果想要控制动画从第一帧到第二针占用时间4秒，从第二帧到第三帧时间为2秒，而从第三帧到第四帧时间2秒的话，就可以通过keyTimes进行设置。keyTimes中存储的是时间占用比例点，此时可以设置keyTimes的值为0.0，0.5，0.75，1.0（当然必须转换为NSNumber，其中首尾必须分别是0和1），也就是说1到2帧运行到总时间的50%，2到3帧运行到总时间的75%，3到4帧运行到8秒结束。</p>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keyAnimation.keyTimes = <span class="variable">@[</span><span class="variable">@(</span><span class="number">0</span>),<span class="variable">@(</span><span class="number">0.3</span>),<span class="variable">@(</span><span class="number">0.8</span>),<span class="variable">@(</span><span class="number">1</span>)];</span><br></pre></td></tr></table></figure>
+<p>(3) calculationMode属性</p>
+<table>
+<thead>
+<tr>
+<th>calculationMode keys</th>
+<th>说明                                                                                                                                       </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kCAAnimationLinear</td>
+<td>calculationMode的默认值,表示当关键帧为座标点的时候,关键帧之间直接直线相连进行插值计算;                                                                                                                                   </td>
+</tr>
+<tr>
+<td>kCAAnimationDiscrete</td>
+<td>离散的,就是不进行插值计算,所有关键帧直接逐个进行显示;                                                                                                                                    </td>
+</tr>
+<tr>
+<td>kCAAnimationPaced</td>
+<td>使得动画均匀进行,而不是按keyTimes设置的或者按关键帧平分时间,此时keyTimes和timingFunctions无效;   </td>
+</tr>
+<tr>
+<td>kCAAnimationCubic</td>
+<td>对关键帧为座标点的关键帧进行圆滑曲线相连后插值计算,对于曲线的形状还可以通过tensionValues,continuityValues,biasValues来进行调整自定义,这里的数学原理是Kochanek–Bartels spline,这里的主要目的是使得运行的轨迹变得圆滑;</td>
+</tr>
+<tr>
+<td>kCAAnimationCubicPaced</td>
+<td>看这个名字就知道和kCAAnimationCubic有一定联系,其实就是在kCAAnimationCubic的基础上使得动画运行变得均匀,就是系统时间内运动的距离相同,此时keyTimes以及timingFunctions也是无效的.      </td>
+</tr>
+</tbody>
+</table>
+<h5 id="感谢一下博客：">感谢一下博客：</h5><p><a href="http://www.cnblogs.com/kenshincui/p/3972100.html#autoid-3-1-0" target="_blank" rel="external">http://www.cnblogs.com/kenshincui/p/3972100.html#autoid-3-1-0</a><br><br><a href="http://www.cnblogs.com/wengzilin/p/4256468.html" target="_blank" rel="external">http://www.cnblogs.com/wengzilin/p/4256468.html</a><br><br><a href="http://blog.jobbole.com/69111/" target="_blank" rel="external">http://blog.jobbole.com/69111/</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/06/30/Core-Animation/" itemprop="url">
+                Core Animation 基础知识
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-06-30T07:18:00+08:00" content="2016-06-30">
+            2016-06-30
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h5 id="一、简介">一、简介</h5><p>CAAnimation的一些基础的知识，复习备用</p>
+<h5 id="二、使用步骤">二、使用步骤</h5><p>1.使用它需要先添加QuartzCore.framework框架和引入主头文件 QuartzCore/QuartzCore.h (Xcode 6 不需要);</p>
+<p>2.初始化一个CAAnimation对象，设置相应的属性;</p>
+<p>3.通过调用CALayer的addAnimation:forKey:方法增加CAAnimation对象到CALayer中，这样就能开始执行动画了;</p>
+<p>4.通过调用CALayer的removeAnimationForKey:方法可以停止CALayer中的动画.</p>
+<hr>
+<h5 id="三、CAAnimation_继承关系与核心类">三、CAAnimation 继承关系与核心类</h5><p>一般情况下，我们使用的是CAAnimation的子类(CABasicAnimation、CAKeyframeAnimation、CAAnimationGroup、CATransition)</p>
+<p><img src="http://img.blog.csdn.net/20150706193857613" alt="CAAnimation classes"></p>
+<p>CAAnimation：核心动画的基础类，不能直接使用，负责动画运行时间、速度的控制，本身实现了CAMediaTiming协议;</p>
+<p>CAPropertyAnimation：属性动画的基类（通过属性进行动画设置，注意是可动画属性），不能直接使用;</p>
+<p>CAAnimationGroup：动画组，动画组是一种组合模式设计，可以通过动画组来进行所有动画行为的统一控制，组中所有动画效果可以并发执行;<br>CATransition：转场动画，主要通过滤镜进行动画效果设置;<br>CABasicAnimation：基础动画，通过属性修改进行动画参数控制，只有初始状态和结束状态;<br>CAKeyframeAnimation：关键帧动画，同样是通过属性进行动画参数控制，但是同基础动画不同的是它可以有多个状态控制;</p>
+<p>基础动画、关键帧动画都属于属性动画，就是通过修改属性值产生动画效果，开发人员只需要设置初始值和结束值，中间的过程动画（又叫“补间动画”）由系统自动计算产生。和基础动画不同的是关键帧动画可以设置多个属性值，每两个属性中间的补间动画由系统自动完成，因此从这个角度而言基础动画又可以看成是有两个关键帧的关键帧动画。</p>
+<hr>
+<h5 id="四、常用属性">四、常用属性</h5><p>1.duration:它设定开始值到结束值花费的时间。期间会被速度的属性所影响;<br><br>2.speed:默认的值为 1.0.这意味着动画播放按照默认的速度。如果你改变这个值为 2.0,动画会用 2 倍的速度播放。这样的影响就是使持续时间减半。如果你指定的持续时间为6秒,速度为2.0,动画就会播放 3 秒钟,一半的 持续时间;<br><br>3.removedOnCompletion:这个属性默认为 YES,那意味着,在指定的时间段完成后,动画就自动的从层上移除了。这个一般不用。假如你想要再次用这个动画时,你需要设定这个属性为 NO。这样的话,下次你在通过-set 方法设定动画的属性时,它将再次使用你的动画,而非默认的动画;<br><br>4.fillMode:fillMode的作用就是决定当前对象过了非active时间段的行为. 比如动画开始之前,动画结束之后。如果是一个动画CAAnimation,则需要将其removedOnCompletion设置为NO,要不然fillMode不起作用. 下面来讲各个fillMode的意义:<br></p>
+<ul>
+<li>kCAFillModeRemoved 这个是默认值,也就是说当动画开始前和动画结束后,动画对layer都没有影响,动画结束后,layer会恢复到之前的状态;<br></li>
+<li>kCAFillModeForwards 当动画结束后,layer会一直保持着动画最后的状态;<br></li>
+<li>kCAFillModeBackwards 这个和kCAFillModeForwards是相对的,就是在动画开始前,你只要将动画加入了一个layer,layer便立即进入动画的初始状态并等待动画开始.你可以这样设定测试代码,将一个动画加入一个layer的时候延迟5秒执行.然后就会发现在动画没有开始的时候,只要动画被加入了layer,layer便处于动画初始状态;<br></li>
+<li>kCAFillModeBoth 理解了上面两个,这个就很好理解了,这个其实就是上面两个的合成.动画加入后开始之前,layer便处于动画初始状态,动画结束后layer保持动画最后的状态;<br><br>5.timingFunction可选的值有：<ul>
+<li>kCAMediaTimingFunctionLinear（线性）：匀速，给你一个相对静态的感觉</li>
+<li>kCAMediaTimingFunctionEaseIn（渐进）：动画缓慢进入，然后加速离开</li>
+<li>kCAMediaTimingFunctionEaseOut（渐出）：动画全速进入，然后减速的到达目的地</li>
+<li>kCAMediaTimingFunctionEaseInEaseOut（渐进渐出）：动画缓慢的进入，中间加速，然后减速的到达目的地。这个是默认的动画行为.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">baseAnimation<span class="variable">.timingFunction</span> = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:k<span class="built_in">CAMediaTimingFunctionEaseOut</span>];</span><br></pre></td></tr></table></figure>
+<p>6.autoreverses:当你设定这个属性为 YES 时,在它到达目的地之后,再原路返回开始值。<br><br>7.timeOffset:动画从偏移的地方开始动画，但结束的地方是偏移的地方<br><br>8.repeatCount:默认的是 0,意味着动画只会播放一次。如果指定一个无限大的重复次数,使用 1e100f。这个不能和repeatDration属性一块使用。<br></p>
+<p>9.repeatDuration:这个属性指定了动画应该被重复多久。动画会一直重复,直到设定的时间流逝完。它不能和repeatCount一起使用。<br><br>10.additive:这个属性根据当前的渲染层的值加上value生成新的渲染的值，也就是动画时present layer的值。</p>
+<p><a href="http://blog.csdn.net/growinggiant/article/details/45535587" target="_blank" rel="external">下边的代码的动画效果是一样的，对比下values会有个明确的认识：</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)change</span><br><span class="line">&#123;</span><br><span class="line">    CAKeyframeAnimation* animation = [CAKeyframeAnimation animationWithKeyPath:@<span class="string">"position.x"</span>];</span><br><span class="line">    animation.values = @[@<span class="number">0</span>,@<span class="number">100</span>,@(-<span class="number">100</span>),@<span class="number">100</span>,@<span class="number">0</span>];</span><br><span class="line">    animation.keyTimes = @[@<span class="number">0</span>,@(<span class="number">1</span>/<span class="number">6.</span>),@(<span class="number">3</span>/<span class="number">6.</span>),@(<span class="number">5</span>/<span class="number">6.</span>),@<span class="number">1</span>];</span><br><span class="line">    animation.duration = <span class="number">2.f</span>;</span><br><span class="line">    animation.additive = YES; <span class="comment">//YES把更改的值追加到当前的present层中 keypath+=value ，NO是把更改的值设置成当前present层的值keypath = value</span></span><br><span class="line">    [self.ly.layer addAnimation:animation forKey:@<span class="string">"shaking"</span>];</span><br><span class="line">    ---------</span><br><span class="line">	CAKeyframeAnimation* animation1 = [CAKeyframeAnimation animationWithKeyPath:@<span class="string">"position.x"</span>];</span><br><span class="line">    animation1.values = @[@(self.ly1.center.x),@(self.ly1.center.x + <span class="number">100</span>),@(self.ly1.center.x - <span class="number">100</span>),@(self.ly1.center.x + <span class="number">100</span>),@(self.ly1.center.x)];</span><br><span class="line">    animation1.keyTimes = @[@<span class="number">0</span>,@(<span class="number">1</span>/<span class="number">6.</span>),@(<span class="number">3</span>/<span class="number">6.</span>),@(<span class="number">5</span>/<span class="number">6.</span>),@<span class="number">1</span>];</span><br><span class="line">    animation1.duration = <span class="number">2.f</span>;</span><br><span class="line">    animation1.additive = NO; <span class="comment">//YES把更改的值追加到当前的model层中 keypath+=value ，NO是把更改的值设置成当前present层的值keypath = value</span></span><br><span class="line">    [self.ly1.layer addAnimation:animation1 forKey:@<span class="string">"shaking"</span>];</span><br><span class="line">    [button animateWithType:arc4random()%<span class="number">3</span>];</span><br><span class="line">    [self performSelector:@selector(change) withObject:nil afterDelay:<span class="number">3.f</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>11.<a href="http://geeklu.com/2012/09/animation-in-ios/" target="_blank" rel="external">beginTime</a><br>无论是图层还是动画,都有一个时间线Timeline的概念,他们的beginTime是相对于父级对象的开始时间. 虽然苹果的文档中没有指明,但是通过代码测试可以发现,默认情况下所有的CALayer图层的时间线都是一致的,他们的beginTime都是0,绝对时间转换到当前Layer中的时间大小就是绝对时间的大小.所以对于图层而言,虽然创建有先后,但是他们的时间线都是一致的(只要不主动去修改某个图层的beginTime),所以我们可以想象成所有的图层默认都是从系统重启后开始了他们的时间线的计时.</p>
+<p>但是动画的时间线的情况就不同了,当一个动画创建好,被加入到某个Layer的时候,会先被拷贝一份出来用于加入当前的图层,在CA事务被提交的时候,如果图层中的动画的beginTime为0,则beginTime会被设定为当前图层的当前时间,使得动画立即开始.如果你想某个直接加入图层的动画稍后执行,可以通过手动设置这个动画的beginTime,但需要注意的是这个beginTime需要为 CACurrentMediaTime()+延迟的秒数,因为beginTime是指其父级对象的时间线上的某个时间,这个时候动画的父级对象为加入的这个图层,图层当前的时间其实为[layer convertTime:CACurrentMediaTime() fromLayer:nil],其实就等于CACurrentMediaTime(),那么再在这个layer的时间线上往后延迟一定的秒数便得到上面的那个结果.</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">baseAnimation.beginTime </span>= CACurrentMediaTime() + <span class="number">1</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>12.delegate：动画代理，用来监听动画的执行过程</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span> (<span class="title">CAAnimationDelegate</span>)</span></span><br><span class="line"><span class="comment">// 动画开始执行的时候触发这个方法</span></span><br><span class="line">- (<span class="keyword">void</span>)animationDidStart:(<span class="built_in">CAAnimation</span> *)anim;</span><br><span class="line"><span class="comment">// 动画执行完毕的时候触发这个方法</span></span><br><span class="line">- (<span class="keyword">void</span>)animationDidStop:(<span class="built_in">CAAnimation</span> *)anim finished:(<span class="built_in">BOOL</span>)flag;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>以上是做动画时常用的属性（当然也包括不常用的）；</p>
+<h5 id="五、动画类">五、动画类</h5><p>1.CABasicAnimation<br>下面是一些简单的使用方法（看一眼就OK了）：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CABasicAnimation</span> *baseAnimation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"position"</span>];</span><br><span class="line">baseAnimation<span class="variable">.delegate</span> = <span class="keyword">self</span>;</span><br><span class="line">baseAnimation<span class="variable">.toValue</span> = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">150</span>, <span class="number">450</span>)];</span><br><span class="line">baseAnimation<span class="variable">.duration</span> = <span class="number">5.0</span>f;</span><br><span class="line">baseAnimation<span class="variable">.removedOnCompletion</span> = <span class="literal">NO</span>;</span><br><span class="line">baseAnimation<span class="variable">.speed</span> = <span class="number">2.0</span>f;</span><br><span class="line">baseAnimation<span class="variable">.fillMode</span> = k<span class="built_in">CAFillModeForwards</span>;</span><br><span class="line">baseAnimation<span class="variable">.timingFunction</span> = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:k<span class="built_in">CAMediaTimingFunctionEaseOut</span>];</span><br><span class="line">[<span class="keyword">self</span><span class="variable">.layer</span> addAnimation:baseAnimation forKey:<span class="string">@"haha"</span>];</span><br></pre></td></tr></table></figure>
+<p>CABasicAnimation 中使用比较多的是KeyPath，下面列出了一些（当然可以通过Xcode 帮助文档搜索“animatable properties“）<br><img src="http://img.blog.csdn.net/20150707111318433" alt="keyPath"></p>
+<p>2.CAAnimationGroup<br>GroupAnimation可以实现多种动画的组合，在GroupAnimation中的各个动画类型是同时进行的。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//缩放动画</span></span><br><span class="line"><span class="built_in">CABasicAnimation</span> *scale = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"transform"</span>];</span><br><span class="line">scale<span class="variable">.fromValue</span> = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CATransform3D</span>:<span class="built_in">CATransform3DIdentity</span>];</span><br><span class="line">scale<span class="variable">.toValue</span>   = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CATransform3D</span>:<span class="built_in">CATransform3DMakeScale</span>(<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">1</span>)];</span><br><span class="line"></span><br><span class="line"><span class="comment">//平移</span></span><br><span class="line"><span class="built_in">CABasicAnimation</span> *position = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"position"</span>];</span><br><span class="line">position<span class="variable">.toValue</span> = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">150</span>, <span class="number">450</span>)];</span><br><span class="line"></span><br><span class="line"><span class="comment">//旋转</span></span><br><span class="line"><span class="built_in">CABasicAnimation</span> *rotation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"transform.rotation.z"</span>];</span><br><span class="line">rotation<span class="variable">.toValue</span> = [<span class="built_in">NSNumber</span> numberWithFloat:M_PI_2];</span><br><span class="line"></span><br><span class="line"><span class="built_in">CAAnimationGroup</span> *group = [<span class="built_in">CAAnimationGroup</span> animation];</span><br><span class="line">group<span class="variable">.duration</span> = <span class="number">5</span>;</span><br><span class="line">group<span class="variable">.speed</span>    = <span class="number">1</span>;</span><br><span class="line">group<span class="variable">.animations</span> = @[scale,rotation,position];</span><br><span class="line">group<span class="variable">.removedOnCompletion</span> = <span class="literal">NO</span>;</span><br><span class="line">group<span class="variable">.fillMode</span> = k<span class="built_in">CAFillModeForwards</span>;</span><br><span class="line">[<span class="keyword">self</span><span class="variable">.layer</span> addAnimation:group forKey:<span class="string">@"group"</span>];</span><br></pre></td></tr></table></figure>
+<h5 id="六、最后感谢一下引用的博客">六、最后感谢一下引用的博客</h5><p><a href="http://geeklu.com/2012/09/animation-in-ios/" target="_blank" rel="external">http://geeklu.com/2012/09/animation-in-ios/</a><br><br><a href="http://www.cnblogs.com/wengzilin/p/4256468.html" target="_blank" rel="external">http://www.cnblogs.com/wengzilin/p/4256468.html</a><br><br><a href="http://www.cnblogs.com/mjios/archive/2013/04/15/3021039.html" target="_blank" rel="external">http://www.cnblogs.com/mjios/archive/2013/04/15/3021039.html</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/05/21/ios-date/" itemprop="url">
+                iOS 日期处理
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-05-21T17:04:42+08:00" content="2016-05-21">
+            2016-05-21
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>前几天在开发的时候遇到了日期方面的处理，花费了不少时间，踩了点坑，今天就把遇到的写一下.</p>
+<h3 id="本文内容">本文内容</h3><ol>
+<li>时间格式</li>
+<li>时间差（两个日期之间的天数、月数、年数差）计算</li>
+</ol>
+<h3 id="时间格式">时间格式</h3><p>在iOS中 <font color="#B22222" size="3">NSDateFormatter</font> 处理时间格式的东东，上次有个需求，就是获取网络请求中cookie的时间<br><br>cookie中的时间是这个酱子的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Date:Sat, <span class="number">21</span> May <span class="number">2016</span> <span class="number">07</span>:<span class="number">57</span>:<span class="number">20</span> GMT</span><br></pre></td></tr></table></figure>
+<p>NSDateFormatter 中有一下格式：</p>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G</td>
+<td style="text-align:center">公元时代，例如AD公元</td>
+</tr>
+<tr>
+<td>yy</td>
+<td style="text-align:center">年的后2位 如：2016 中的 16</td>
+</tr>
+<tr>
+<td>yyyy</td>
+<td style="text-align:center">完整年 如：2016</td>
+</tr>
+<tr>
+<td>MM</td>
+<td style="text-align:center">月，显示为1-12</td>
+</tr>
+<tr>
+<td>MMM</td>
+<td style="text-align:center">月，显示为英文月份简写,如 Jan</td>
+</tr>
+<tr>
+<td>MMMM</td>
+<td style="text-align:center">月，显示为英文月份全称，如 Janualy</td>
+</tr>
+<tr>
+<td>dd</td>
+<td style="text-align:center">日，2位数表示，如02</td>
+</tr>
+<tr>
+<td>d</td>
+<td style="text-align:center">日，1-2位显示，如 2</td>
+</tr>
+<tr>
+<td>EEE</td>
+<td style="text-align:center">简写星期几，如Sun</td>
+</tr>
+<tr>
+<td>EEEE</td>
+<td style="text-align:center">全写星期几，如Sunday</td>
+</tr>
+<tr>
+<td>aa</td>
+<td style="text-align:center">上下午，AM/PM</td>
+</tr>
+<tr>
+<td>H</td>
+<td style="text-align:center">时，24小时制，0-23</td>
+</tr>
+<tr>
+<td>K</td>
+<td style="text-align:center">时，12小时制，0-11</td>
+</tr>
+<tr>
+<td>m</td>
+<td style="text-align:center">分，1-2位 ( 0-9 是一位 )</td>
+</tr>
+<tr>
+<td>mm</td>
+<td style="text-align:center">分，2位</td>
+</tr>
+<tr>
+<td>s</td>
+<td style="text-align:center">秒，1-2位</td>
+</tr>
+<tr>
+<td>ss</td>
+<td style="text-align:center">秒，2位</td>
+</tr>
+<tr>
+<td>S</td>
+<td style="text-align:center">毫秒</td>
+</tr>
+<tr>
+<td>Z</td>
+<td style="text-align:center">GMT</td>
+</tr>
+</tbody>
+</table>
+<p>了解了上面的格式，那就容易多了，故格式是：<font color="#B22222" size="3">EEE, dd MMM yyyy HH:mm:ss Z</font></p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="name">NSDateFormatter</span> *<span class="atom">formatter</span> = [[<span class="name">NSDateFormatter</span> <span class="atom">alloc</span>] <span class="atom">init</span>];</span><br><span class="line">[<span class="atom">formatter</span> <span class="atom">setDateFormat</span>:@<span class="string">"EEE, dd MMM yyyy HH:mm:ss Z"</span>];</span><br><span class="line"></span><br><span class="line"><span class="name">NSDate</span> *<span class="atom">date</span> = [<span class="atom">formatter</span> <span class="atom">dateFromString</span>:@<span class="string">"Sat, 21 May 2016 07:57:20 GMT"</span>];</span><br></pre></td></tr></table></figure>
+<p>但是上面的代码 得出的 date 可能是 nil,后面查了下原来是少设置了<font color="#B22222" size="3">NSLocale (区域设置)</font></p>
+<p>因为时间格式是英文的，所以：</p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="name">NSDateFormatter</span> *<span class="atom">formatter</span> = [[<span class="name">NSDateFormatter</span> <span class="atom">alloc</span>] <span class="atom">init</span>];</span><br><span class="line">[<span class="atom">formatter</span> <span class="atom">setDateFormat</span>:@<span class="string">"EEE, dd MMM yyyy HH:mm:ss Z"</span>];</span><br><span class="line">[<span class="atom">formatter</span> <span class="atom">setLocale</span>:[[<span class="name">NSLocale</span> <span class="atom">alloc</span>] <span class="atom">initWithLocaleIdentifier</span>:@<span class="string">"en_US"</span>]];</span><br><span class="line"><span class="name">NSDate</span> *<span class="atom">date</span> = [<span class="atom">formatter</span> <span class="atom">dateFromString</span>:@<span class="string">"Sat, 21 May 2016 07:57:20 GMT"</span>];</span><br></pre></td></tr></table></figure>
+<p>另外，关于是使用  <font color="#B22222" size="3">en_US_POSIX还是en_US</font> 可以看<a href="http://www.lidaren.com/archives/811" target="_blank" rel="external">这篇文章</a><br><br>当然，你设置成了  <font color="#B22222" size="3">zh_CN</font> ，那格式出来的是中文了，如“EEE, dd MMM yyyy HH:mm:ss Z”格式出来的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">周六, <span class="number">21</span> <span class="number">5</span>月 <span class="number">2016</span> <span class="number">16</span>:<span class="number">37</span>:<span class="number">57</span> +<span class="number">0800</span></span><br></pre></td></tr></table></figure>
+<h3 id="时间差计算">时间差计算</h3><p>要计算两个日期的有多少天，多少个月，如果要自己计算的话，那就爽歪歪了，不过所幸 iOS的日历功能( <font color="#B22222" size="3">NSCalendar</font> )可以给我们提供一些便利。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSDate</span> *date1 = [formatter dateFromString:<span class="string">@"2016-05-21"</span>];</span><br><span class="line"><span class="built_in">NSDate</span> *date2 = [formatter dateFromString:<span class="string">@"2013-11-25"</span>];</span><br><span class="line"><span class="built_in">NSCalendar</span> *gregorian = [[<span class="built_in">NSCalendar</span> alloc] initWithCalendarIdentifier:<span class="built_in">NSCalendarIdentifierGregorian</span>];</span><br><span class="line"><span class="built_in">NSDateComponents</span> *components = [gregorian components:<span class="built_in">NSCalendarUnitYear</span> | <span class="built_in">NSCalendarUnitMonth</span> | <span class="built_in">NSCalendarUnitDay</span> fromDate:date2 toDate:date1 options:<span class="number">0</span>];</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"year = %ld month = %ld day = %ld"</span>,components<span class="variable">.year</span>,components<span class="variable">.month</span>,components<span class="variable">.day</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="参考：">参考：<br></h3><p><a href="http://blog.csdn.net/crayondeng/article/details/8755306" target="_blank" rel="external">http://blog.csdn.net/crayondeng/article/details/8755306</a><br><br><a href="http://www.125135.com/339261.htm" target="_blank" rel="external">http://www.125135.com/339261.htm</a><br><br><a href="http://www.cnblogs.com/kaysun/p/5466508.html" target="_blank" rel="external">http://www.cnblogs.com/kaysun/p/5466508.html</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/04/23/JSPatch-stduy/" itemprop="url">
+                JSPatch 学习
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-04-23T21:14:30+08:00" content="2016-04-23">
+            2016-04-23
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="引言">引言</h3><p>好久前就已经了解到JSPatch（JSPatch是iOS平台的热修复框架，能够及时的修复线上的一些小bug，iOS应用审核时间之长，大家都懂得），一直以来都没有抽出时间去学习，今天抽出时间来学习下，突然又发现只有官方的一些教程，自己照着写写满满都是泪（崩溃的次数多）。学JSPatch写法，首先大家需要先补一下JavaScript的知识。</p>
+<h3 id="基础用法">基础用法</h3><p>关于基础的用法大家可以先看<a href="https://github.com/bang590/JSPatch/wiki/JSPatch-基础用法" target="_blank" rel="external">官方的Wiki</a>,大致有13个知识点，我这里直接就上用法了。<br></p>
+<h4 id="require">require</h4><p>首先，用到哪个类就需要require一下，否则会崩溃，比如UIView、UILabel等等，中间逗号隔开</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'UILabel,UIView'</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="调用OC的方法">调用OC的方法</h4><p>因为JavaScript是链式语法，所以说和写OC有很大的不同,写的时候要注意</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'UIView, UIColor'</span>);</span><br><span class="line"><span class="keyword">var</span> view = UIView.alloc().init();<span class="comment">//实例方法</span></span><br><span class="line"><span class="keyword">var</span> red = UIColor.redColor();<span class="comment">//类方法</span></span><br></pre></td></tr></table></figure>
+<p>UIView 有很多的Property，这些Property如何调用呢？<br><br>等于调用这个 Property 的 getter / setter 方法，获取时记得加 (),如：</p>
+<figure class="highlight sml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">require(<span class="symbol">'UIView</span>, <span class="type">UIColor'</span>);</span><br><span class="line">var view = <span class="type">UIView</span>.alloc<span class="literal">()</span>.init<span class="literal">()</span>;</span><br><span class="line">view.setBackgroundColor(<span class="type">UIColor</span>.grayColor<span class="literal">()</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="常量、枚举、宏、全局变量">常量、枚举、宏、全局变量</h4><p>Objective-C 里的常量/枚举不能直接在 JS 上使用，可以直接在 JS 上用具体值代替：</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="keyword">label</span> = UILabel.alloc().init();</span><br><span class="line"><span class="keyword">label</span>.setTextAlignment(<span class="number">1</span>);<span class="comment">//这里需要写具体的值</span></span><br></pre></td></tr></table></figure>
+<p>宏也不使用，若定义的宏是一个值，可以在 JS 定义同样的全局变量代替，若定义的宏是程序，可以在JS展开宏</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">define</span> TABBAR_HEIGHT <span class="number">40</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> SCREEN_WIDTH [[UIScreen mainScreen] bounds].size.height</span></span><br><span class="line">[view setWidth:SCREEN_WIDTH height:TABBAR_HEIGHT];</span><br><span class="line"><span class="comment">//JS</span></span><br><span class="line">view.setWidth_height(<span class="number">40</span>, UIScreen.mainScreen().bounds().height);</span><br></pre></td></tr></table></figure>
+<p>若宏的值是某些在底层才能获取到的值，例如 CGFLOAT_MIN，可以通过在某个类或实例方法里将它返回，或者用添加扩展的方式提供支持，</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">JPMacroSupport</span></span></span><br><span class="line">+ (<span class="keyword">void</span>)main:(JSContext *)context</span><br><span class="line">&#123;</span><br><span class="line">  context[<span class="string">@"CGFLOAT_MIN"</span>] = ^<span class="built_in">CGFloat</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">CGFLOAT_MIN</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">require(<span class="string">'JPEngine'</span>).addExtensions([<span class="string">'JPMacroSupport'</span>])</span><br><span class="line">var <span class="built_in">float</span>M<span class="keyword">in</span> = CGFLOAT_MIN();</span><br></pre></td></tr></table></figure>
+<p>当然全局变量也是如此：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">NSString</span> *name;</span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">JPTestObject</span></span></span><br><span class="line">+ (<span class="built_in">NSString</span> *)name &#123;</span><br><span class="line">  <span class="keyword">return</span> name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">var</span> name = JPTestObject.<span class="function"><span class="title">name</span><span class="params">()</span></span> <span class="comment">//拿到全局变量值</span></span><br></pre></td></tr></table></figure>
+<h4 id="defineClass">defineClass</h4><p>在 defineClass 里定义 OC 已存在的方法即可覆盖:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">defineClass</span>(<span class="string">'ViewController'</span>, &#123;</span><br><span class="line">    <span class="tag">viewDidLoad</span>: <span class="tag">function</span>() &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>如果想调用原方法，在方法名前加 ORIG 即可调用未覆盖前的 OC 原方法:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">defineClass(<span class="string">'ViewController'</span>, &#123;</span><br><span class="line">    viewDidLoad: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">self</span>.ORIGviewDidLoad();</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>下面是一个UILabel添加到View上的例子：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">require<span class="list">(<span class="quoted">'UILabel</span>,UIView,UIColor,UIFont')</span><span class="comment">;</span></span><br><span class="line">defineClass<span class="list">(<span class="quoted">'ViewController</span>', &#123;</span><br><span class="line">    viewDidLoad: function<span class="list">()</span> &#123;</span><br><span class="line">        self.ORIGviewDidLoad<span class="list">()</span><span class="comment">;</span></span><br><span class="line">        var view = self.view<span class="list">()</span><span class="comment">;</span></span><br><span class="line">        var label = UILabel.alloc<span class="list">()</span>.initWithFrame<span class="list">(&#123;x:<span class="number">100</span>, y:<span class="number">200</span>, width:<span class="number">100</span>, height:<span class="number">100</span>&#125;)</span><span class="comment">;</span></span><br><span class="line">        label.setFont<span class="list">(<span class="keyword">UIFont</span>.systemFontOfSize<span class="list">(<span class="number">10</span>)</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setTextAlignment<span class="list">(<span class="number">1</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setText<span class="list">(<span class="string">"你好 ！"</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setBackgroundColor<span class="list">(<span class="keyword">UIColor</span>.grayColor<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">        view.addSubview<span class="list">(<span class="keyword">label</span>)</span><span class="comment">;</span></span><br><span class="line">        var background = UIView.alloc<span class="list">()</span>.initWithFrame<span class="list">(&#123;x:<span class="number">100</span>,y:<span class="number">350</span>,width:<span class="number">100</span>,height:<span class="number">100</span>&#125;)</span><span class="comment">;</span></span><br><span class="line">        background.setBackgroundColor<span class="list">(<span class="keyword">UIColor</span>.grayColor<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">        self.setBackgroundView<span class="list">(<span class="keyword">background</span>)</span><span class="comment">;</span></span><br><span class="line">        view.addSubview<span class="list">(<span class="keyword">self</span>.backgroundView<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>开始的时候一直不知道OC中的“self.view”在JavaScript中怎么调用，试了好久直接调用“self.view()”就行了。</p>
+<p><br><br><br></p>
+<hr>
+<p>参考：<br><br><a href="https://github.com/bang590/JSPatch/wiki" target="_blank" rel="external">官方的Wiki</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/10/14/github-hexo/" itemprop="url">
+                github 搭建博客-hexo
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-14T23:00:07+08:00" content="2015-10-14">
+            2015-10-14
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h2 id="Mac下_搭建博客_之_hexo">Mac下 搭建博客 之 hexo</h2><h3 id="引言：">引言：</h3><p>一直在CSDN写博客，但是CSDN对Markdown支持不是很好，而且还是在线，不是很方便。于是决定搭建一个自己的博客，正好github可以免费搭建博客，于是就搭建了一下。</p>
+<p>搭建的过程遇到很多的坑，在这里给大家说明，避免大家再次趟雷。</p>
+<h3 id="一、安装_HomeBrew">一、安装 HomeBrew</h3><p>HomeBrew 是 OS X 下的一个程式管理器，需要用他来安装其他程式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby <span class="operator">-e</span> <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span>"</span></span><br></pre></td></tr></table></figure>
+<h3 id="二、安装_NodeJS">二、安装 NodeJS</h3><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span>install node</span><br></pre></td></tr></table></figure>
+<h3 id="三、安装_Hexo">三、安装 Hexo</h3><p>可以用 nodejs 自带 npm 安装,切到hexo</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="operator"><span class="keyword">install</span> hexo -<span class="keyword">g</span></span><br><span class="line">hexo init</span><br><span class="line">npm <span class="keyword">install</span></span></span><br></pre></td></tr></table></figure>
+<p>注意：在这里运行命令“npm install hexo -g”时可能会有错误</p>
+<p>1.错误：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">npm WARN locking <span class="keyword">Error</span>: EACCES, <span class="keyword">open</span> '/Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock'</span><br><span class="line">npm WARN locking    at <span class="keyword">Error</span> (native)</span><br><span class="line">npm WARN locking  /Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock failed &#123; [<span class="keyword">Error</span>: EACCES, <span class="keyword">open</span> '/Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock']</span><br><span class="line">npm WARN locking  errno: -13,</span><br><span class="line">npm WARN locking  code: 'EACCES',</span><br><span class="line">npm WARN locking  path: '/Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock' &#125;</span><br><span class="line">npm <span class="keyword">ERR</span>! Darwin 14.1.0</span><br><span class="line">npm <span class="keyword">ERR</span>! argv <span class="string">"node"</span> <span class="string">"/usr/local/bin/npm"</span> <span class="string">"install"</span> <span class="string">"hexo"</span> <span class="string">"-g"</span></span><br><span class="line">npm <span class="keyword">ERR</span>! node v0.12.0</span><br><span class="line">npm <span class="keyword">ERR</span>! npm  v2.10.0</span><br><span class="line"></span><br><span class="line">npm <span class="keyword">ERR</span>! Attempt to unlock /usr/<span class="keyword">local</span>/lib/node_modules/hexo, <span class="keyword">which</span> hasn't been locked</span><br></pre></td></tr></table></figure>
+<p>解决办法，运行以下命令：</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">sudo</span> <span class="comment">npm</span> <span class="comment">install</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">unsafe</span><span class="literal">-</span><span class="comment">perm</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">verbose</span> <span class="literal">-</span><span class="comment">g</span> <span class="comment">hexo</span></span><br></pre></td></tr></table></figure>
+<p>2.错误 运行“npm install”时</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node-pre-gyp <span class="operator"><span class="keyword">install</span> <span class="comment">--fallback-to-build</span></span></span><br></pre></td></tr></table></figure>
+<p>解决办法，运行以下命令：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="operator"><span class="keyword">install</span> <span class="comment">--production</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="四、安装_GIT">四、安装 GIT</h3><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span>install git</span><br></pre></td></tr></table></figure>
+<h3 id="五、生成_SSH_Key：">五、生成 SSH Key：</h3><p>打开终端：</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>ssh -v</span><br></pre></td></tr></table></figure>
+<p>查看ssh的版本</p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">OpenSSH_6.2p2, OSSLShim 0.9.8r 8 Dec 2011</span><br><span class="line">usage: ssh <span class="comment">[-1246AaCfgKkMNnqsTtVvXxYy]</span> <span class="comment">[-b bind_address]</span> <span class="comment">[-c cipher_spec]</span></span><br><span class="line">           <span class="comment">[-D <span class="comment">[bind_address:]</span>port]</span> <span class="comment">[-e escape_char]</span> <span class="comment">[-F configfile]</span></span><br><span class="line">           <span class="comment">[-I pkcs11]</span> <span class="comment">[-i identity_file]</span></span><br><span class="line">           <span class="comment">[-L <span class="comment">[bind_address:]</span>port:host:hostport]</span></span><br><span class="line">           <span class="comment">[-l login_name]</span> <span class="comment">[-m mac_spec]</span> <span class="comment">[-O ctl_cmd]</span> <span class="comment">[-o option]</span> <span class="comment">[-p port]</span></span><br><span class="line">           <span class="comment">[-R <span class="comment">[bind_address:]</span>port:host:hostport]</span> <span class="comment">[-S ctl_path]</span></span><br><span class="line">           <span class="comment">[-W host:port]</span> <span class="comment">[-w local_tun<span class="comment">[:remote_tun]</span>]</span></span><br><span class="line">           <span class="comment">[user@]</span>hostname <span class="comment">[command]</span></span><br></pre></td></tr></table></figure>
+<p>这个表明ssh已经安装，在终端输入：</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>ssh-keygen</span><br></pre></td></tr></table></figure>
+<p>然后系统提示输入文件保存位置等信息，连续敲三次回车即可，生成的SSH key文件保存在中～/.ssh/id_rsa.pub</p>
+<p>查看 .ssh，搜索目录</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls -<span class="tag">a</span> ~/.ssh</span><br></pre></td></tr></table></figure>
+<h3 id="六、github上添加ssh以及创建项目">六、github上添加ssh以及创建项目</h3><p>在github上添加ssh，然后创建项目</p>
+<h3 id="七、Hexo_的设定、更新以及写作命令">七、Hexo 的设定、更新以及写作命令</h3><p>1、修改 hexo 根目录下 _config.yml 文件(‘xxxx’为你的账户名称)：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">deploy</span>:</span><br><span class="line">  <span class="attribute">type</span>: git</span><br><span class="line">  <span class="attribute">repository</span>: <span class="attribute">https</span>:<span class="comment">//github.com/username/username.github.io.git</span></span><br><span class="line">  <span class="attribute">branch</span>: master</span><br></pre></td></tr></table></figure>
+<p>2、安装 hexo-deployer-git</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="operator"><span class="keyword">install</span> hexo-deployer-git <span class="comment">--save</span></span></span><br></pre></td></tr></table></figure>
+<p>3、更新hexo到最新版</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="operator"><span class="keyword">update</span> hexo -<span class="keyword">g</span></span></span><br></pre></td></tr></table></figure>
+<p>4、写作命令，这几个命令都很简单没有什么难度</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">建立新文章：hexo <span class="keyword">n</span> <span class="string">"新文章名"</span></span><br><span class="line">预览文章：hexo <span class="literal">s</span></span><br><span class="line">生成网页：hexo <span class="keyword">g</span></span><br><span class="line">发布文章：hexo <span class="literal">d</span></span><br><span class="line">生成网页并发布文章：hexo <span class="keyword">d</span> -<span class="keyword">g</span></span><br></pre></td></tr></table></figure>
+<h3 id="九、安装主题">九、安装主题</h3><p>关于安装主题 可以去看<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">Next</a>，上面有在线的文档，主题配置写的都很详细。</p>
+<hr>
+<p>参考博客：</p>
+<p>1.<a href="http://godera.org/2015/03/16/Mac下程序员博客之Hexo-GitHub-Pages-GitCafe-Pages-DNSPod/" target="_blank" rel="external">http://godera.org/2015/03/16/Mac下程序员博客之Hexo-GitHub-Pages-GitCafe-Pages-DNSPod/</a><br>2.<a href="http://code.wileam.com/build-a-hexo-blog-and-optimize/" target="_blank" rel="external">http://code.wileam.com/build-a-hexo-blog-and-optimize/</a></p>
+<p>3.<a href="http://theme-next.iissnan.com" target="_blank" rel="external">Next 主题配置</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
-  </nav>
-
  </div>
 
         
@@ -1909,7 +1772,7 @@ dispatch_semaphore_wait的返回值也为<span class="keyword">long</span>型。
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-count">10</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
