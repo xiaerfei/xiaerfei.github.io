@@ -1,0 +1,705 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="just do it !" />
+
+
+
+  <meta name="keywords" content="Hexo,next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="just do it !">
+<meta property="og:type" content="website">
+<meta property="og:title" content="吾生也有涯，而知也无涯">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
+<meta property="og:site_name" content="吾生也有涯，而知也无涯">
+<meta property="og:description" content="just do it !">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="吾生也有涯，而知也无涯">
+<meta name="twitter:description" content="just do it !">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+
+
+  <title> 吾生也有涯，而知也无涯 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column 
+   page-home 
+">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">吾生也有涯，而知也无涯</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+  <section id="posts" class="posts-expand">
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/05/21/ios-date/" itemprop="url">
+                iOS 日期处理
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-05-21T17:04:42+08:00" content="2016-05-21">
+            2016-05-21
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>前几天在开发的时候遇到了日期方面的处理，花费了不少时间，踩了点坑，今天就把遇到的写一下.</p>
+<h3 id="本文内容">本文内容</h3><ol>
+<li>时间格式</li>
+<li>时间差（两个日期之间的天数、月数、年数差）计算</li>
+</ol>
+<h3 id="时间格式">时间格式</h3><p>在iOS中 <font color="#B22222" size="3">NSDateFormatter</font> 处理时间格式的东东，上次有个需求，就是获取网络请求中cookie的时间<br><br>cookie中的时间是这个酱子的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Date:Sat, <span class="number">21</span> May <span class="number">2016</span> <span class="number">07</span>:<span class="number">57</span>:<span class="number">20</span> GMT</span><br></pre></td></tr></table></figure>
+<p>NSDateFormatter 中有一下格式：</p>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G</td>
+<td style="text-align:center">公元时代，例如AD公元</td>
+</tr>
+<tr>
+<td>yy</td>
+<td style="text-align:center">年的后2位 如：2016 中的 16</td>
+</tr>
+<tr>
+<td>yyyy</td>
+<td style="text-align:center">完整年 如：2016</td>
+</tr>
+<tr>
+<td>MM</td>
+<td style="text-align:center">月，显示为1-12</td>
+</tr>
+<tr>
+<td>MMM</td>
+<td style="text-align:center">月，显示为英文月份简写,如 Jan</td>
+</tr>
+<tr>
+<td>MMMM</td>
+<td style="text-align:center">月，显示为英文月份全称，如 Janualy</td>
+</tr>
+<tr>
+<td>dd</td>
+<td style="text-align:center">日，2位数表示，如02</td>
+</tr>
+<tr>
+<td>d</td>
+<td style="text-align:center">日，1-2位显示，如 2</td>
+</tr>
+<tr>
+<td>EEE</td>
+<td style="text-align:center">简写星期几，如Sun</td>
+</tr>
+<tr>
+<td>EEEE</td>
+<td style="text-align:center">全写星期几，如Sunday</td>
+</tr>
+<tr>
+<td>aa</td>
+<td style="text-align:center">上下午，AM/PM</td>
+</tr>
+<tr>
+<td>H</td>
+<td style="text-align:center">时，24小时制，0-23</td>
+</tr>
+<tr>
+<td>K</td>
+<td style="text-align:center">时，12小时制，0-11</td>
+</tr>
+<tr>
+<td>m</td>
+<td style="text-align:center">分，1-2位 ( 0-9 是一位 )</td>
+</tr>
+<tr>
+<td>mm</td>
+<td style="text-align:center">分，2位</td>
+</tr>
+<tr>
+<td>s</td>
+<td style="text-align:center">秒，1-2位</td>
+</tr>
+<tr>
+<td>ss</td>
+<td style="text-align:center">秒，2位</td>
+</tr>
+<tr>
+<td>S</td>
+<td style="text-align:center">毫秒</td>
+</tr>
+<tr>
+<td>Z</td>
+<td style="text-align:center">GMT</td>
+</tr>
+</tbody>
+</table>
+<p>了解了上面的格式，那就容易多了，故格式是：<font color="#B22222" size="3">EEE, dd MMM yyyy HH:mm:ss Z</font></p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="name">NSDateFormatter</span> *<span class="atom">formatter</span> = [[<span class="name">NSDateFormatter</span> <span class="atom">alloc</span>] <span class="atom">init</span>];</span><br><span class="line">[<span class="atom">formatter</span> <span class="atom">setDateFormat</span>:@<span class="string">"EEE, dd MMM yyyy HH:mm:ss Z"</span>];</span><br><span class="line"></span><br><span class="line"><span class="name">NSDate</span> *<span class="atom">date</span> = [<span class="atom">formatter</span> <span class="atom">dateFromString</span>:@<span class="string">"Sat, 21 May 2016 07:57:20 GMT"</span>];</span><br></pre></td></tr></table></figure>
+<p>但是上面的代码 得出的 date 可能是 nil,后面查了下原来是少设置了<font color="#B22222" size="3">NSLocale (区域设置)</font></p>
+<p>因为时间格式是英文的，所以：</p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="name">NSDateFormatter</span> *<span class="atom">formatter</span> = [[<span class="name">NSDateFormatter</span> <span class="atom">alloc</span>] <span class="atom">init</span>];</span><br><span class="line">[<span class="atom">formatter</span> <span class="atom">setDateFormat</span>:@<span class="string">"EEE, dd MMM yyyy HH:mm:ss Z"</span>];</span><br><span class="line">[<span class="atom">formatter</span> <span class="atom">setLocale</span>:[[<span class="name">NSLocale</span> <span class="atom">alloc</span>] <span class="atom">initWithLocaleIdentifier</span>:@<span class="string">"en_US"</span>]];</span><br><span class="line"><span class="name">NSDate</span> *<span class="atom">date</span> = [<span class="atom">formatter</span> <span class="atom">dateFromString</span>:@<span class="string">"Sat, 21 May 2016 07:57:20 GMT"</span>];</span><br></pre></td></tr></table></figure>
+<p>另外，关于是使用  <font color="#B22222" size="3">en_US_POSIX还是en_US</font> 可以看<a href="http://www.lidaren.com/archives/811" target="_blank" rel="external">这篇文章</a><br><br>当然，你设置成了  <font color="#B22222" size="3">zh_CN</font> ，那格式出来的是中文了，如“EEE, dd MMM yyyy HH:mm:ss Z”格式出来的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">周六, <span class="number">21</span> <span class="number">5</span>月 <span class="number">2016</span> <span class="number">16</span>:<span class="number">37</span>:<span class="number">57</span> +<span class="number">0800</span></span><br></pre></td></tr></table></figure>
+<h3 id="时间差计算">时间差计算</h3><p>要计算两个日期的有多少天，多少个月，如果要自己计算的话，那就爽歪歪了，不过所幸 iOS的日历功能( <font color="#B22222" size="3">NSCalendar</font> )可以给我们提供一些便利。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSDate</span> *date1 = [formatter dateFromString:<span class="string">@"2016-05-21"</span>];</span><br><span class="line"><span class="built_in">NSDate</span> *date2 = [formatter dateFromString:<span class="string">@"2013-11-25"</span>];</span><br><span class="line"><span class="built_in">NSCalendar</span> *gregorian = [[<span class="built_in">NSCalendar</span> alloc] initWithCalendarIdentifier:<span class="built_in">NSCalendarIdentifierGregorian</span>];</span><br><span class="line"><span class="built_in">NSDateComponents</span> *components = [gregorian components:<span class="built_in">NSCalendarUnitYear</span> | <span class="built_in">NSCalendarUnitMonth</span> | <span class="built_in">NSCalendarUnitDay</span> fromDate:date2 toDate:date1 options:<span class="number">0</span>];</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"year = %ld month = %ld day = %ld"</span>,components<span class="variable">.year</span>,components<span class="variable">.month</span>,components<span class="variable">.day</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="参考：">参考：<br></h3><p><a href="http://blog.csdn.net/crayondeng/article/details/8755306" target="_blank" rel="external">http://blog.csdn.net/crayondeng/article/details/8755306</a><br><br><a href="http://www.125135.com/339261.htm" target="_blank" rel="external">http://www.125135.com/339261.htm</a><br><br><a href="http://www.cnblogs.com/kaysun/p/5466508.html" target="_blank" rel="external">http://www.cnblogs.com/kaysun/p/5466508.html</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/04/23/JSPatch-stduy/" itemprop="url">
+                JSPatch 学习
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-04-23T21:14:30+08:00" content="2016-04-23">
+            2016-04-23
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="引言">引言</h3><p>好久前就已经了解到JSPatch（JSPatch是iOS平台的热修复框架，能够及时的修复线上的一些小bug，iOS应用审核时间之长，大家都懂得），一直以来都没有抽出时间去学习，今天抽出时间来学习下，突然又发现只有官方的一些教程，自己照着写写满满都是泪（崩溃的次数多）。学JSPatch写法，首先大家需要先补一下JavaScript的知识。</p>
+<h3 id="基础用法">基础用法</h3><p>关于基础的用法大家可以先看<a href="https://github.com/bang590/JSPatch/wiki/JSPatch-基础用法" target="_blank" rel="external">官方的Wiki</a>,大致有13个知识点，我这里直接就上用法了。<br></p>
+<h4 id="require">require</h4><p>首先，用到哪个类就需要require一下，否则会崩溃，比如UIView、UILabel等等，中间逗号隔开</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'UILabel,UIView'</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="调用OC的方法">调用OC的方法</h4><p>因为JavaScript是链式语法，所以说和写OC有很大的不同,写的时候要注意</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'UIView, UIColor'</span>);</span><br><span class="line"><span class="keyword">var</span> view = UIView.alloc().init();<span class="comment">//实例方法</span></span><br><span class="line"><span class="keyword">var</span> red = UIColor.redColor();<span class="comment">//类方法</span></span><br></pre></td></tr></table></figure>
+<p>UIView 有很多的Property，这些Property如何调用呢？<br><br>等于调用这个 Property 的 getter / setter 方法，获取时记得加 (),如：</p>
+<figure class="highlight sml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">require(<span class="symbol">'UIView</span>, <span class="type">UIColor'</span>);</span><br><span class="line">var view = <span class="type">UIView</span>.alloc<span class="literal">()</span>.init<span class="literal">()</span>;</span><br><span class="line">view.setBackgroundColor(<span class="type">UIColor</span>.grayColor<span class="literal">()</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="常量、枚举、宏、全局变量">常量、枚举、宏、全局变量</h4><p>Objective-C 里的常量/枚举不能直接在 JS 上使用，可以直接在 JS 上用具体值代替：</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="keyword">label</span> = UILabel.alloc().init();</span><br><span class="line"><span class="keyword">label</span>.setTextAlignment(<span class="number">1</span>);<span class="comment">//这里需要写具体的值</span></span><br></pre></td></tr></table></figure>
+<p>宏也不使用，若定义的宏是一个值，可以在 JS 定义同样的全局变量代替，若定义的宏是程序，可以在JS展开宏</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">define</span> TABBAR_HEIGHT <span class="number">40</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> SCREEN_WIDTH [[UIScreen mainScreen] bounds].size.height</span></span><br><span class="line">[view setWidth:SCREEN_WIDTH height:TABBAR_HEIGHT];</span><br><span class="line"><span class="comment">//JS</span></span><br><span class="line">view.setWidth_height(<span class="number">40</span>, UIScreen.mainScreen().bounds().height);</span><br></pre></td></tr></table></figure>
+<p>若宏的值是某些在底层才能获取到的值，例如 CGFLOAT_MIN，可以通过在某个类或实例方法里将它返回，或者用添加扩展的方式提供支持，</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">JPMacroSupport</span></span></span><br><span class="line">+ (<span class="keyword">void</span>)main:(JSContext *)context</span><br><span class="line">&#123;</span><br><span class="line">  context[<span class="string">@"CGFLOAT_MIN"</span>] = ^<span class="built_in">CGFloat</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">CGFLOAT_MIN</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">require(<span class="string">'JPEngine'</span>).addExtensions([<span class="string">'JPMacroSupport'</span>])</span><br><span class="line">var <span class="built_in">float</span>M<span class="keyword">in</span> = CGFLOAT_MIN();</span><br></pre></td></tr></table></figure>
+<p>当然全局变量也是如此：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">NSString</span> *name;</span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">JPTestObject</span></span></span><br><span class="line">+ (<span class="built_in">NSString</span> *)name &#123;</span><br><span class="line">  <span class="keyword">return</span> name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">var</span> name = JPTestObject.<span class="function"><span class="title">name</span><span class="params">()</span></span> <span class="comment">//拿到全局变量值</span></span><br></pre></td></tr></table></figure>
+<h4 id="defineClass">defineClass</h4><p>在 defineClass 里定义 OC 已存在的方法即可覆盖:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">defineClass</span>(<span class="string">'ViewController'</span>, &#123;</span><br><span class="line">    <span class="tag">viewDidLoad</span>: <span class="tag">function</span>() &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>如果想调用原方法，在方法名前加 ORIG 即可调用未覆盖前的 OC 原方法:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">defineClass(<span class="string">'ViewController'</span>, &#123;</span><br><span class="line">    viewDidLoad: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">self</span>.ORIGviewDidLoad();</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>下面是一个UILabel添加到View上的例子：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">require<span class="list">(<span class="quoted">'UILabel</span>,UIView,UIColor,UIFont')</span><span class="comment">;</span></span><br><span class="line">defineClass<span class="list">(<span class="quoted">'ViewController</span>', &#123;</span><br><span class="line">    viewDidLoad: function<span class="list">()</span> &#123;</span><br><span class="line">        self.ORIGviewDidLoad<span class="list">()</span><span class="comment">;</span></span><br><span class="line">        var view = self.view<span class="list">()</span><span class="comment">;</span></span><br><span class="line">        var label = UILabel.alloc<span class="list">()</span>.initWithFrame<span class="list">(&#123;x:<span class="number">100</span>, y:<span class="number">200</span>, width:<span class="number">100</span>, height:<span class="number">100</span>&#125;)</span><span class="comment">;</span></span><br><span class="line">        label.setFont<span class="list">(<span class="keyword">UIFont</span>.systemFontOfSize<span class="list">(<span class="number">10</span>)</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setTextAlignment<span class="list">(<span class="number">1</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setText<span class="list">(<span class="string">"你好 ！"</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setBackgroundColor<span class="list">(<span class="keyword">UIColor</span>.grayColor<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">        view.addSubview<span class="list">(<span class="keyword">label</span>)</span><span class="comment">;</span></span><br><span class="line">        var background = UIView.alloc<span class="list">()</span>.initWithFrame<span class="list">(&#123;x:<span class="number">100</span>,y:<span class="number">350</span>,width:<span class="number">100</span>,height:<span class="number">100</span>&#125;)</span><span class="comment">;</span></span><br><span class="line">        background.setBackgroundColor<span class="list">(<span class="keyword">UIColor</span>.grayColor<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">        self.setBackgroundView<span class="list">(<span class="keyword">background</span>)</span><span class="comment">;</span></span><br><span class="line">        view.addSubview<span class="list">(<span class="keyword">self</span>.backgroundView<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>开始的时候一直不知道OC中的“self.view”在JavaScript中怎么调用，试了好久直接调用“self.view()”就行了。</p>
+<p><br><br><br></p>
+<hr>
+<p>参考：<br><br><a href="https://github.com/bang590/JSPatch/wiki" target="_blank" rel="external">官方的Wiki</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/10/14/github-hexo/" itemprop="url">
+                github 搭建博客-hexo
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-14T23:00:07+08:00" content="2015-10-14">
+            2015-10-14
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h2 id="Mac下_搭建博客_之_hexo">Mac下 搭建博客 之 hexo</h2><h3 id="引言：">引言：</h3><p>一直在CSDN写博客，但是CSDN对Markdown支持不是很好，而且还是在线，不是很方便。于是决定搭建一个自己的博客，正好github可以免费搭建博客，于是就搭建了一下。</p>
+<p>搭建的过程遇到很多的坑，在这里给大家说明，避免大家再次趟雷。</p>
+<h3 id="一、安装_HomeBrew">一、安装 HomeBrew</h3><p>HomeBrew 是 OS X 下的一个程式管理器，需要用他来安装其他程式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby <span class="operator">-e</span> <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span>"</span></span><br></pre></td></tr></table></figure>
+<h3 id="二、安装_NodeJS">二、安装 NodeJS</h3><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span>install node</span><br></pre></td></tr></table></figure>
+<h3 id="三、安装_Hexo">三、安装 Hexo</h3><p>可以用 nodejs 自带 npm 安装,切到hexo</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="operator"><span class="keyword">install</span> hexo -<span class="keyword">g</span></span><br><span class="line">hexo init</span><br><span class="line">npm <span class="keyword">install</span></span></span><br></pre></td></tr></table></figure>
+<p>注意：在这里运行命令“npm install hexo -g”时可能会有错误</p>
+<p>1.错误：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">npm WARN locking <span class="keyword">Error</span>: EACCES, <span class="keyword">open</span> '/Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock'</span><br><span class="line">npm WARN locking    at <span class="keyword">Error</span> (native)</span><br><span class="line">npm WARN locking  /Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock failed &#123; [<span class="keyword">Error</span>: EACCES, <span class="keyword">open</span> '/Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock']</span><br><span class="line">npm WARN locking  errno: -13,</span><br><span class="line">npm WARN locking  code: 'EACCES',</span><br><span class="line">npm WARN locking  path: '/Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock' &#125;</span><br><span class="line">npm <span class="keyword">ERR</span>! Darwin 14.1.0</span><br><span class="line">npm <span class="keyword">ERR</span>! argv <span class="string">"node"</span> <span class="string">"/usr/local/bin/npm"</span> <span class="string">"install"</span> <span class="string">"hexo"</span> <span class="string">"-g"</span></span><br><span class="line">npm <span class="keyword">ERR</span>! node v0.12.0</span><br><span class="line">npm <span class="keyword">ERR</span>! npm  v2.10.0</span><br><span class="line"></span><br><span class="line">npm <span class="keyword">ERR</span>! Attempt to unlock /usr/<span class="keyword">local</span>/lib/node_modules/hexo, <span class="keyword">which</span> hasn't been locked</span><br></pre></td></tr></table></figure>
+<p>解决办法，运行以下命令：</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">sudo</span> <span class="comment">npm</span> <span class="comment">install</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">unsafe</span><span class="literal">-</span><span class="comment">perm</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">verbose</span> <span class="literal">-</span><span class="comment">g</span> <span class="comment">hexo</span></span><br></pre></td></tr></table></figure>
+<p>2.错误 运行“npm install”时</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node-pre-gyp <span class="operator"><span class="keyword">install</span> <span class="comment">--fallback-to-build</span></span></span><br></pre></td></tr></table></figure>
+<p>解决办法，运行以下命令：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="operator"><span class="keyword">install</span> <span class="comment">--production</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="四、安装_GIT">四、安装 GIT</h3><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span>install git</span><br></pre></td></tr></table></figure>
+<h3 id="五、生成_SSH_Key：">五、生成 SSH Key：</h3><p>打开终端：</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>ssh -v</span><br></pre></td></tr></table></figure>
+<p>查看ssh的版本</p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">OpenSSH_6.2p2, OSSLShim 0.9.8r 8 Dec 2011</span><br><span class="line">usage: ssh <span class="comment">[-1246AaCfgKkMNnqsTtVvXxYy]</span> <span class="comment">[-b bind_address]</span> <span class="comment">[-c cipher_spec]</span></span><br><span class="line">           <span class="comment">[-D <span class="comment">[bind_address:]</span>port]</span> <span class="comment">[-e escape_char]</span> <span class="comment">[-F configfile]</span></span><br><span class="line">           <span class="comment">[-I pkcs11]</span> <span class="comment">[-i identity_file]</span></span><br><span class="line">           <span class="comment">[-L <span class="comment">[bind_address:]</span>port:host:hostport]</span></span><br><span class="line">           <span class="comment">[-l login_name]</span> <span class="comment">[-m mac_spec]</span> <span class="comment">[-O ctl_cmd]</span> <span class="comment">[-o option]</span> <span class="comment">[-p port]</span></span><br><span class="line">           <span class="comment">[-R <span class="comment">[bind_address:]</span>port:host:hostport]</span> <span class="comment">[-S ctl_path]</span></span><br><span class="line">           <span class="comment">[-W host:port]</span> <span class="comment">[-w local_tun<span class="comment">[:remote_tun]</span>]</span></span><br><span class="line">           <span class="comment">[user@]</span>hostname <span class="comment">[command]</span></span><br></pre></td></tr></table></figure>
+<p>这个表明ssh已经安装，在终端输入：</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>ssh-keygen</span><br></pre></td></tr></table></figure>
+<p>然后系统提示输入文件保存位置等信息，连续敲三次回车即可，生成的SSH key文件保存在中～/.ssh/id_rsa.pub</p>
+<p>查看 .ssh，搜索目录</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls -<span class="tag">a</span> ~/.ssh</span><br></pre></td></tr></table></figure>
+<h3 id="六、github上添加ssh以及创建项目">六、github上添加ssh以及创建项目</h3><p>在github上添加ssh，然后创建项目</p>
+<h3 id="七、Hexo_的设定、更新以及写作命令">七、Hexo 的设定、更新以及写作命令</h3><p>1、修改 hexo 根目录下 _config.yml 文件(‘xxxx’为你的账户名称)：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">deploy</span>:</span><br><span class="line">  <span class="attribute">type</span>: git</span><br><span class="line">  <span class="attribute">repository</span>: <span class="attribute">https</span>:<span class="comment">//github.com/username/username.github.io.git</span></span><br><span class="line">  <span class="attribute">branch</span>: master</span><br></pre></td></tr></table></figure>
+<p>2、安装 hexo-deployer-git</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="operator"><span class="keyword">install</span> hexo-deployer-git <span class="comment">--save</span></span></span><br></pre></td></tr></table></figure>
+<p>3、更新hexo到最新版</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="operator"><span class="keyword">update</span> hexo -<span class="keyword">g</span></span></span><br></pre></td></tr></table></figure>
+<p>4、写作命令，这几个命令都很简单没有什么难度</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">建立新文章：hexo <span class="keyword">n</span> <span class="string">"新文章名"</span></span><br><span class="line">预览文章：hexo <span class="literal">s</span></span><br><span class="line">生成网页：hexo <span class="keyword">g</span></span><br><span class="line">发布文章：hexo <span class="literal">d</span></span><br><span class="line">生成网页并发布文章：hexo <span class="keyword">d</span> -<span class="keyword">g</span></span><br></pre></td></tr></table></figure>
+<h3 id="九、安装主题">九、安装主题</h3><p>关于安装主题 可以去看<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">Next</a>，上面有在线的文档，主题配置写的都很详细。</p>
+<hr>
+<p>参考博客：</p>
+<p>1.<a href="http://godera.org/2015/03/16/Mac下程序员博客之Hexo-GitHub-Pages-GitCafe-Pages-DNSPod/" target="_blank" rel="external">http://godera.org/2015/03/16/Mac下程序员博客之Hexo-GitHub-Pages-GitCafe-Pages-DNSPod/</a><br>2.<a href="http://code.wileam.com/build-a-hexo-blog-and-optimize/" target="_blank" rel="external">http://code.wileam.com/build-a-hexo-blog-and-optimize/</a></p>
+<p>3.<a href="http://theme-next.iissnan.com" target="_blank" rel="external">Next 主题配置</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/">&laquo;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+ </div>
+
+        
+
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Share" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Share</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">just do it !</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Share</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,686 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="just do it !" />
+
+
+
+  <meta name="keywords" content="Hexo,next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="排序算法之归并排序及其优化归并排序介绍归并排序是创建在归并操作上的一种有效的排序算法，效率为O(n log n)。1945年由约翰·冯·诺伊曼首次提出。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用，且各层分治递归可以同时进行。
+自顶向下不说废话了，开工。待排数组如下：
+
+第一步我们首先将这 8 个元素，一层一层的分割，如：
+
+第一层两组：[8 , 6, 2 , 3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序算法之插入排序">
+<meta property="og:url" content="http://yoursite.com/2017/03/15/merge-sort/index.html">
+<meta property="og:site_name" content="吾生也有涯，而知也无涯">
+<meta property="og:description" content="排序算法之归并排序及其优化归并排序介绍归并排序是创建在归并操作上的一种有效的排序算法，效率为O(n log n)。1945年由约翰·冯·诺伊曼首次提出。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用，且各层分治递归可以同时进行。
+自顶向下不说废话了，开工。待排数组如下：
+
+第一步我们首先将这 8 个元素，一层一层的分割，如：
+
+第一层两组：[8 , 6, 2 , 3">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E5%88%9D%E5%A7%8B%E6%95%B0%E7%BB%84.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F01.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F02.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F03.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F04.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F05.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F06.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F07.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F08.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F09.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F11.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F10.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F12.png">
+<meta property="og:updated_time" content="2018-03-19T13:50:46.527Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="排序算法之插入排序">
+<meta name="twitter:description" content="排序算法之归并排序及其优化归并排序介绍归并排序是创建在归并操作上的一种有效的排序算法，效率为O(n log n)。1945年由约翰·冯·诺伊曼首次提出。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用，且各层分治递归可以同时进行。
+自顶向下不说废话了，开工。待排数组如下：
+
+第一步我们首先将这 8 个元素，一层一层的分割，如：
+
+第一层两组：[8 , 6, 2 , 3">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+
+
+  <title> 排序算法之插入排序 | 吾生也有涯，而知也无涯 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">吾生也有涯，而知也无涯</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              排序算法之插入排序
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-03-15T23:15:55+08:00" content="2017-03-15">
+            2017-03-15
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h1 id="排序算法之归并排序及其优化">排序算法之归并排序及其优化</h1><h2 id="归并排序介绍">归并排序介绍</h2><p>归并排序是创建在归并操作上的一种有效的排序算法，效率为O(n log n)。1945年由约翰·冯·诺伊曼首次提出。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用，且各层分治递归可以同时进行。</p>
+<h2 id="自顶向下">自顶向下</h2><p>不说废话了，开工。<br>待排数组如下：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E5%88%9D%E5%A7%8B%E6%95%B0%E7%BB%84.png" alt="插入排序初始数组"></p>
+<h3 id="第一步">第一步</h3><p>我们首先将这 8 个元素，一层一层的分割，如：</p>
+<ul>
+<li>第一层两组：<strong>[8 , 6, 2 , 3],[ 1, 5, 7, 4]</strong></li>
+<li>第二层四组：<strong>[8, 6], [2, 3], [1, 5], [7, 4]</strong></li>
+<li>第三层八组：<strong>[8], [6], [2], [3], [1], [5], [7], [4]</strong></li>
+</ul>
+<p>如下图:</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F01.png" alt="归并排序01"></p>
+<h3 id="第二步_归并操作(Merge)">第二步 归并操作(Merge)</h3><p>从底层开始两两归并（当然也可以三三进行归并），归并之后是有序的。</p>
+<p>第三层八组，进行两两归并：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F02.png" alt="归并排序02"></p>
+<p>第二层四组，进行两两归并：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F03.png" alt="归并排序03"></p>
+<p>第一层两组，进行两两归并：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F04.png" alt="归并排序04"></p>
+<p>此时，数组已经排序完成！</p>
+<h3 id="第三步_分析程序">第三步 分析程序</h3><p>很明显，上面的是自顶向下，采用的是分治法，我们采用递归的方法，来实现这个算法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mergeSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    __mergeSort(arr, <span class="number">0</span>, n-<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>开始分割：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> __mergeSort(<span class="keyword">int</span> arr[],<span class="keyword">int</span> l,<span class="keyword">int</span> r) &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> mid = l + (r - l)/<span class="number">2</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (l &gt;= r) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    __mergeSort(arr, l, mid);</span><br><span class="line">    __mergeSort(arr, mid + <span class="number">1</span>, r);</span><br><span class="line">    </span><br><span class="line">    _merge(arr, l, mid, r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意：这里取中间的 mid 有个问题，大多数人都会写成这样：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> mid = (l + r)/<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>这样写不严谨，当<code>l</code>和<code>r</code> 都很大时，<code>(l + r)</code> 会溢出</strong>。</p>
+<p>先不断的分割[l,mid],然后[mid+1,r]</p>
+<p>最后归并：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">void _merge(int arr[],int <span class="keyword">l</span>, int mid,int r) &#123;</span><br><span class="line">    int <span class="keyword">count</span> = r-<span class="keyword">l</span>+1;</span><br><span class="line">    int <span class="keyword">ta</span>[<span class="keyword">count</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (int i = <span class="keyword">l</span>; i &lt;= r; i++) &#123;</span><br><span class="line">        int a = i - <span class="keyword">l</span>;</span><br><span class="line">        <span class="keyword">ta</span>[a] = arr[i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    int i = <span class="keyword">l</span>,j = mid + 1;</span><br><span class="line">    <span class="keyword">for</span> (int k = <span class="keyword">l</span>; k &lt;= r; k++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i &gt; mid) &#123;</span><br><span class="line">            arr[k] = <span class="keyword">ta</span>[j - <span class="keyword">l</span>];</span><br><span class="line">            j ++;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (j &gt; r) &#123;</span><br><span class="line">            arr[k] = <span class="keyword">ta</span>[i - <span class="keyword">l</span>];</span><br><span class="line">            i ++ ;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">ta</span>[i - <span class="keyword">l</span>] &lt; <span class="keyword">ta</span>[j - <span class="keyword">l</span>]) &#123;</span><br><span class="line">            arr[k] = <span class="keyword">ta</span>[i-<span class="keyword">l</span>];</span><br><span class="line">            i ++;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            arr[k] = <span class="keyword">ta</span>[j - <span class="keyword">l</span>];</span><br><span class="line">            j ++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里创建了一个临时的数组长度为 <code>(r - l) + 1</code> .</p>
+<p><strong>注意：如果数据量很大，可能会造成栈溢出，这是归并排序的一个缺点。</strong></p>
+<p>咱们来分析一下归并排序的最后一步：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F05.png" alt="归并排序05"></p>
+<p>先排除边界：</p>
+<ul>
+<li>当 <code>i &gt; mid</code> 时，说明[l,mid]区间已经结束，所以 [mid+1,r] 直接赋值就行了;</li>
+<li>当 <code>j &gt; r</code> 时，说明[mid+1,r]区间已经结束，所以 [l,mid] 直接赋值就行了;</li>
+</ul>
+<p>开始比较：</p>
+<h3 id="第一次比较">第一次比较</h3><p><strong>i -&gt; 2，j -&gt; 1; 2 &gt; 1,将 1 放进去：</strong></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F06.png" alt="归并排序06"></p>
+<h3 id="第二次比较">第二次比较</h3><p>此时数组的状态及各个变量的指向：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F07.png" alt="归并排序07"></p>
+<p><strong>i -&gt; 2，j -&gt; 4; 2 &lt; 4,将 2 放进去：</strong></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F08.png" alt="归并排序08"></p>
+<h3 id="第三次比较">第三次比较</h3><p>此时数组的状态及各个变量的指向：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F09.png" alt="归并排序09"></p>
+<p><strong>i -&gt; 3，j -&gt; 4; 3 &lt; 4,将 3 放进去：</strong></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F11.png" alt="归并排序11"></p>
+<h3 id="第四次比较">第四次比较</h3><p>此时数组的状态及各个变量的指向：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F10.png" alt="归并排序10"></p>
+<p><strong>i -&gt; 6，j -&gt; 4; 6 &gt; 4,将 4 放进去：</strong></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F12.png" alt="归并排序12"></p>
+<p>后面的就不一一解释了，按照这个思路，请继续往下画…</p>
+<p>我相信前面的程序，现在是非常清晰了。</p>
+<h2 id="自低向上">自低向上</h2><p>其实自低向上很好理解，就是第一步被分割后，开始向上归并，只不过不是使用递归的解法，而是迭代法。</p>
+<p>我这里把程序贴出来，大家跟着程序把图画一下，就理解了。</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> mergeSortBackUp(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n) &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> <span class="keyword">size</span> = <span class="number">1</span>; <span class="keyword">size</span> &lt;= n; <span class="keyword">size</span> += <span class="keyword">size</span> ) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i + <span class="keyword">size</span> &lt; n; i += (<span class="keyword">size</span> + <span class="keyword">size</span>)) &#123;</span><br><span class="line">            _merge(arr, i, i + <span class="keyword">size</span> - <span class="number">1</span>, MIN(i + <span class="keyword">size</span> + <span class="keyword">size</span> - <span class="number">1</span>,n-<span class="number">1</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意：这里的_merge 函数 用的是上一步的！</strong></p>
+<h2 id="测试">测试</h2><p>这里用了 1千万一个数据测试，测试结果如下：</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:归并排序 　　	 sorttime: 3.218722s</span><br><span class="line">sortname:归并排序2　　	 sorttime: 2.599350s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>近乎有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:归并排序 　　	 sorttime: 3.078164s</span><br><span class="line">sortname:归并排序2　　	 sorttime: 2.605246s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>随机<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:归并排序 　　	 sorttime: 4.810648s</span><br><span class="line">sortname:归并排序2　　	 sorttime: 4.118894s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>倒叙<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:归并排序 　　	 sorttime: 3.054663s</span><br><span class="line">sortname:归并排序2　　	 sorttime: 2.569524s</span><br></pre></td></tr></table></figure>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/25/quick-sort/" rel="prev">排序算法之快速排序</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/07/shell-sort/" rel="next">排序算法之希尔排序</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Share" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Share</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">just do it !</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#排序算法之归并排序及其优化"><span class="nav-number">1.</span> <span class="nav-text">排序算法之归并排序及其优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#归并排序介绍"><span class="nav-number">1.1.</span> <span class="nav-text">归并排序介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自顶向下"><span class="nav-number">1.2.</span> <span class="nav-text">自顶向下</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一步"><span class="nav-number">1.2.1.</span> <span class="nav-text">第一步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二步_归并操作(Merge)"><span class="nav-number">1.2.2.</span> <span class="nav-text">第二步 归并操作(Merge)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三步_分析程序"><span class="nav-number">1.2.3.</span> <span class="nav-text">第三步 分析程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一次比较"><span class="nav-number">1.2.4.</span> <span class="nav-text">第一次比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二次比较"><span class="nav-number">1.2.5.</span> <span class="nav-text">第二次比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三次比较"><span class="nav-number">1.2.6.</span> <span class="nav-text">第三次比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四次比较"><span class="nav-number">1.2.7.</span> <span class="nav-text">第四次比较</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自低向上"><span class="nav-number">1.3.</span> <span class="nav-text">自低向上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">1.4.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Share</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

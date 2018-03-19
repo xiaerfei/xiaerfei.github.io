@@ -1,0 +1,671 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="just do it !" />
+
+
+
+  <meta name="keywords" content="Hexo,next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="前言希尔排序，也称递减增量排序算法，是插入排序的一种更高效的改进版本。
+希尔排序的实质就是分组插入排序，它们的思想高度是一致的的（为了共产主义😁😁😁），不过希尔排序的速度蛮快的，甚至可以与快速排序相媲美！
+希尔排序是基于插入排序的以下两点性质而提出改进方法的：
+
+插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率；
+但插入排序一般来说是低效的，因为插入排序每次只能将数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序算法之希尔排序">
+<meta property="og:url" content="http://yoursite.com/2017/03/07/shell-sort/index.html">
+<meta property="og:site_name" content="吾生也有涯，而知也无涯">
+<meta property="og:description" content="前言希尔排序，也称递减增量排序算法，是插入排序的一种更高效的改进版本。
+希尔排序的实质就是分组插入排序，它们的思想高度是一致的的（为了共产主义😁😁😁），不过希尔排序的速度蛮快的，甚至可以与快速排序相媲美！
+希尔排序是基于插入排序的以下两点性质而提出改进方法的：
+
+插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率；
+但插入排序一般来说是低效的，因为插入排序每次只能将数据">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F01.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F02.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F03.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F04.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-05.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-06.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-07.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-08.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-09.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-09.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-10.png">
+<meta property="og:updated_time" content="2018-03-19T13:50:24.558Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="排序算法之希尔排序">
+<meta name="twitter:description" content="前言希尔排序，也称递减增量排序算法，是插入排序的一种更高效的改进版本。
+希尔排序的实质就是分组插入排序，它们的思想高度是一致的的（为了共产主义😁😁😁），不过希尔排序的速度蛮快的，甚至可以与快速排序相媲美！
+希尔排序是基于插入排序的以下两点性质而提出改进方法的：
+
+插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率；
+但插入排序一般来说是低效的，因为插入排序每次只能将数据">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+
+
+  <title> 排序算法之希尔排序 | 吾生也有涯，而知也无涯 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">吾生也有涯，而知也无涯</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              排序算法之希尔排序
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-03-07T21:30:10+08:00" content="2017-03-07">
+            2017-03-07
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="前言">前言</h2><p>希尔排序，也称递减增量排序算法，是插入排序的一种更高效的改进版本。</p>
+<p>希尔排序的实质就是分组插入排序，它们的思想高度是一致的的（为了共产主义😁😁😁），不过希尔排序的速度蛮快的，甚至可以与快速排序相媲美！</p>
+<p>希尔排序是基于插入排序的以下两点性质而提出改进方法的：</p>
+<ul>
+<li>插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率；</li>
+<li>但插入排序一般来说是低效的，因为插入排序每次只能将数据移动一位；</li>
+</ul>
+<p>不好意思上面的部分来自<a href="https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F" target="_blank" rel="external">维基百科</a></p>
+<p>好了，第一部分介绍完了，我们来看图说画：</p>
+<hr>
+<h2 id="看图说话">看图说话</h2><p>以一个 n = 11 的数组为例：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F01.png" alt="希尔排序01"></p>
+<h3 id="第一次">第一次</h3><h4 id="第一步_设步长为_2_则_int_gap_=_11/2_=_5">第一步 设步长为 2 则 int gap = 11/2 = 5</h4><p>将数组分为 5 组，每组两个数据</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F02.png" alt="希尔排序02"></p>
+<h4 id="第二步">第二步</h4><p>那么就被分成了 A B C D E 这几组数据：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F03.png" alt="希尔排序03"></p>
+<h4 id="第三步">第三步</h4><p>对每组数据进行排序：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F04.png" alt="希尔排序04"></p>
+<p>于是数组变为下面的：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-05.png" alt="希尔排序05"></p>
+<h3 id="第二次">第二次</h3><h4 id="第一步_重复上面第一步_int_gap_=_5/2_=_2">第一步 重复上面第一步 int gap = 5/2 = 2</h4><p>将数组分为 2 组，每组5个数据</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-06.png" alt="希尔排序06"></p>
+<h4 id="第二步-1">第二步</h4><p>那么就被分成了 A B  这两组数据：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-07.png" alt="希尔排序07"></p>
+<h4 id="第三步-1">第三步</h4><p>对每组数据进行排序：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-08.png" alt="希尔排序08"></p>
+<p>于是数组变为下面的：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-09.png" alt="希尔排序09"></p>
+<h3 id="第三次">第三次</h3><h4 id="第一步_重复上面第一步_int_gap_=_2/2_=_1">第一步 重复上面第一步 int gap = 2/2 = 1</h4><p>将数组分为 1 组，那就是整个数组</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-09.png" alt="希尔排序09"></p>
+<p>对整个数组进行排序：<br><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-10.png" alt="希尔排序10"></p>
+<h3 id="第四次">第四次</h3><h4 id="第一步_重复上面第一步_int_gap_=_1/2_=_0">第一步 重复上面第一步 int gap = 1/2 = 0</h4><p>则此时 数组排序已经完成</p>
+<hr>
+<h3 id="看程序">看程序</h3><p>经过上面的一步步的分析，相信大家已经可以看得懂下面的程序（按照上面的理解即可）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">shellsort2</span><span class="params">(<span class="keyword">int</span> a[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> j, gap;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (gap = n / <span class="number">2</span>; gap &gt; <span class="number">0</span>; gap /= <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">for</span> (j = gap; j &lt; n; j++)<span class="comment">//从数组第gap个元素开始</span></span><br><span class="line">            <span class="keyword">if</span> (a[j] &lt; a[j - gap])<span class="comment">//每个元素与自己组内的数据进行直接插入排序</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">int</span> temp = a[j];</span><br><span class="line">                <span class="keyword">int</span> k = j - gap;</span><br><span class="line">                <span class="keyword">while</span> (k &gt;= <span class="number">0</span> &amp;&amp; a[k] &gt; temp)</span><br><span class="line">                &#123;</span><br><span class="line">                    a[k + gap] = a[k];</span><br><span class="line">                    k -= gap;</span><br><span class="line">                &#125;</span><br><span class="line">                a[k + gap] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="测试">测试</h3><p>下面我们开始测试，同样的四种：</p>
+<ol>
+<li>有序</li>
+<li>近乎有序</li>
+<li>随机</li>
+<li>倒叙</li>
+</ol>
+<p>我们测试100W个数据，测试它的排序时间，<a href="https://coding.net/u/xiaerfei/p/baseAlgorithm/git/blob/master/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/SortHelper.c" target="_blank" rel="external">测试用例的程序在这里</a>，测试代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> n  = <span class="number">100000</span>;</span><br><span class="line"><span class="comment">// 有序</span></span><br><span class="line"><span class="keyword">int</span> *a = generateSequenceArray(n);</span><br><span class="line"><span class="comment">// 近乎有序</span></span><br><span class="line"><span class="keyword">int</span> *b = generateRandomSequenceArray(n, <span class="number">100</span>);</span><br><span class="line"><span class="comment">// 随机</span></span><br><span class="line"><span class="keyword">int</span> *c = generateRandomArray(n,<span class="number">0</span>,n);</span><br><span class="line"><span class="comment">// 倒叙</span></span><br><span class="line"><span class="keyword">int</span> *d = generateReverseArray(n);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *a1 = copyGenerateRandomArray(a, n);</span><br><span class="line"><span class="keyword">int</span> *a2 = copyGenerateRandomArray(a, n);</span><br><span class="line"><span class="keyword">int</span> *a3 = copyGenerateRandomArray(a, n);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *b1 = copyGenerateRandomArray(b, n);</span><br><span class="line"><span class="keyword">int</span> *b2 = copyGenerateRandomArray(b, n);</span><br><span class="line"><span class="keyword">int</span> *b3 = copyGenerateRandomArray(b, n);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *c1 = copyGenerateRandomArray(c, n);</span><br><span class="line"><span class="keyword">int</span> *c2 = copyGenerateRandomArray(c, n);</span><br><span class="line"><span class="keyword">int</span> *c3 = copyGenerateRandomArray(c, n);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *d1 = copyGenerateRandomArray(d, n);</span><br><span class="line"><span class="keyword">int</span> *d2 = copyGenerateRandomArray(d, n);</span><br><span class="line"><span class="keyword">int</span> *d3 = copyGenerateRandomArray(d, n);</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"**************有序*************\n"</span>);</span><br><span class="line">testSort(<span class="string">"插入排序　　"</span>, insertSort,a1, n);</span><br><span class="line">testSort(<span class="string">"插入排序优化"</span>, insertSort2,a2, n);</span><br><span class="line">testSort(<span class="string">"希尔排序　　"</span>, shellsort2,a3, n);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"\n**************近乎有序*************\n"</span>);</span><br><span class="line">testSort(<span class="string">"插入排序　　"</span>, insertSort,b1, n);</span><br><span class="line">testSort(<span class="string">"插入排序优化"</span>, insertSort2,b2, n);</span><br><span class="line">testSort(<span class="string">"希尔排序　　"</span>, shellsort2,b3, n);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"\n**************随机*************\n"</span>);</span><br><span class="line">testSort(<span class="string">"插入排序　　"</span>, insertSort,c1, n);</span><br><span class="line">testSort(<span class="string">"插入排序优化"</span>, insertSort2,c2, n);</span><br><span class="line">testSort(<span class="string">"希尔排序　　"</span>, shellsort2,c3, n);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"\n**************倒叙*************\n"</span>);</span><br><span class="line">testSort(<span class="string">"插入排序　　"</span>, insertSort,d1, n);</span><br><span class="line">testSort(<span class="string">"插入排序优化"</span>, insertSort2,d2, n);</span><br><span class="line">testSort(<span class="string">"希尔排序　　"</span>, shellsort2,d3, n);</span><br><span class="line"></span><br><span class="line"><span class="built_in">free</span>(a);<span class="built_in">free</span>(a1);<span class="built_in">free</span>(a2);<span class="built_in">free</span>(a3);</span><br><span class="line"></span><br><span class="line"><span class="built_in">free</span>(b);<span class="built_in">free</span>(b1);<span class="built_in">free</span>(b2);<span class="built_in">free</span>(b3);</span><br><span class="line"></span><br><span class="line"><span class="built_in">free</span>(c);<span class="built_in">free</span>(c1);<span class="built_in">free</span>(c2);<span class="built_in">free</span>(c3);</span><br><span class="line"></span><br><span class="line"><span class="built_in">free</span>(d);<span class="built_in">free</span>(d1);<span class="built_in">free</span>(d2);<span class="built_in">free</span>(d3);</span><br></pre></td></tr></table></figure>
+<p>log如下：</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 0.000404s</span><br><span class="line">sortname:插入排序优化	 sorttime: 0.000474s</span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.003668s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>近乎有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 0.042827s</span><br><span class="line">sortname:插入排序优化	 sorttime: 0.020470s</span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.011824s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>随机<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 17.607321s</span><br><span class="line">sortname:插入排序优化	 sorttime: 8.014994s</span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.032545s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>倒叙<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 35.988631s</span><br><span class="line">sortname:插入排序优化	 sorttime: 16.293709s</span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.009289s</span><br></pre></td></tr></table></figure>
+<p>由此可以看出 希尔排序的强悍，特别是对于最坏情况的排序，是未优化过的插入排序的近4000倍！</p>
+<p>不知道希尔排序 大家搞明白了么！！！ 😀😀😀</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/15/merge-sort/" rel="prev">排序算法之插入排序</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/05/insert-sort/" rel="next">排序算法之插入排序</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Share" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Share</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">just do it !</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#看图说话"><span class="nav-number">2.</span> <span class="nav-text">看图说话</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一次"><span class="nav-number">2.1.</span> <span class="nav-text">第一次</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一步_设步长为_2_则_int_gap_=_11/2_=_5"><span class="nav-number">2.1.1.</span> <span class="nav-text">第一步 设步长为 2 则 int gap = 11/2 = 5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二步"><span class="nav-number">2.1.2.</span> <span class="nav-text">第二步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三步"><span class="nav-number">2.1.3.</span> <span class="nav-text">第三步</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二次"><span class="nav-number">2.2.</span> <span class="nav-text">第二次</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一步_重复上面第一步_int_gap_=_5/2_=_2"><span class="nav-number">2.2.1.</span> <span class="nav-text">第一步 重复上面第一步 int gap = 5/2 = 2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二步-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">第二步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三步-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">第三步</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三次"><span class="nav-number">2.3.</span> <span class="nav-text">第三次</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一步_重复上面第一步_int_gap_=_2/2_=_1"><span class="nav-number">2.3.1.</span> <span class="nav-text">第一步 重复上面第一步 int gap = 2/2 = 1</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四次"><span class="nav-number">2.4.</span> <span class="nav-text">第四次</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一步_重复上面第一步_int_gap_=_1/2_=_0"><span class="nav-number">2.4.1.</span> <span class="nav-text">第一步 重复上面第一步 int gap = 1/2 = 0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#看程序"><span class="nav-number">2.5.</span> <span class="nav-text">看程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">2.6.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Share</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

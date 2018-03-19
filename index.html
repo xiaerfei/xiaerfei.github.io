@@ -163,6 +163,347 @@
           
           
             
+              <a class="post-title-link" href="/2017/03/25/quick-sort/" itemprop="url">
+                排序算法之快速排序
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-03-25T22:35:45+08:00" content="2017-03-25">
+            2017-03-25
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h1 id="排序算法之快速排序及其优化">排序算法之快速排序及其优化</h1><h2 id="快速排序介绍">快速排序介绍</h2><p>快速排序（英语：Quicksort），又称划分交换排序（partition-exchange sort），一种排序算法，最早由东尼·霍尔提出。使用分治法（Divide and conquer）策略来把一个序列（list）分为两个子序列（sub-lists）。</p>
+<p>快速排序通常明显比其他Ο(n log n)算法更快，因为它的内部循环（inner loop）可以在大部分的架构上很有效率地被实现出来。在平均状况下，排序n个项目要Ο(n log n)次比较。在最坏状况下则需要Ο(n\^2)次比较，但这种状况并不常见。</p>
+<h2 id="快速排序_看图说话">快速排序 看图说话</h2><h3 id="实例分析排序过程">实例分析排序过程</h3><p>待排数组：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F01.png" alt="快速排序01"></p>
+<p>选取数组的第一个元素为基准：5</p>
+<p>将小于5的元素放在其左边，大于5的元素放在其右边：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F02.png" alt="快速排序02"></p>
+<p>然后不断的对左右两边进行上面的分割，最终为：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F04.png" alt="快速排序04"></p>
+<p><strong>注意：我用线将当前的数组的顺序连接了起来，这已经是排序完成了，大家看了下面的分割过程，自己将这个过程用这样的图在纸上或者keynote等画出来，之后，下面的程序是非常好理解的！</strong></p>
+<h3 id="分析分割过程">分析分割过程</h3><p>我们来看分割： 定义 v 为基准值；定义 l 为数组的第一个元素的索引；j 为小于基准值的最后一个元素的索引；i 为当前和基准值比较的值的索引，e 为 其值。</p>
+<p>数组arr中 [l+1,j] 区间的值都是 小于 v 的,[j+1,i-1] 都是大于 v 的，具体如下图：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F05.png" alt="快速排序05"></p>
+<p>1.当 <code>e 小于 v</code> 的时候：<br>把 <code>j+1</code> 位置的值 和 <code>e</code> 交换：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F06.png" alt="快速排序06"></p>
+<p>然后 <code>j ++</code>,<code>i ++</code>,就行了；</p>
+<p>2.当 <code>e 大于 v</code> 的时候：</p>
+<p>这个就简单了 直接 <code>i ++</code> 就 O 了；</p>
+<p>3.当分割完了之后：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F07.png" alt="快速排序07"></p>
+<p>此时，只要将 <code>l 和 j + 1</code> 的位置的值交换一下：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F08.png" alt="快速排序08"></p>
+<p>我们已经将数组分割成为:左边小于 v ,右边 大于 v.</p>
+<p>关于边界处理，请看后面的程序。</p>
+<p>下面是分割的代码：</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> __partition(<span class="built_in">int</span> arr[],<span class="built_in">int</span> l,<span class="built_in">int</span> r) &#123;</span><br><span class="line">    <span class="built_in">int</span> v = arr[l]<span class="comment">;</span></span><br><span class="line">    <span class="built_in">int</span> j = l<span class="comment">;</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = l+<span class="number">1</span><span class="comment">; i &lt;= r; i++) &#123;</span></span><br><span class="line">        <span class="keyword">if</span> (arr[i] &lt; v) &#123;</span><br><span class="line">            swap(&amp;arr[j +<span class="number">1</span>], &amp;arr[i])<span class="comment">;</span></span><br><span class="line">            j ++<span class="comment">;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    swap(&amp;arr[l], &amp;arr[j])<span class="comment">;</span></span><br><span class="line">    <span class="keyword">return</span> j<span class="comment">;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>相信，有了前面的图，理解这个程序是很容易的。</p>
+<p>快速排序，使用递归的方法是很容易理解的，我们这里也采用递归的方法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> __quickSort(<span class="keyword">int</span> arr[],<span class="keyword">int</span> l,<span class="keyword">int</span> r) &#123;</span><br><span class="line">    <span class="keyword">if</span> (l &gt;= r) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> p = __partition(arr,l,r);</span><br><span class="line">    </span><br><span class="line">    __quickSort(arr, l, p-<span class="number">1</span>);</span><br><span class="line">    __quickSort(arr, p+<span class="number">1</span>, r);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    __quickSort(arr,<span class="number">0</span>,n-<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面不断的递归分割，直到 <code>l &gt; r</code> 结束递归；你能一步步的看到这里，就可以在纸上，手撸快速排序的代码了。</p>
+<h3 id="测试一下">测试一下</h3><p>和前面的一样 还是四种测试用例：</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.004465s</span><br><span class="line">sortname:归并排序 　　 sorttime: 0.023814s</span><br><span class="line">sortname:快速排序　　	 sorttime: 14.126987s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>近乎有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.015746s</span><br><span class="line">sortname:归并排序 　　 sorttime: 0.031117s</span><br><span class="line">sortname:快速排序　　	 sorttime: 0.896174s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>随机<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.034790s</span><br><span class="line">sortname:归并排序 　　 sorttime: 0.037268s</span><br><span class="line">sortname:快速排序　　	 sorttime: 0.018142s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>倒叙<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.010014s</span><br><span class="line">sortname:归并排序 　　 sorttime: 0.024656s</span><br><span class="line">sortname:快速排序　　	 sorttime: 23.304824s</span><br></pre></td></tr></table></figure>
+<p>快速排序不是号称最快的排序方法么，可是测试结果说明了一切 😂😂😂</p>
+<p>其实我们写的这个并没有经过优化，并且快速排序并非能适应所有的排序场景。</p>
+<h2 id="随机化快速排序">随机化快速排序</h2><p>首先想一下归并排序是不是和快速排序的方法很相似啊，不同的是归并排序是等分的而快速排序不是的，是根据选择的基值来分的，我们上面选择的是数组的第一个</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F09.png" alt="快速排序09"></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F10.png" alt="快速排序10"></p>
+<p>最差的情况是测试用例中 倒叙的：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F11.png" alt="快速排序10"></p>
+<p>我们想的是：每次得取数组中中间的那个数值作为基值，但这样做需要重新遍历一遍数组，耗费了大量的时间。我们可以去个折中的方法，就是随机取数组中的值作为基值，且看程序：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> __partition_00(<span class="keyword">int</span> arr[],<span class="keyword">int</span> l,<span class="keyword">int</span> r) &#123;</span><br><span class="line">    swap(&amp;arr[l], &amp;arr[rand()%(r-l+<span class="number">1</span>) + l]);</span><br><span class="line">    <span class="keyword">int</span> v = arr[l];</span><br><span class="line">    <span class="keyword">int</span> j = l;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = l+<span class="number">1</span>; i &lt;= r; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (arr[i] &lt; v) &#123;</span><br><span class="line">            swap(&amp;arr[j +<span class="number">1</span>], &amp;arr[i]);</span><br><span class="line">            j ++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    swap(&amp;arr[l], &amp;arr[j]);</span><br><span class="line">    <span class="keyword">return</span> j;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序中的 <code>swap(&amp;arr[l], &amp;arr[rand()%(r-l+1) + l]);</code> 就是使用 rand() 函数 随机取了值 和 为l索引上的值交换，作为基值，虽然还是有可能 降为 n^2,但概率远远的降低了。</p>
+<p>我们再来看测试：</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.004857s</span><br><span class="line">sortname:归并排序　　	 sorttime: 0.026325s</span><br><span class="line">sortname:快速排序　　	 sorttime: 14.352925s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.013611s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>近乎有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.012678s</span><br><span class="line">sortname:归并排序　　	 sorttime: 0.025845s</span><br><span class="line">sortname:快速排序　　	 sorttime: 0.632769s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.013047s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>随机<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.031845s</span><br><span class="line">sortname:归并排序　　	 sorttime: 0.036922s</span><br><span class="line">sortname:快速排序　　	 sorttime: 0.016712s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.020723s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>倒序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.010177s</span><br><span class="line">sortname:归并排序　　	 sorttime: 0.023441s</span><br><span class="line">sortname:快速排序　　	 sorttime: 23.705080s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.014164s</span><br></pre></td></tr></table></figure>
+<p>我们再看时间，是不是在性能上有不小的提升</p>
+<p>那，还能再优化么，当然能了，稍等一下…</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2017/03/15/merge-sort/" itemprop="url">
+                排序算法之插入排序
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-03-15T23:15:55+08:00" content="2017-03-15">
+            2017-03-15
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h1 id="排序算法之归并排序及其优化">排序算法之归并排序及其优化</h1><h2 id="归并排序介绍">归并排序介绍</h2><p>归并排序是创建在归并操作上的一种有效的排序算法，效率为O(n log n)。1945年由约翰·冯·诺伊曼首次提出。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用，且各层分治递归可以同时进行。</p>
+<h2 id="自顶向下">自顶向下</h2><p>不说废话了，开工。<br>待排数组如下：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E5%88%9D%E5%A7%8B%E6%95%B0%E7%BB%84.png" alt="插入排序初始数组"></p>
+<h3 id="第一步">第一步</h3><p>我们首先将这 8 个元素，一层一层的分割，如：</p>
+<ul>
+<li>第一层两组：<strong>[8 , 6, 2 , 3],[ 1, 5, 7, 4]</strong></li>
+<li>第二层四组：<strong>[8, 6], [2, 3], [1, 5], [7, 4]</strong></li>
+<li>第三层八组：<strong>[8], [6], [2], [3], [1], [5], [7], [4]</strong></li>
+</ul>
+<p>如下图:</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F01.png" alt="归并排序01"></p>
+<h3 id="第二步_归并操作(Merge)">第二步 归并操作(Merge)</h3><p>从底层开始两两归并（当然也可以三三进行归并），归并之后是有序的。</p>
+<p>第三层八组，进行两两归并：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F02.png" alt="归并排序02"></p>
+<p>第二层四组，进行两两归并：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F03.png" alt="归并排序03"></p>
+<p>第一层两组，进行两两归并：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F04.png" alt="归并排序04"></p>
+<p>此时，数组已经排序完成！</p>
+<h3 id="第三步_分析程序">第三步 分析程序</h3><p>很明显，上面的是自顶向下，采用的是分治法，我们采用递归的方法，来实现这个算法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mergeSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    __mergeSort(arr, <span class="number">0</span>, n-<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>开始分割：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> __mergeSort(<span class="keyword">int</span> arr[],<span class="keyword">int</span> l,<span class="keyword">int</span> r) &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> mid = l + (r - l)/<span class="number">2</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (l &gt;= r) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    __mergeSort(arr, l, mid);</span><br><span class="line">    __mergeSort(arr, mid + <span class="number">1</span>, r);</span><br><span class="line">    </span><br><span class="line">    _merge(arr, l, mid, r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意：这里取中间的 mid 有个问题，大多数人都会写成这样：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> mid = (l + r)/<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>这样写不严谨，当<code>l</code>和<code>r</code> 都很大时，<code>(l + r)</code> 会溢出</strong>。</p>
+<p>先不断的分割[l,mid],然后[mid+1,r]</p>
+<p>最后归并：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">void _merge(int arr[],int <span class="keyword">l</span>, int mid,int r) &#123;</span><br><span class="line">    int <span class="keyword">count</span> = r-<span class="keyword">l</span>+1;</span><br><span class="line">    int <span class="keyword">ta</span>[<span class="keyword">count</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (int i = <span class="keyword">l</span>; i &lt;= r; i++) &#123;</span><br><span class="line">        int a = i - <span class="keyword">l</span>;</span><br><span class="line">        <span class="keyword">ta</span>[a] = arr[i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    int i = <span class="keyword">l</span>,j = mid + 1;</span><br><span class="line">    <span class="keyword">for</span> (int k = <span class="keyword">l</span>; k &lt;= r; k++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i &gt; mid) &#123;</span><br><span class="line">            arr[k] = <span class="keyword">ta</span>[j - <span class="keyword">l</span>];</span><br><span class="line">            j ++;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (j &gt; r) &#123;</span><br><span class="line">            arr[k] = <span class="keyword">ta</span>[i - <span class="keyword">l</span>];</span><br><span class="line">            i ++ ;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">ta</span>[i - <span class="keyword">l</span>] &lt; <span class="keyword">ta</span>[j - <span class="keyword">l</span>]) &#123;</span><br><span class="line">            arr[k] = <span class="keyword">ta</span>[i-<span class="keyword">l</span>];</span><br><span class="line">            i ++;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            arr[k] = <span class="keyword">ta</span>[j - <span class="keyword">l</span>];</span><br><span class="line">            j ++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里创建了一个临时的数组长度为 <code>(r - l) + 1</code> .</p>
+<p><strong>注意：如果数据量很大，可能会造成栈溢出，这是归并排序的一个缺点。</strong></p>
+<p>咱们来分析一下归并排序的最后一步：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F05.png" alt="归并排序05"></p>
+<p>先排除边界：</p>
+<ul>
+<li>当 <code>i &gt; mid</code> 时，说明[l,mid]区间已经结束，所以 [mid+1,r] 直接赋值就行了;</li>
+<li>当 <code>j &gt; r</code> 时，说明[mid+1,r]区间已经结束，所以 [l,mid] 直接赋值就行了;</li>
+</ul>
+<p>开始比较：</p>
+<h3 id="第一次比较">第一次比较</h3><p><strong>i -&gt; 2，j -&gt; 1; 2 &gt; 1,将 1 放进去：</strong></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F06.png" alt="归并排序06"></p>
+<h3 id="第二次比较">第二次比较</h3><p>此时数组的状态及各个变量的指向：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F07.png" alt="归并排序07"></p>
+<p><strong>i -&gt; 2，j -&gt; 4; 2 &lt; 4,将 2 放进去：</strong></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F08.png" alt="归并排序08"></p>
+<h3 id="第三次比较">第三次比较</h3><p>此时数组的状态及各个变量的指向：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F09.png" alt="归并排序09"></p>
+<p><strong>i -&gt; 3，j -&gt; 4; 3 &lt; 4,将 3 放进去：</strong></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F11.png" alt="归并排序11"></p>
+<h3 id="第四次比较">第四次比较</h3><p>此时数组的状态及各个变量的指向：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F10.png" alt="归并排序10"></p>
+<p><strong>i -&gt; 6，j -&gt; 4; 6 &gt; 4,将 4 放进去：</strong></p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F12.png" alt="归并排序12"></p>
+<p>后面的就不一一解释了，按照这个思路，请继续往下画…</p>
+<p>我相信前面的程序，现在是非常清晰了。</p>
+<h2 id="自低向上">自低向上</h2><p>其实自低向上很好理解，就是第一步被分割后，开始向上归并，只不过不是使用递归的解法，而是迭代法。</p>
+<p>我这里把程序贴出来，大家跟着程序把图画一下，就理解了。</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> mergeSortBackUp(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n) &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> <span class="keyword">size</span> = <span class="number">1</span>; <span class="keyword">size</span> &lt;= n; <span class="keyword">size</span> += <span class="keyword">size</span> ) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i + <span class="keyword">size</span> &lt; n; i += (<span class="keyword">size</span> + <span class="keyword">size</span>)) &#123;</span><br><span class="line">            _merge(arr, i, i + <span class="keyword">size</span> - <span class="number">1</span>, MIN(i + <span class="keyword">size</span> + <span class="keyword">size</span> - <span class="number">1</span>,n-<span class="number">1</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意：这里的_merge 函数 用的是上一步的！</strong></p>
+<h2 id="测试">测试</h2><p>这里用了 1千万一个数据测试，测试结果如下：</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:归并排序 　　	 sorttime: 3.218722s</span><br><span class="line">sortname:归并排序2　　	 sorttime: 2.599350s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>近乎有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:归并排序 　　	 sorttime: 3.078164s</span><br><span class="line">sortname:归并排序2　　	 sorttime: 2.605246s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>随机<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:归并排序 　　	 sorttime: 4.810648s</span><br><span class="line">sortname:归并排序2　　	 sorttime: 4.118894s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>倒叙<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:归并排序 　　	 sorttime: 3.054663s</span><br><span class="line">sortname:归并排序2　　	 sorttime: 2.569524s</span><br></pre></td></tr></table></figure>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2017/03/07/shell-sort/" itemprop="url">
+                排序算法之希尔排序
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-03-07T21:30:10+08:00" content="2017-03-07">
+            2017-03-07
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h2 id="前言">前言</h2><p>希尔排序，也称递减增量排序算法，是插入排序的一种更高效的改进版本。</p>
+<p>希尔排序的实质就是分组插入排序，它们的思想高度是一致的的（为了共产主义😁😁😁），不过希尔排序的速度蛮快的，甚至可以与快速排序相媲美！</p>
+<p>希尔排序是基于插入排序的以下两点性质而提出改进方法的：</p>
+<ul>
+<li>插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率；</li>
+<li>但插入排序一般来说是低效的，因为插入排序每次只能将数据移动一位；</li>
+</ul>
+<p>不好意思上面的部分来自<a href="https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F" target="_blank" rel="external">维基百科</a></p>
+<p>好了，第一部分介绍完了，我们来看图说画：</p>
+<hr>
+<h2 id="看图说话">看图说话</h2><p>以一个 n = 11 的数组为例：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F01.png" alt="希尔排序01"></p>
+<h3 id="第一次">第一次</h3><h4 id="第一步_设步长为_2_则_int_gap_=_11/2_=_5">第一步 设步长为 2 则 int gap = 11/2 = 5</h4><p>将数组分为 5 组，每组两个数据</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F02.png" alt="希尔排序02"></p>
+<h4 id="第二步">第二步</h4><p>那么就被分成了 A B C D E 这几组数据：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F03.png" alt="希尔排序03"></p>
+<h4 id="第三步">第三步</h4><p>对每组数据进行排序：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F04.png" alt="希尔排序04"></p>
+<p>于是数组变为下面的：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-05.png" alt="希尔排序05"></p>
+<h3 id="第二次">第二次</h3><h4 id="第一步_重复上面第一步_int_gap_=_5/2_=_2">第一步 重复上面第一步 int gap = 5/2 = 2</h4><p>将数组分为 2 组，每组5个数据</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-06.png" alt="希尔排序06"></p>
+<h4 id="第二步-1">第二步</h4><p>那么就被分成了 A B  这两组数据：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-07.png" alt="希尔排序07"></p>
+<h4 id="第三步-1">第三步</h4><p>对每组数据进行排序：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-08.png" alt="希尔排序08"></p>
+<p>于是数组变为下面的：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-09.png" alt="希尔排序09"></p>
+<h3 id="第三次">第三次</h3><h4 id="第一步_重复上面第一步_int_gap_=_2/2_=_1">第一步 重复上面第一步 int gap = 2/2 = 1</h4><p>将数组分为 1 组，那就是整个数组</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-09.png" alt="希尔排序09"></p>
+<p>对整个数组进行排序：<br><img src="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F-10.png" alt="希尔排序10"></p>
+<h3 id="第四次">第四次</h3><h4 id="第一步_重复上面第一步_int_gap_=_1/2_=_0">第一步 重复上面第一步 int gap = 1/2 = 0</h4><p>则此时 数组排序已经完成</p>
+<hr>
+<h3 id="看程序">看程序</h3><p>经过上面的一步步的分析，相信大家已经可以看得懂下面的程序（按照上面的理解即可）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">shellsort2</span><span class="params">(<span class="keyword">int</span> a[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> j, gap;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (gap = n / <span class="number">2</span>; gap &gt; <span class="number">0</span>; gap /= <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">for</span> (j = gap; j &lt; n; j++)<span class="comment">//从数组第gap个元素开始</span></span><br><span class="line">            <span class="keyword">if</span> (a[j] &lt; a[j - gap])<span class="comment">//每个元素与自己组内的数据进行直接插入排序</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">int</span> temp = a[j];</span><br><span class="line">                <span class="keyword">int</span> k = j - gap;</span><br><span class="line">                <span class="keyword">while</span> (k &gt;= <span class="number">0</span> &amp;&amp; a[k] &gt; temp)</span><br><span class="line">                &#123;</span><br><span class="line">                    a[k + gap] = a[k];</span><br><span class="line">                    k -= gap;</span><br><span class="line">                &#125;</span><br><span class="line">                a[k + gap] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="测试">测试</h3><p>下面我们开始测试，同样的四种：</p>
+<ol>
+<li>有序</li>
+<li>近乎有序</li>
+<li>随机</li>
+<li>倒叙</li>
+</ol>
+<p>我们测试100W个数据，测试它的排序时间，<a href="https://coding.net/u/xiaerfei/p/baseAlgorithm/git/blob/master/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/SortHelper.c" target="_blank" rel="external">测试用例的程序在这里</a>，测试代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> n  = <span class="number">100000</span>;</span><br><span class="line"><span class="comment">// 有序</span></span><br><span class="line"><span class="keyword">int</span> *a = generateSequenceArray(n);</span><br><span class="line"><span class="comment">// 近乎有序</span></span><br><span class="line"><span class="keyword">int</span> *b = generateRandomSequenceArray(n, <span class="number">100</span>);</span><br><span class="line"><span class="comment">// 随机</span></span><br><span class="line"><span class="keyword">int</span> *c = generateRandomArray(n,<span class="number">0</span>,n);</span><br><span class="line"><span class="comment">// 倒叙</span></span><br><span class="line"><span class="keyword">int</span> *d = generateReverseArray(n);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *a1 = copyGenerateRandomArray(a, n);</span><br><span class="line"><span class="keyword">int</span> *a2 = copyGenerateRandomArray(a, n);</span><br><span class="line"><span class="keyword">int</span> *a3 = copyGenerateRandomArray(a, n);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *b1 = copyGenerateRandomArray(b, n);</span><br><span class="line"><span class="keyword">int</span> *b2 = copyGenerateRandomArray(b, n);</span><br><span class="line"><span class="keyword">int</span> *b3 = copyGenerateRandomArray(b, n);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *c1 = copyGenerateRandomArray(c, n);</span><br><span class="line"><span class="keyword">int</span> *c2 = copyGenerateRandomArray(c, n);</span><br><span class="line"><span class="keyword">int</span> *c3 = copyGenerateRandomArray(c, n);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *d1 = copyGenerateRandomArray(d, n);</span><br><span class="line"><span class="keyword">int</span> *d2 = copyGenerateRandomArray(d, n);</span><br><span class="line"><span class="keyword">int</span> *d3 = copyGenerateRandomArray(d, n);</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"**************有序*************\n"</span>);</span><br><span class="line">testSort(<span class="string">"插入排序　　"</span>, insertSort,a1, n);</span><br><span class="line">testSort(<span class="string">"插入排序优化"</span>, insertSort2,a2, n);</span><br><span class="line">testSort(<span class="string">"希尔排序　　"</span>, shellsort2,a3, n);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"\n**************近乎有序*************\n"</span>);</span><br><span class="line">testSort(<span class="string">"插入排序　　"</span>, insertSort,b1, n);</span><br><span class="line">testSort(<span class="string">"插入排序优化"</span>, insertSort2,b2, n);</span><br><span class="line">testSort(<span class="string">"希尔排序　　"</span>, shellsort2,b3, n);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"\n**************随机*************\n"</span>);</span><br><span class="line">testSort(<span class="string">"插入排序　　"</span>, insertSort,c1, n);</span><br><span class="line">testSort(<span class="string">"插入排序优化"</span>, insertSort2,c2, n);</span><br><span class="line">testSort(<span class="string">"希尔排序　　"</span>, shellsort2,c3, n);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"\n**************倒叙*************\n"</span>);</span><br><span class="line">testSort(<span class="string">"插入排序　　"</span>, insertSort,d1, n);</span><br><span class="line">testSort(<span class="string">"插入排序优化"</span>, insertSort2,d2, n);</span><br><span class="line">testSort(<span class="string">"希尔排序　　"</span>, shellsort2,d3, n);</span><br><span class="line"></span><br><span class="line"><span class="built_in">free</span>(a);<span class="built_in">free</span>(a1);<span class="built_in">free</span>(a2);<span class="built_in">free</span>(a3);</span><br><span class="line"></span><br><span class="line"><span class="built_in">free</span>(b);<span class="built_in">free</span>(b1);<span class="built_in">free</span>(b2);<span class="built_in">free</span>(b3);</span><br><span class="line"></span><br><span class="line"><span class="built_in">free</span>(c);<span class="built_in">free</span>(c1);<span class="built_in">free</span>(c2);<span class="built_in">free</span>(c3);</span><br><span class="line"></span><br><span class="line"><span class="built_in">free</span>(d);<span class="built_in">free</span>(d1);<span class="built_in">free</span>(d2);<span class="built_in">free</span>(d3);</span><br></pre></td></tr></table></figure>
+<p>log如下：</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 0.000404s</span><br><span class="line">sortname:插入排序优化	 sorttime: 0.000474s</span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.003668s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>近乎有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 0.042827s</span><br><span class="line">sortname:插入排序优化	 sorttime: 0.020470s</span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.011824s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>随机<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 17.607321s</span><br><span class="line">sortname:插入排序优化	 sorttime: 8.014994s</span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.032545s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>倒叙<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 35.988631s</span><br><span class="line">sortname:插入排序优化	 sorttime: 16.293709s</span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.009289s</span><br></pre></td></tr></table></figure>
+<p>由此可以看出 希尔排序的强悍，特别是对于最坏情况的排序，是未优化过的插入排序的近4000倍！</p>
+<p>不知道希尔排序 大家搞明白了么！！！ 😀😀😀</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/03/05/insert-sort/" itemprop="url">
                 排序算法之插入排序
               </a>
@@ -1382,367 +1723,13 @@ dispatch_semaphore_wait的返回值也为<span class="keyword">long</span>型。
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/05/21/ios-date/" itemprop="url">
-                iOS 日期处理
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-05-21T17:04:42+08:00" content="2016-05-21">
-            2016-05-21
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>前几天在开发的时候遇到了日期方面的处理，花费了不少时间，踩了点坑，今天就把遇到的写一下.</p>
-<h3 id="本文内容">本文内容</h3><ol>
-<li>时间格式</li>
-<li>时间差（两个日期之间的天数、月数、年数差）计算</li>
-</ol>
-<h3 id="时间格式">时间格式</h3><p>在iOS中 <font color="#B22222" size="3">NSDateFormatter</font> 处理时间格式的东东，上次有个需求，就是获取网络请求中cookie的时间<br><br>cookie中的时间是这个酱子的：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Date:Sat, <span class="number">21</span> May <span class="number">2016</span> <span class="number">07</span>:<span class="number">57</span>:<span class="number">20</span> GMT</span><br></pre></td></tr></table></figure>
-<p>NSDateFormatter 中有一下格式：</p>
-<table>
-<thead>
-<tr>
-<th>格式</th>
-<th style="text-align:center">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>G</td>
-<td style="text-align:center">公元时代，例如AD公元</td>
-</tr>
-<tr>
-<td>yy</td>
-<td style="text-align:center">年的后2位 如：2016 中的 16</td>
-</tr>
-<tr>
-<td>yyyy</td>
-<td style="text-align:center">完整年 如：2016</td>
-</tr>
-<tr>
-<td>MM</td>
-<td style="text-align:center">月，显示为1-12</td>
-</tr>
-<tr>
-<td>MMM</td>
-<td style="text-align:center">月，显示为英文月份简写,如 Jan</td>
-</tr>
-<tr>
-<td>MMMM</td>
-<td style="text-align:center">月，显示为英文月份全称，如 Janualy</td>
-</tr>
-<tr>
-<td>dd</td>
-<td style="text-align:center">日，2位数表示，如02</td>
-</tr>
-<tr>
-<td>d</td>
-<td style="text-align:center">日，1-2位显示，如 2</td>
-</tr>
-<tr>
-<td>EEE</td>
-<td style="text-align:center">简写星期几，如Sun</td>
-</tr>
-<tr>
-<td>EEEE</td>
-<td style="text-align:center">全写星期几，如Sunday</td>
-</tr>
-<tr>
-<td>aa</td>
-<td style="text-align:center">上下午，AM/PM</td>
-</tr>
-<tr>
-<td>H</td>
-<td style="text-align:center">时，24小时制，0-23</td>
-</tr>
-<tr>
-<td>K</td>
-<td style="text-align:center">时，12小时制，0-11</td>
-</tr>
-<tr>
-<td>m</td>
-<td style="text-align:center">分，1-2位 ( 0-9 是一位 )</td>
-</tr>
-<tr>
-<td>mm</td>
-<td style="text-align:center">分，2位</td>
-</tr>
-<tr>
-<td>s</td>
-<td style="text-align:center">秒，1-2位</td>
-</tr>
-<tr>
-<td>ss</td>
-<td style="text-align:center">秒，2位</td>
-</tr>
-<tr>
-<td>S</td>
-<td style="text-align:center">毫秒</td>
-</tr>
-<tr>
-<td>Z</td>
-<td style="text-align:center">GMT</td>
-</tr>
-</tbody>
-</table>
-<p>了解了上面的格式，那就容易多了，故格式是：<font color="#B22222" size="3">EEE, dd MMM yyyy HH:mm:ss Z</font></p>
-<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="name">NSDateFormatter</span> *<span class="atom">formatter</span> = [[<span class="name">NSDateFormatter</span> <span class="atom">alloc</span>] <span class="atom">init</span>];</span><br><span class="line">[<span class="atom">formatter</span> <span class="atom">setDateFormat</span>:@<span class="string">"EEE, dd MMM yyyy HH:mm:ss Z"</span>];</span><br><span class="line"></span><br><span class="line"><span class="name">NSDate</span> *<span class="atom">date</span> = [<span class="atom">formatter</span> <span class="atom">dateFromString</span>:@<span class="string">"Sat, 21 May 2016 07:57:20 GMT"</span>];</span><br></pre></td></tr></table></figure>
-<p>但是上面的代码 得出的 date 可能是 nil,后面查了下原来是少设置了<font color="#B22222" size="3">NSLocale (区域设置)</font></p>
-<p>因为时间格式是英文的，所以：</p>
-<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="name">NSDateFormatter</span> *<span class="atom">formatter</span> = [[<span class="name">NSDateFormatter</span> <span class="atom">alloc</span>] <span class="atom">init</span>];</span><br><span class="line">[<span class="atom">formatter</span> <span class="atom">setDateFormat</span>:@<span class="string">"EEE, dd MMM yyyy HH:mm:ss Z"</span>];</span><br><span class="line">[<span class="atom">formatter</span> <span class="atom">setLocale</span>:[[<span class="name">NSLocale</span> <span class="atom">alloc</span>] <span class="atom">initWithLocaleIdentifier</span>:@<span class="string">"en_US"</span>]];</span><br><span class="line"><span class="name">NSDate</span> *<span class="atom">date</span> = [<span class="atom">formatter</span> <span class="atom">dateFromString</span>:@<span class="string">"Sat, 21 May 2016 07:57:20 GMT"</span>];</span><br></pre></td></tr></table></figure>
-<p>另外，关于是使用  <font color="#B22222" size="3">en_US_POSIX还是en_US</font> 可以看<a href="http://www.lidaren.com/archives/811" target="_blank" rel="external">这篇文章</a><br><br>当然，你设置成了  <font color="#B22222" size="3">zh_CN</font> ，那格式出来的是中文了，如“EEE, dd MMM yyyy HH:mm:ss Z”格式出来的：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">周六, <span class="number">21</span> <span class="number">5</span>月 <span class="number">2016</span> <span class="number">16</span>:<span class="number">37</span>:<span class="number">57</span> +<span class="number">0800</span></span><br></pre></td></tr></table></figure>
-<h3 id="时间差计算">时间差计算</h3><p>要计算两个日期的有多少天，多少个月，如果要自己计算的话，那就爽歪歪了，不过所幸 iOS的日历功能( <font color="#B22222" size="3">NSCalendar</font> )可以给我们提供一些便利。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSDate</span> *date1 = [formatter dateFromString:<span class="string">@"2016-05-21"</span>];</span><br><span class="line"><span class="built_in">NSDate</span> *date2 = [formatter dateFromString:<span class="string">@"2013-11-25"</span>];</span><br><span class="line"><span class="built_in">NSCalendar</span> *gregorian = [[<span class="built_in">NSCalendar</span> alloc] initWithCalendarIdentifier:<span class="built_in">NSCalendarIdentifierGregorian</span>];</span><br><span class="line"><span class="built_in">NSDateComponents</span> *components = [gregorian components:<span class="built_in">NSCalendarUnitYear</span> | <span class="built_in">NSCalendarUnitMonth</span> | <span class="built_in">NSCalendarUnitDay</span> fromDate:date2 toDate:date1 options:<span class="number">0</span>];</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"year = %ld month = %ld day = %ld"</span>,components<span class="variable">.year</span>,components<span class="variable">.month</span>,components<span class="variable">.day</span>);</span><br></pre></td></tr></table></figure>
-<h3 id="参考：">参考：<br></h3><p><a href="http://blog.csdn.net/crayondeng/article/details/8755306" target="_blank" rel="external">http://blog.csdn.net/crayondeng/article/details/8755306</a><br><br><a href="http://www.125135.com/339261.htm" target="_blank" rel="external">http://www.125135.com/339261.htm</a><br><br><a href="http://www.cnblogs.com/kaysun/p/5466508.html" target="_blank" rel="external">http://www.cnblogs.com/kaysun/p/5466508.html</a></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/04/23/JSPatch-stduy/" itemprop="url">
-                JSPatch 学习
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-04-23T21:14:30+08:00" content="2016-04-23">
-            2016-04-23
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="引言">引言</h3><p>好久前就已经了解到JSPatch（JSPatch是iOS平台的热修复框架，能够及时的修复线上的一些小bug，iOS应用审核时间之长，大家都懂得），一直以来都没有抽出时间去学习，今天抽出时间来学习下，突然又发现只有官方的一些教程，自己照着写写满满都是泪（崩溃的次数多）。学JSPatch写法，首先大家需要先补一下JavaScript的知识。</p>
-<h3 id="基础用法">基础用法</h3><p>关于基础的用法大家可以先看<a href="https://github.com/bang590/JSPatch/wiki/JSPatch-基础用法" target="_blank" rel="external">官方的Wiki</a>,大致有13个知识点，我这里直接就上用法了。<br></p>
-<h4 id="require">require</h4><p>首先，用到哪个类就需要require一下，否则会崩溃，比如UIView、UILabel等等，中间逗号隔开</p>
-<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'UILabel,UIView'</span>);</span><br></pre></td></tr></table></figure>
-<h4 id="调用OC的方法">调用OC的方法</h4><p>因为JavaScript是链式语法，所以说和写OC有很大的不同,写的时候要注意</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'UIView, UIColor'</span>);</span><br><span class="line"><span class="keyword">var</span> view = UIView.alloc().init();<span class="comment">//实例方法</span></span><br><span class="line"><span class="keyword">var</span> red = UIColor.redColor();<span class="comment">//类方法</span></span><br></pre></td></tr></table></figure>
-<p>UIView 有很多的Property，这些Property如何调用呢？<br><br>等于调用这个 Property 的 getter / setter 方法，获取时记得加 (),如：</p>
-<figure class="highlight sml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">require(<span class="symbol">'UIView</span>, <span class="type">UIColor'</span>);</span><br><span class="line">var view = <span class="type">UIView</span>.alloc<span class="literal">()</span>.init<span class="literal">()</span>;</span><br><span class="line">view.setBackgroundColor(<span class="type">UIColor</span>.grayColor<span class="literal">()</span>);</span><br></pre></td></tr></table></figure>
-<h4 id="常量、枚举、宏、全局变量">常量、枚举、宏、全局变量</h4><p>Objective-C 里的常量/枚举不能直接在 JS 上使用，可以直接在 JS 上用具体值代替：</p>
-<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="keyword">label</span> = UILabel.alloc().init();</span><br><span class="line"><span class="keyword">label</span>.setTextAlignment(<span class="number">1</span>);<span class="comment">//这里需要写具体的值</span></span><br></pre></td></tr></table></figure>
-<p>宏也不使用，若定义的宏是一个值，可以在 JS 定义同样的全局变量代替，若定义的宏是程序，可以在JS展开宏</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">define</span> TABBAR_HEIGHT <span class="number">40</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> SCREEN_WIDTH [[UIScreen mainScreen] bounds].size.height</span></span><br><span class="line">[view setWidth:SCREEN_WIDTH height:TABBAR_HEIGHT];</span><br><span class="line"><span class="comment">//JS</span></span><br><span class="line">view.setWidth_height(<span class="number">40</span>, UIScreen.mainScreen().bounds().height);</span><br></pre></td></tr></table></figure>
-<p>若宏的值是某些在底层才能获取到的值，例如 CGFLOAT_MIN，可以通过在某个类或实例方法里将它返回，或者用添加扩展的方式提供支持，</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">JPMacroSupport</span></span></span><br><span class="line">+ (<span class="keyword">void</span>)main:(JSContext *)context</span><br><span class="line">&#123;</span><br><span class="line">  context[<span class="string">@"CGFLOAT_MIN"</span>] = ^<span class="built_in">CGFloat</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">CGFLOAT_MIN</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">require(<span class="string">'JPEngine'</span>).addExtensions([<span class="string">'JPMacroSupport'</span>])</span><br><span class="line">var <span class="built_in">float</span>M<span class="keyword">in</span> = CGFLOAT_MIN();</span><br></pre></td></tr></table></figure>
-<p>当然全局变量也是如此：</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">NSString</span> *name;</span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">JPTestObject</span></span></span><br><span class="line">+ (<span class="built_in">NSString</span> *)name &#123;</span><br><span class="line">  <span class="keyword">return</span> name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">var</span> name = JPTestObject.<span class="function"><span class="title">name</span><span class="params">()</span></span> <span class="comment">//拿到全局变量值</span></span><br></pre></td></tr></table></figure>
-<h4 id="defineClass">defineClass</h4><p>在 defineClass 里定义 OC 已存在的方法即可覆盖:</p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">defineClass</span>(<span class="string">'ViewController'</span>, &#123;</span><br><span class="line">    <span class="tag">viewDidLoad</span>: <span class="tag">function</span>() &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>如果想调用原方法，在方法名前加 ORIG 即可调用未覆盖前的 OC 原方法:</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">defineClass(<span class="string">'ViewController'</span>, &#123;</span><br><span class="line">    viewDidLoad: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">self</span>.ORIGviewDidLoad();</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>下面是一个UILabel添加到View上的例子：</p>
-<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">require<span class="list">(<span class="quoted">'UILabel</span>,UIView,UIColor,UIFont')</span><span class="comment">;</span></span><br><span class="line">defineClass<span class="list">(<span class="quoted">'ViewController</span>', &#123;</span><br><span class="line">    viewDidLoad: function<span class="list">()</span> &#123;</span><br><span class="line">        self.ORIGviewDidLoad<span class="list">()</span><span class="comment">;</span></span><br><span class="line">        var view = self.view<span class="list">()</span><span class="comment">;</span></span><br><span class="line">        var label = UILabel.alloc<span class="list">()</span>.initWithFrame<span class="list">(&#123;x:<span class="number">100</span>, y:<span class="number">200</span>, width:<span class="number">100</span>, height:<span class="number">100</span>&#125;)</span><span class="comment">;</span></span><br><span class="line">        label.setFont<span class="list">(<span class="keyword">UIFont</span>.systemFontOfSize<span class="list">(<span class="number">10</span>)</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setTextAlignment<span class="list">(<span class="number">1</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setText<span class="list">(<span class="string">"你好 ！"</span>)</span><span class="comment">;</span></span><br><span class="line">        label.setBackgroundColor<span class="list">(<span class="keyword">UIColor</span>.grayColor<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">        view.addSubview<span class="list">(<span class="keyword">label</span>)</span><span class="comment">;</span></span><br><span class="line">        var background = UIView.alloc<span class="list">()</span>.initWithFrame<span class="list">(&#123;x:<span class="number">100</span>,y:<span class="number">350</span>,width:<span class="number">100</span>,height:<span class="number">100</span>&#125;)</span><span class="comment">;</span></span><br><span class="line">        background.setBackgroundColor<span class="list">(<span class="keyword">UIColor</span>.grayColor<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">        self.setBackgroundView<span class="list">(<span class="keyword">background</span>)</span><span class="comment">;</span></span><br><span class="line">        view.addSubview<span class="list">(<span class="keyword">self</span>.backgroundView<span class="list">()</span>)</span><span class="comment">;</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
-<p>开始的时候一直不知道OC中的“self.view”在JavaScript中怎么调用，试了好久直接调用“self.view()”就行了。</p>
-<p><br><br><br></p>
-<hr>
-<p>参考：<br><br><a href="https://github.com/bang590/JSPatch/wiki" target="_blank" rel="external">官方的Wiki</a></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/10/14/github-hexo/" itemprop="url">
-                github 搭建博客-hexo
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-10-14T23:00:07+08:00" content="2015-10-14">
-            2015-10-14
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h2 id="Mac下_搭建博客_之_hexo">Mac下 搭建博客 之 hexo</h2><h3 id="引言：">引言：</h3><p>一直在CSDN写博客，但是CSDN对Markdown支持不是很好，而且还是在线，不是很方便。于是决定搭建一个自己的博客，正好github可以免费搭建博客，于是就搭建了一下。</p>
-<p>搭建的过程遇到很多的坑，在这里给大家说明，避免大家再次趟雷。</p>
-<h3 id="一、安装_HomeBrew">一、安装 HomeBrew</h3><p>HomeBrew 是 OS X 下的一个程式管理器，需要用他来安装其他程式。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby <span class="operator">-e</span> <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span>"</span></span><br></pre></td></tr></table></figure>
-<h3 id="二、安装_NodeJS">二、安装 NodeJS</h3><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span>install node</span><br></pre></td></tr></table></figure>
-<h3 id="三、安装_Hexo">三、安装 Hexo</h3><p>可以用 nodejs 自带 npm 安装,切到hexo</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="operator"><span class="keyword">install</span> hexo -<span class="keyword">g</span></span><br><span class="line">hexo init</span><br><span class="line">npm <span class="keyword">install</span></span></span><br></pre></td></tr></table></figure>
-<p>注意：在这里运行命令“npm install hexo -g”时可能会有错误</p>
-<p>1.错误：</p>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">npm WARN locking <span class="keyword">Error</span>: EACCES, <span class="keyword">open</span> '/Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock'</span><br><span class="line">npm WARN locking    at <span class="keyword">Error</span> (native)</span><br><span class="line">npm WARN locking  /Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock failed &#123; [<span class="keyword">Error</span>: EACCES, <span class="keyword">open</span> '/Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock']</span><br><span class="line">npm WARN locking  errno: -13,</span><br><span class="line">npm WARN locking  code: 'EACCES',</span><br><span class="line">npm WARN locking  path: '/Users/xxxxxx/.npm/_locks/hexo-eabe9ea76eaf84ee.lock' &#125;</span><br><span class="line">npm <span class="keyword">ERR</span>! Darwin 14.1.0</span><br><span class="line">npm <span class="keyword">ERR</span>! argv <span class="string">"node"</span> <span class="string">"/usr/local/bin/npm"</span> <span class="string">"install"</span> <span class="string">"hexo"</span> <span class="string">"-g"</span></span><br><span class="line">npm <span class="keyword">ERR</span>! node v0.12.0</span><br><span class="line">npm <span class="keyword">ERR</span>! npm  v2.10.0</span><br><span class="line"></span><br><span class="line">npm <span class="keyword">ERR</span>! Attempt to unlock /usr/<span class="keyword">local</span>/lib/node_modules/hexo, <span class="keyword">which</span> hasn't been locked</span><br></pre></td></tr></table></figure>
-<p>解决办法，运行以下命令：</p>
-<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">sudo</span> <span class="comment">npm</span> <span class="comment">install</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">unsafe</span><span class="literal">-</span><span class="comment">perm</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">verbose</span> <span class="literal">-</span><span class="comment">g</span> <span class="comment">hexo</span></span><br></pre></td></tr></table></figure>
-<p>2.错误 运行“npm install”时</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node-pre-gyp <span class="operator"><span class="keyword">install</span> <span class="comment">--fallback-to-build</span></span></span><br></pre></td></tr></table></figure>
-<p>解决办法，运行以下命令：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="operator"><span class="keyword">install</span> <span class="comment">--production</span></span></span><br></pre></td></tr></table></figure>
-<h3 id="四、安装_GIT">四、安装 GIT</h3><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span>install git</span><br></pre></td></tr></table></figure>
-<h3 id="五、生成_SSH_Key：">五、生成 SSH Key：</h3><p>打开终端：</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>ssh -v</span><br></pre></td></tr></table></figure>
-<p>查看ssh的版本</p>
-<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">OpenSSH_6.2p2, OSSLShim 0.9.8r 8 Dec 2011</span><br><span class="line">usage: ssh <span class="comment">[-1246AaCfgKkMNnqsTtVvXxYy]</span> <span class="comment">[-b bind_address]</span> <span class="comment">[-c cipher_spec]</span></span><br><span class="line">           <span class="comment">[-D <span class="comment">[bind_address:]</span>port]</span> <span class="comment">[-e escape_char]</span> <span class="comment">[-F configfile]</span></span><br><span class="line">           <span class="comment">[-I pkcs11]</span> <span class="comment">[-i identity_file]</span></span><br><span class="line">           <span class="comment">[-L <span class="comment">[bind_address:]</span>port:host:hostport]</span></span><br><span class="line">           <span class="comment">[-l login_name]</span> <span class="comment">[-m mac_spec]</span> <span class="comment">[-O ctl_cmd]</span> <span class="comment">[-o option]</span> <span class="comment">[-p port]</span></span><br><span class="line">           <span class="comment">[-R <span class="comment">[bind_address:]</span>port:host:hostport]</span> <span class="comment">[-S ctl_path]</span></span><br><span class="line">           <span class="comment">[-W host:port]</span> <span class="comment">[-w local_tun<span class="comment">[:remote_tun]</span>]</span></span><br><span class="line">           <span class="comment">[user@]</span>hostname <span class="comment">[command]</span></span><br></pre></td></tr></table></figure>
-<p>这个表明ssh已经安装，在终端输入：</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>ssh-keygen</span><br></pre></td></tr></table></figure>
-<p>然后系统提示输入文件保存位置等信息，连续敲三次回车即可，生成的SSH key文件保存在中～/.ssh/id_rsa.pub</p>
-<p>查看 .ssh，搜索目录</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls -<span class="tag">a</span> ~/.ssh</span><br></pre></td></tr></table></figure>
-<h3 id="六、github上添加ssh以及创建项目">六、github上添加ssh以及创建项目</h3><p>在github上添加ssh，然后创建项目</p>
-<h3 id="七、Hexo_的设定、更新以及写作命令">七、Hexo 的设定、更新以及写作命令</h3><p>1、修改 hexo 根目录下 _config.yml 文件(‘xxxx’为你的账户名称)：</p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">deploy</span>:</span><br><span class="line">  <span class="attribute">type</span>: git</span><br><span class="line">  <span class="attribute">repository</span>: <span class="attribute">https</span>:<span class="comment">//github.com/username/username.github.io.git</span></span><br><span class="line">  <span class="attribute">branch</span>: master</span><br></pre></td></tr></table></figure>
-<p>2、安装 hexo-deployer-git</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="operator"><span class="keyword">install</span> hexo-deployer-git <span class="comment">--save</span></span></span><br></pre></td></tr></table></figure>
-<p>3、更新hexo到最新版</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="operator"><span class="keyword">update</span> hexo -<span class="keyword">g</span></span></span><br></pre></td></tr></table></figure>
-<p>4、写作命令，这几个命令都很简单没有什么难度</p>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">建立新文章：hexo <span class="keyword">n</span> <span class="string">"新文章名"</span></span><br><span class="line">预览文章：hexo <span class="literal">s</span></span><br><span class="line">生成网页：hexo <span class="keyword">g</span></span><br><span class="line">发布文章：hexo <span class="literal">d</span></span><br><span class="line">生成网页并发布文章：hexo <span class="keyword">d</span> -<span class="keyword">g</span></span><br></pre></td></tr></table></figure>
-<h3 id="九、安装主题">九、安装主题</h3><p>关于安装主题 可以去看<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">Next</a>，上面有在线的文档，主题配置写的都很详细。</p>
-<hr>
-<p>参考博客：</p>
-<p>1.<a href="http://godera.org/2015/03/16/Mac下程序员博客之Hexo-GitHub-Pages-GitCafe-Pages-DNSPod/" target="_blank" rel="external">http://godera.org/2015/03/16/Mac下程序员博客之Hexo-GitHub-Pages-GitCafe-Pages-DNSPod/</a><br>2.<a href="http://code.wileam.com/build-a-hexo-blog-and-optimize/" target="_blank" rel="external">http://code.wileam.com/build-a-hexo-blog-and-optimize/</a></p>
-<p>3.<a href="http://theme-next.iissnan.com" target="_blank" rel="external">Next 主题配置</a></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
+  </nav>
+
  </div>
 
         
@@ -1774,7 +1761,7 @@ dispatch_semaphore_wait的返回值也为<span class="keyword">long</span>型。
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
