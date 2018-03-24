@@ -163,6 +163,111 @@
           
           
             
+              <a class="post-title-link" href="/2016/06/30/Core-Animation/" itemprop="url">
+                Core Animation 基础知识
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-06-30T07:18:00+08:00" content="2016-06-30">
+            2016-06-30
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h5 id="一、简介">一、简介</h5><p>CAAnimation的一些基础的知识，复习备用</p>
+<h5 id="二、使用步骤">二、使用步骤</h5><p>1.使用它需要先添加QuartzCore.framework框架和引入主头文件 QuartzCore/QuartzCore.h (Xcode 6 不需要);</p>
+<p>2.初始化一个CAAnimation对象，设置相应的属性;</p>
+<p>3.通过调用CALayer的addAnimation:forKey:方法增加CAAnimation对象到CALayer中，这样就能开始执行动画了;</p>
+<p>4.通过调用CALayer的removeAnimationForKey:方法可以停止CALayer中的动画.</p>
+<hr>
+<h5 id="三、CAAnimation_继承关系与核心类">三、CAAnimation 继承关系与核心类</h5><p>一般情况下，我们使用的是CAAnimation的子类(CABasicAnimation、CAKeyframeAnimation、CAAnimationGroup、CATransition)</p>
+<p><img src="http://img.blog.csdn.net/20150706193857613" alt="CAAnimation classes"></p>
+<p>CAAnimation：核心动画的基础类，不能直接使用，负责动画运行时间、速度的控制，本身实现了CAMediaTiming协议;</p>
+<p>CAPropertyAnimation：属性动画的基类（通过属性进行动画设置，注意是可动画属性），不能直接使用;</p>
+<p>CAAnimationGroup：动画组，动画组是一种组合模式设计，可以通过动画组来进行所有动画行为的统一控制，组中所有动画效果可以并发执行;<br>CATransition：转场动画，主要通过滤镜进行动画效果设置;<br>CABasicAnimation：基础动画，通过属性修改进行动画参数控制，只有初始状态和结束状态;<br>CAKeyframeAnimation：关键帧动画，同样是通过属性进行动画参数控制，但是同基础动画不同的是它可以有多个状态控制;</p>
+<p>基础动画、关键帧动画都属于属性动画，就是通过修改属性值产生动画效果，开发人员只需要设置初始值和结束值，中间的过程动画（又叫“补间动画”）由系统自动计算产生。和基础动画不同的是关键帧动画可以设置多个属性值，每两个属性中间的补间动画由系统自动完成，因此从这个角度而言基础动画又可以看成是有两个关键帧的关键帧动画。</p>
+<hr>
+<h5 id="四、常用属性">四、常用属性</h5><p>1.duration:它设定开始值到结束值花费的时间。期间会被速度的属性所影响;<br><br>2.speed:默认的值为 1.0.这意味着动画播放按照默认的速度。如果你改变这个值为 2.0,动画会用 2 倍的速度播放。这样的影响就是使持续时间减半。如果你指定的持续时间为6秒,速度为2.0,动画就会播放 3 秒钟,一半的 持续时间;<br><br>3.removedOnCompletion:这个属性默认为 YES,那意味着,在指定的时间段完成后,动画就自动的从层上移除了。这个一般不用。假如你想要再次用这个动画时,你需要设定这个属性为 NO。这样的话,下次你在通过-set 方法设定动画的属性时,它将再次使用你的动画,而非默认的动画;<br><br>4.fillMode:fillMode的作用就是决定当前对象过了非active时间段的行为. 比如动画开始之前,动画结束之后。如果是一个动画CAAnimation,则需要将其removedOnCompletion设置为NO,要不然fillMode不起作用. 下面来讲各个fillMode的意义:<br></p>
+<ul>
+<li>kCAFillModeRemoved 这个是默认值,也就是说当动画开始前和动画结束后,动画对layer都没有影响,动画结束后,layer会恢复到之前的状态;<br></li>
+<li>kCAFillModeForwards 当动画结束后,layer会一直保持着动画最后的状态;<br></li>
+<li>kCAFillModeBackwards 这个和kCAFillModeForwards是相对的,就是在动画开始前,你只要将动画加入了一个layer,layer便立即进入动画的初始状态并等待动画开始.你可以这样设定测试代码,将一个动画加入一个layer的时候延迟5秒执行.然后就会发现在动画没有开始的时候,只要动画被加入了layer,layer便处于动画初始状态;<br></li>
+<li>kCAFillModeBoth 理解了上面两个,这个就很好理解了,这个其实就是上面两个的合成.动画加入后开始之前,layer便处于动画初始状态,动画结束后layer保持动画最后的状态;<br><br>5.timingFunction可选的值有：<ul>
+<li>kCAMediaTimingFunctionLinear（线性）：匀速，给你一个相对静态的感觉</li>
+<li>kCAMediaTimingFunctionEaseIn（渐进）：动画缓慢进入，然后加速离开</li>
+<li>kCAMediaTimingFunctionEaseOut（渐出）：动画全速进入，然后减速的到达目的地</li>
+<li>kCAMediaTimingFunctionEaseInEaseOut（渐进渐出）：动画缓慢的进入，中间加速，然后减速的到达目的地。这个是默认的动画行为.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">baseAnimation<span class="variable">.timingFunction</span> = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:k<span class="built_in">CAMediaTimingFunctionEaseOut</span>];</span><br></pre></td></tr></table></figure>
+<p>6.autoreverses:当你设定这个属性为 YES 时,在它到达目的地之后,再原路返回开始值。<br><br>7.timeOffset:动画从偏移的地方开始动画，但结束的地方是偏移的地方<br><br>8.repeatCount:默认的是 0,意味着动画只会播放一次。如果指定一个无限大的重复次数,使用 1e100f。这个不能和repeatDration属性一块使用。<br></p>
+<p>9.repeatDuration:这个属性指定了动画应该被重复多久。动画会一直重复,直到设定的时间流逝完。它不能和repeatCount一起使用。<br><br>10.additive:这个属性根据当前的渲染层的值加上value生成新的渲染的值，也就是动画时present layer的值。</p>
+<p><a href="http://blog.csdn.net/growinggiant/article/details/45535587" target="_blank" rel="external">下边的代码的动画效果是一样的，对比下values会有个明确的认识：</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)change</span><br><span class="line">&#123;</span><br><span class="line">    CAKeyframeAnimation* animation = [CAKeyframeAnimation animationWithKeyPath:@<span class="string">"position.x"</span>];</span><br><span class="line">    animation.values = @[@<span class="number">0</span>,@<span class="number">100</span>,@(-<span class="number">100</span>),@<span class="number">100</span>,@<span class="number">0</span>];</span><br><span class="line">    animation.keyTimes = @[@<span class="number">0</span>,@(<span class="number">1</span>/<span class="number">6.</span>),@(<span class="number">3</span>/<span class="number">6.</span>),@(<span class="number">5</span>/<span class="number">6.</span>),@<span class="number">1</span>];</span><br><span class="line">    animation.duration = <span class="number">2.f</span>;</span><br><span class="line">    animation.additive = YES; <span class="comment">//YES把更改的值追加到当前的present层中 keypath+=value ，NO是把更改的值设置成当前present层的值keypath = value</span></span><br><span class="line">    [self.ly.layer addAnimation:animation forKey:@<span class="string">"shaking"</span>];</span><br><span class="line">    ---------</span><br><span class="line">	CAKeyframeAnimation* animation1 = [CAKeyframeAnimation animationWithKeyPath:@<span class="string">"position.x"</span>];</span><br><span class="line">    animation1.values = @[@(self.ly1.center.x),@(self.ly1.center.x + <span class="number">100</span>),@(self.ly1.center.x - <span class="number">100</span>),@(self.ly1.center.x + <span class="number">100</span>),@(self.ly1.center.x)];</span><br><span class="line">    animation1.keyTimes = @[@<span class="number">0</span>,@(<span class="number">1</span>/<span class="number">6.</span>),@(<span class="number">3</span>/<span class="number">6.</span>),@(<span class="number">5</span>/<span class="number">6.</span>),@<span class="number">1</span>];</span><br><span class="line">    animation1.duration = <span class="number">2.f</span>;</span><br><span class="line">    animation1.additive = NO; <span class="comment">//YES把更改的值追加到当前的model层中 keypath+=value ，NO是把更改的值设置成当前present层的值keypath = value</span></span><br><span class="line">    [self.ly1.layer addAnimation:animation1 forKey:@<span class="string">"shaking"</span>];</span><br><span class="line">    [button animateWithType:arc4random()%<span class="number">3</span>];</span><br><span class="line">    [self performSelector:@selector(change) withObject:nil afterDelay:<span class="number">3.f</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>11.<a href="http://geeklu.com/2012/09/animation-in-ios/" target="_blank" rel="external">beginTime</a><br>无论是图层还是动画,都有一个时间线Timeline的概念,他们的beginTime是相对于父级对象的开始时间. 虽然苹果的文档中没有指明,但是通过代码测试可以发现,默认情况下所有的CALayer图层的时间线都是一致的,他们的beginTime都是0,绝对时间转换到当前Layer中的时间大小就是绝对时间的大小.所以对于图层而言,虽然创建有先后,但是他们的时间线都是一致的(只要不主动去修改某个图层的beginTime),所以我们可以想象成所有的图层默认都是从系统重启后开始了他们的时间线的计时.</p>
+<p>但是动画的时间线的情况就不同了,当一个动画创建好,被加入到某个Layer的时候,会先被拷贝一份出来用于加入当前的图层,在CA事务被提交的时候,如果图层中的动画的beginTime为0,则beginTime会被设定为当前图层的当前时间,使得动画立即开始.如果你想某个直接加入图层的动画稍后执行,可以通过手动设置这个动画的beginTime,但需要注意的是这个beginTime需要为 CACurrentMediaTime()+延迟的秒数,因为beginTime是指其父级对象的时间线上的某个时间,这个时候动画的父级对象为加入的这个图层,图层当前的时间其实为[layer convertTime:CACurrentMediaTime() fromLayer:nil],其实就等于CACurrentMediaTime(),那么再在这个layer的时间线上往后延迟一定的秒数便得到上面的那个结果.</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">baseAnimation.beginTime </span>= CACurrentMediaTime() + <span class="number">1</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>12.delegate：动画代理，用来监听动画的执行过程</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span> (<span class="title">CAAnimationDelegate</span>)</span></span><br><span class="line"><span class="comment">// 动画开始执行的时候触发这个方法</span></span><br><span class="line">- (<span class="keyword">void</span>)animationDidStart:(<span class="built_in">CAAnimation</span> *)anim;</span><br><span class="line"><span class="comment">// 动画执行完毕的时候触发这个方法</span></span><br><span class="line">- (<span class="keyword">void</span>)animationDidStop:(<span class="built_in">CAAnimation</span> *)anim finished:(<span class="built_in">BOOL</span>)flag;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>以上是做动画时常用的属性（当然也包括不常用的）；</p>
+<h5 id="五、动画类">五、动画类</h5><p>1.CABasicAnimation<br>下面是一些简单的使用方法（看一眼就OK了）：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CABasicAnimation</span> *baseAnimation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"position"</span>];</span><br><span class="line">baseAnimation<span class="variable">.delegate</span> = <span class="keyword">self</span>;</span><br><span class="line">baseAnimation<span class="variable">.toValue</span> = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">150</span>, <span class="number">450</span>)];</span><br><span class="line">baseAnimation<span class="variable">.duration</span> = <span class="number">5.0</span>f;</span><br><span class="line">baseAnimation<span class="variable">.removedOnCompletion</span> = <span class="literal">NO</span>;</span><br><span class="line">baseAnimation<span class="variable">.speed</span> = <span class="number">2.0</span>f;</span><br><span class="line">baseAnimation<span class="variable">.fillMode</span> = k<span class="built_in">CAFillModeForwards</span>;</span><br><span class="line">baseAnimation<span class="variable">.timingFunction</span> = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:k<span class="built_in">CAMediaTimingFunctionEaseOut</span>];</span><br><span class="line">[<span class="keyword">self</span><span class="variable">.layer</span> addAnimation:baseAnimation forKey:<span class="string">@"haha"</span>];</span><br></pre></td></tr></table></figure>
+<p>CABasicAnimation 中使用比较多的是KeyPath，下面列出了一些（当然可以通过Xcode 帮助文档搜索“animatable properties“）<br><img src="http://img.blog.csdn.net/20150707111318433" alt="keyPath"></p>
+<p>2.CAAnimationGroup<br>GroupAnimation可以实现多种动画的组合，在GroupAnimation中的各个动画类型是同时进行的。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//缩放动画</span></span><br><span class="line"><span class="built_in">CABasicAnimation</span> *scale = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"transform"</span>];</span><br><span class="line">scale<span class="variable">.fromValue</span> = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CATransform3D</span>:<span class="built_in">CATransform3DIdentity</span>];</span><br><span class="line">scale<span class="variable">.toValue</span>   = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CATransform3D</span>:<span class="built_in">CATransform3DMakeScale</span>(<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">1</span>)];</span><br><span class="line"></span><br><span class="line"><span class="comment">//平移</span></span><br><span class="line"><span class="built_in">CABasicAnimation</span> *position = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"position"</span>];</span><br><span class="line">position<span class="variable">.toValue</span> = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">150</span>, <span class="number">450</span>)];</span><br><span class="line"></span><br><span class="line"><span class="comment">//旋转</span></span><br><span class="line"><span class="built_in">CABasicAnimation</span> *rotation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"transform.rotation.z"</span>];</span><br><span class="line">rotation<span class="variable">.toValue</span> = [<span class="built_in">NSNumber</span> numberWithFloat:M_PI_2];</span><br><span class="line"></span><br><span class="line"><span class="built_in">CAAnimationGroup</span> *group = [<span class="built_in">CAAnimationGroup</span> animation];</span><br><span class="line">group<span class="variable">.duration</span> = <span class="number">5</span>;</span><br><span class="line">group<span class="variable">.speed</span>    = <span class="number">1</span>;</span><br><span class="line">group<span class="variable">.animations</span> = @[scale,rotation,position];</span><br><span class="line">group<span class="variable">.removedOnCompletion</span> = <span class="literal">NO</span>;</span><br><span class="line">group<span class="variable">.fillMode</span> = k<span class="built_in">CAFillModeForwards</span>;</span><br><span class="line">[<span class="keyword">self</span><span class="variable">.layer</span> addAnimation:group forKey:<span class="string">@"group"</span>];</span><br></pre></td></tr></table></figure>
+<h5 id="六、最后感谢一下引用的博客">六、最后感谢一下引用的博客</h5><p><a href="http://geeklu.com/2012/09/animation-in-ios/" target="_blank" rel="external">http://geeklu.com/2012/09/animation-in-ios/</a><br><br><a href="http://www.cnblogs.com/wengzilin/p/4256468.html" target="_blank" rel="external">http://www.cnblogs.com/wengzilin/p/4256468.html</a><br><br><a href="http://www.cnblogs.com/mjios/archive/2013/04/15/3021039.html" target="_blank" rel="external">http://www.cnblogs.com/mjios/archive/2013/04/15/3021039.html</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/05/21/ios-date/" itemprop="url">
                 iOS 日期处理
               </a>
@@ -548,7 +653,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

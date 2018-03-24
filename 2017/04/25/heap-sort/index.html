@@ -1,0 +1,784 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="just do it !" />
+
+
+
+  <meta name="keywords" content="Hexo,next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="关于二叉树的一些概念一些基本概念
+堆的定义堆(heap)，是数据结构中的堆（不是内存模型中的堆）。堆通常是一个可以被看做一棵树，它满足下列性质：
+
+堆中任意节点的值总是不大于(不小于)其子节点的值；
+堆总是一棵完全树；
+
+二叉堆的定义二叉堆是一颗完全树，它分为两种：最大堆和最小堆。
+
+最大堆：父结点的键值总是大于或等于任何一个子节点的键值
+最小堆：父结点的键值总是小于或等于任何一个子节点的键值">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序算法之堆排序">
+<meta property="og:url" content="http://yoursite.com/2017/04/25/heap-sort/index.html">
+<meta property="og:site_name" content="吾生也有涯，而知也无涯">
+<meta property="og:description" content="关于二叉树的一些概念一些基本概念
+堆的定义堆(heap)，是数据结构中的堆（不是内存模型中的堆）。堆通常是一个可以被看做一棵树，它满足下列性质：
+
+堆中任意节点的值总是不大于(不小于)其子节点的值；
+堆总是一棵完全树；
+
+二叉堆的定义二叉堆是一颗完全树，它分为两种：最大堆和最小堆。
+
+最大堆：父结点的键值总是大于或等于任何一个子节点的键值
+最小堆：父结点的键值总是小于或等于任何一个子节点的键值">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-00.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-01m.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-02.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-03m.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-04.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-05.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-06.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/heap-display-max-00.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-07.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-08.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-09.png">
+<meta property="og:updated_time" content="2018-03-24T05:51:46.241Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="排序算法之堆排序">
+<meta name="twitter:description" content="关于二叉树的一些概念一些基本概念
+堆的定义堆(heap)，是数据结构中的堆（不是内存模型中的堆）。堆通常是一个可以被看做一棵树，它满足下列性质：
+
+堆中任意节点的值总是不大于(不小于)其子节点的值；
+堆总是一棵完全树；
+
+二叉堆的定义二叉堆是一颗完全树，它分为两种：最大堆和最小堆。
+
+最大堆：父结点的键值总是大于或等于任何一个子节点的键值
+最小堆：父结点的键值总是小于或等于任何一个子节点的键值">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+
+
+  <title> 排序算法之堆排序 | 吾生也有涯，而知也无涯 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">吾生也有涯，而知也无涯</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              排序算法之堆排序
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-04-25T23:15:06+08:00" content="2017-04-25">
+            2017-04-25
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="关于二叉树的一些概念">关于二叉树的一些概念</h2><p><a href="http://www.cnblogs.com/idorax/p/6441043.html" target="_blank" rel="external">一些基本概念</a></p>
+<h2 id="堆的定义">堆的定义</h2><p>堆(heap)，是数据结构中的堆（不是内存模型中的堆）。堆通常是一个可以被看做一棵树，它满足下列性质：</p>
+<ul>
+<li>堆中任意节点的值总是不大于(不小于)其子节点的值；</li>
+<li>堆总是一棵完全树；</li>
+</ul>
+<h2 id="二叉堆的定义">二叉堆的定义</h2><p>二叉堆是一颗完全树，它分为两种：最大堆和最小堆。</p>
+<ul>
+<li>最大堆：父结点的键值总是大于或等于任何一个子节点的键值</li>
+<li>最小堆：父结点的键值总是小于或等于任何一个子节点的键值</li>
+</ul>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-00.png" alt=""></p>
+<blockquote>
+<p>二叉堆的性质</p>
+</blockquote>
+<p>二叉堆一般都通过”数组”来实现。数组实现的二叉堆，父节点和子节点的位置存在一定的关系。</p>
+<p>设二叉堆的顶点索引为 1：</p>
+<ul>
+<li>性质一：索引为 <code>i</code> 的左孩子的索引是 <code>2*i</code>；</li>
+<li>性质二：索引为 <code>i</code> 的右孩子的索引是 <code>2*i + 1</code>；</li>
+<li>性质三：索引为 <code>i</code> 的父节点的索引是 <code>floor(i/2)</code>；</li>
+</ul>
+<p>设二叉堆的顶点索引为 0：</p>
+<ul>
+<li>性质一：索引为 <code>i</code> 的左孩子的索引是 <code>2*i + 1</code>；</li>
+<li>性质二：索引为 <code>i</code> 的右孩子的索引是 <code>2*i + 2</code>；</li>
+<li>性质三：索引为 <code>i</code> 的父节点的索引是 <code>floor((i-1)/2)</code>；</li>
+</ul>
+<h2 id="二叉堆的基本实现_（最大堆）">二叉堆的基本实现 （最大堆）</h2><p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-01m.png" alt=""></p>
+<blockquote>
+<p>用数组存储二叉堆</p>
+</blockquote>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-02.png" alt=""></p>
+<h3 id="shiftUp">shiftUp</h3><p>向二叉堆中添加一个元素，我们就要为它找到一个合适的位置，例如添加的是 <code>95</code> 这个元素</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-03m.png" alt=""></p>
+<p>显然此时这个二叉堆已经不满足我们对最大堆的定义，我们要维护的它（最大堆的定义），这里需要几步。我们要不断的把它(<code>95</code>)和它的父节点相比较，大于父节点就交换，直至小于它的父节点。</p>
+<blockquote>
+<p>第一步 和父节点 <code>50</code> 比较</p>
+</blockquote>
+<p><code>95</code> 大于 <code>50</code>，所以 <code>95</code> 和 父节点 <code>50</code> 交换位置</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-04.png" alt=""></p>
+<blockquote>
+<p>第二步 和父节点 <code>58</code> 比较</p>
+</blockquote>
+<p><code>95</code> 大于 <code>58</code>，所以 <code>95</code> 和 父节点 <code>58</code> 交换位置</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-05.png" alt=""></p>
+<blockquote>
+<p>第三步 和父节点 <code>86</code> 比较</p>
+</blockquote>
+<p><code>95</code> 大于 <code>86</code>，所以 <code>95</code> 和 父节点 <code>86</code> 交换位置</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-06.png" alt=""></p>
+<p><strong>至此，就完成了整个 <code>shiftUp</code> 的过程</strong></p>
+<h3 id="shiftUp_程序的编写">shiftUp 程序的编写</h3><p>我们首先建立一个结构体：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> Heap_sort_max_s Heap_sort_max;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> Heap_sort_max_s &#123;</span><br><span class="line">    <span class="keyword">int</span> count;                              <span class="comment">//-&gt; 当前堆内数据的大小</span></span><br><span class="line">    <span class="keyword">int</span> capacity;                           <span class="comment">//-&gt; 当前堆的容量</span></span><br><span class="line">    <span class="keyword">void</span> (*insert)(Heap_sort_max *,<span class="keyword">int</span>);    <span class="comment">//-&gt; 插入函数</span></span><br><span class="line">    <span class="keyword">int</span> (*extract_max)(Heap_sort_max *);    <span class="comment">//-&gt; 输出一个最大值</span></span><br><span class="line">    <span class="keyword">int</span> *item;                              <span class="comment">//-&gt; 数组指针</span></span><br><span class="line">    <span class="keyword">void</span> (*print_to_dot)(Heap_sort_max *);  <span class="comment">//-&gt; 生成 dot 语言 函数</span></span><br><span class="line">&#125; Heap_sort_max;</span><br></pre></td></tr></table></figure>
+<p>insert 函数：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> void insert(Heap_sort_max* heap_sort_max,<span class="keyword">int</span> item) &#123;</span><br><span class="line">    <span class="keyword">if</span> (heap_sort_max-&gt;count &gt; heap_sort_max-&gt;capacity) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    heap_sort_max-&gt;count += <span class="number">1</span>;</span><br><span class="line">    heap_sort_max-&gt;item[heap_sort_max-&gt;count] = item;</span><br><span class="line">    heap_sort_max_shift_up(heap_sort_max, heap_sort_max-&gt;count);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>shiftUp 函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">heap_sort_max_shift_up</span><span class="params">(Heap_sort_max *heap_sort_max,<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (k &gt; <span class="number">1</span> &amp;&amp; heap_sort_max-&gt;item[k/<span class="number">2</span>] &lt; heap_sort_max-&gt;item[k]) &#123;</span><br><span class="line">        swap(&amp;heap_sort_max-&gt;item[k/<span class="number">2</span>], &amp;heap_sort_max-&gt;item[k]);</span><br><span class="line">        k /= <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其它：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">print_to_dot</span><span class="params">(Heap_sort_max *heap_sort_max)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n&lt;---------- dot start ----------&gt;\n\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"digraph heap &#123;\nnode[shape=circle];\nnodesep=0.3;\n"</span>);</span><br><span class="line">    <span class="keyword">int</span> count = heap_sort_max-&gt;count;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= count; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> leftIndex = <span class="number">2</span> * i;</span><br><span class="line">        <span class="keyword">int</span> rightIndex = <span class="number">2</span> * i + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (leftIndex &lt;= count) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\t%d -&gt; %d;\n"</span>,heap_sort_max-&gt;item[i],heap_sort_max-&gt;item[leftIndex]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (rightIndex &lt;= count) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\t%d -&gt; %d;\n"</span>,heap_sort_max-&gt;item[i],heap_sort_max-&gt;item[rightIndex]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"&#125;\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n\n&lt;---------- dot end ----------&gt;\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> Heap_sort_max <span class="title">create_heap_sort_max</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> *p = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>) * capacity);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; capacity; i++) &#123;</span><br><span class="line">        p[i] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Heap_sort_max heap_sort_max = &#123;</span><br><span class="line">        .count = <span class="number">0</span>,</span><br><span class="line">        .capacity = capacity,</span><br><span class="line">        .insert = insert,</span><br><span class="line">        .extract_max = extract_max,</span><br><span class="line">        .item = p,</span><br><span class="line">        .print_to_dot = print_to_dot</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> heap_sort_max;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">free_heap_sort_max</span><span class="params">(Heap_sort_max *heap_sort_max)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">free</span>(heap_sort_max-&gt;item);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="测试_insert">测试 insert</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test_heap_sort_max</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> *a = generateNoRepeatRandomArray(<span class="number">20</span>,<span class="number">0</span>,<span class="number">100</span>);</span><br><span class="line">    </span><br><span class="line">    Heap_sort_max heap_sort_max = create_heap_sort_max(<span class="number">50</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; i++) &#123;</span><br><span class="line">        heap_sort_max.insert(&amp;heap_sort_max,a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">void</span> (*print_to_dot)(Heap_sort_max *heap_sort_max) = heap_sort_max.print_to_dot;</span><br><span class="line">    print_to_dot(&amp;heap_sort_max);</span><br><span class="line">    </span><br><span class="line">    free_heap_sort_max(&amp;heap_sort_max);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们创建一个空间为 50 大小的堆，向其中插入 20 个随机的元素。最终由 dot 生成的图片：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/heap-display-max-00.png" alt=""></p>
+<hr>
+<h3 id="shiftDown">shiftDown</h3><p>下面我们要从堆中取出一个最大的元素 <code>95</code>，为了使这个堆仍然是一个完全二叉树，那么我们将最后一个元素放到堆顶，此时的 <code>count</code> 应将 减去一。</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-07.png" alt=""></p>
+<p>现在这个二叉堆已经不满足我们对最大堆的定义，我们要维护的它，对它进行 <code>shiftDown</code> 操作。</p>
+<blockquote>
+<p>第一步 和 子节点 <code>86</code> 、<code>60</code> 比较</p>
+</blockquote>
+<p><code>50</code> 小于 它的两个子节点 <code>86</code> 、<code>60</code>，但 <code>86</code> 比 <code>60</code> 要大，所以 <code>86</code> 和 <code>50</code> 交换：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-08.png" alt=""></p>
+<blockquote>
+<p>第二步 和 子节点 <code>46</code> 、<code>58</code> 比较</p>
+</blockquote>
+<p><code>50</code> 小于 它的左节点 <code>58</code> ，大于右结点 <code>46</code>，所以 <code>58</code> 和 <code>50</code> 交换：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/heap-diaplay-09.png" alt=""></p>
+<blockquote>
+<p>最后</p>
+</blockquote>
+<p>由于 <code>50</code> 大于 35，所以不必交换。</p>
+<p><strong>至此，就完成了整个 <code>shiftDown</code> 的过程</strong></p>
+<h3 id="shiftDown_程序的编写">shiftDown 程序的编写</h3><p>shiftDown:</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> heap_sort_max_shift_down(Heap_sort_max *heap_sort_max,<span class="keyword">int</span> k) &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">2</span>*k &lt;= heap_sort_max-&gt;<span class="keyword">count</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> <span class="keyword">index</span> = <span class="number">2</span>*k;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">index</span> + <span class="number">1</span> &lt;= heap_sort_max-&gt;<span class="keyword">count</span> &amp;&amp; heap_sort_max-&gt;item[<span class="keyword">index</span> + <span class="number">1</span>] &gt; heap_sort_max-&gt;item[<span class="keyword">index</span>]) &#123;</span><br><span class="line">            <span class="keyword">index</span> += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (heap_sort_max-&gt;item[k] &gt; heap_sort_max-&gt;item[<span class="keyword">index</span>]) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        swap(&amp;heap_sort_max-&gt;item[k], &amp;heap_sort_max-&gt;item[<span class="keyword">index</span>]);</span><br><span class="line">        k = <span class="keyword">index</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出最大值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">extract_max</span><span class="params">(Heap_sort_max* heap_sort_max)</span> </span>&#123;</span><br><span class="line">    assert(heap_sort_max-&gt;count &gt; <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">int</span> ret = heap_sort_max-&gt;item[<span class="number">1</span>];</span><br><span class="line">    </span><br><span class="line">    swap(&amp;heap_sort_max-&gt;item[<span class="number">1</span>], &amp;heap_sort_max-&gt;item[heap_sort_max-&gt;count]);</span><br><span class="line">    heap_sort_max-&gt;count -= <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    heap_sort_max_shift_down(heap_sort_max, <span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="堆排序">堆排序</h2><p>我们实现了 <code>shiftUp</code> 和 <code>shiftDown</code> 两个操作，那堆排序也就可以实现了。</p>
+<p>实现的基本思路是： 先把元素一个一个插入，然后再一个一个去取堆顶元素。代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">heap_sort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    Heap_sort_max heap_sort_max = create_heap_sort_max(n + <span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        heap_sort_max.insert(&amp;heap_sort_max,arr[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n-<span class="number">1</span>; i &gt;=<span class="number">0</span>; i--) &#123;</span><br><span class="line">        arr[i] = ((<span class="keyword">int</span> (*)(Heap_sort_max *heap_sort_max))heap_sort_max.extract_max)(&amp;heap_sort_max);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="测试">测试</h3><p>我们用 50w 个元素测试：</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序优化	 sorttime: 0.003090s</span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.025961s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.067989s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.059503s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.109031s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.283506s</span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>近乎有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序优化	 sorttime: 0.011907s</span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.031257s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.069627s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.047605s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.090930s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.249643s</span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有大量的重复值<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.055228s</span><br><span class="line">sortname:快速排序随机	 sorttime: 27.275784s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.055961s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.015928s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.151020s</span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>随机<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.197971s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.099134s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.103923s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.120655s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.210723s</span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>倒叙<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.057273s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.077192s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.049288s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.092265s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.130887s</span><br></pre></td></tr></table></figure>
+<p>可以看到是，堆排序要比其它的排序稍稍慢一些，不过还是可以接受的。</p>
+<h2 id="堆排序优化_heapify">堆排序优化 heapify</h2><p>将排序的数组直接赋值给堆，然后进行 <code>shiftDown</code> 操作，省去 <code>insert</code> 操作。代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">heapify_sort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    Heap_sort_max heap_sort_max = create_heap_sort_max(n + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i ++) &#123;</span><br><span class="line">        heap_sort_max.item[i+<span class="number">1</span>] = arr[i];</span><br><span class="line">    &#125;</span><br><span class="line">    heap_sort_max.count = n;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n/<span class="number">2</span>; i &gt;= <span class="number">1</span>; i--) &#123;</span><br><span class="line">        heap_sort_max_shift_down(&amp;heap_sort_max, i);<span class="comment">/// O(n)</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n-<span class="number">1</span>; i &gt;=<span class="number">0</span>; i--) &#123;</span><br><span class="line">        arr[i] = ((<span class="keyword">int</span> (*)(Heap_sort_max *heap_sort_max))heap_sort_max.extract_max)(&amp;heap_sort_max);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="测试-1">测试</h3><p>我们用 50w 个元素测试：</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序优化	 sorttime: 0.003090s</span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.025961s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.067989s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.059503s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.109031s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.283506s</span><br><span class="line">sortname:堆排序优化　	 sorttime: 0.130963s</span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>近乎有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序优化	 sorttime: 0.011907s</span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.031257s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.069627s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.047605s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.090930s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.249643s</span><br><span class="line">sortname:堆排序优化　	 sorttime: 0.127976s</span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有大量的重复值<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.055228s</span><br><span class="line">sortname:快速排序随机	 sorttime: 27.275784s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.055961s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.015928s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.151020s</span><br><span class="line">sortname:堆排序优化　	 sorttime: 0.132577s</span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>随机<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.197971s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.099134s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.103923s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.120655s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.210723s</span><br><span class="line">sortname:堆排序优化　	 sorttime: 0.212289s</span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>倒叙<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.057273s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.077192s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.049288s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.092265s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.130887s</span><br><span class="line">sortname:堆排序优化　	 sorttime: 0.130506s</span><br></pre></td></tr></table></figure>
+<p>可以看到比之前稍稍快一点点。</p>
+<h2 id="原地堆排序">原地堆排序</h2><p>之前的堆排序都是用了额外的空，原地堆排序的空间复杂度为 O(1)。</p>
+<p><strong>ps:原地堆排序的顶元素是从 <code>0</code> 开始的。</strong></p>
+<h3 id="原地堆排序分析">原地堆排序分析</h3><p>首先二叉堆数组是这样的：</p>
+<p><img src="" alt=""></p>
+<p>然后不断的将堆顶元素和堆尾的元素交换，并且每次交换后将堆元素的大小减一，当剩下最后一个的时候，数组已经从小到大排好序了。</p>
+<p><img src="" alt=""></p>
+<p>由于原地堆排序的顶元素是从 <code>0</code> 开始的，我们要重新实现 <code>shiftDown</code> 操作：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 顶结点的索引从 0 开始</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">heap_autochthonous_sort_shift_down</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n,<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> ((<span class="number">2</span>*k + <span class="number">1</span>) &lt; n) &#123;</span><br><span class="line">        <span class="keyword">int</span> index = <span class="number">2</span>*k + <span class="number">1</span>; <span class="comment">// 取左孩子索引</span></span><br><span class="line">        <span class="keyword">if</span> (index + <span class="number">1</span> &lt; n &amp;&amp; arr[index + <span class="number">1</span>] &gt; arr[index]) &#123; index++; &#125;</span><br><span class="line">        <span class="keyword">if</span> (arr[k] &gt; arr[index]) &#123; <span class="keyword">break</span>; &#125;</span><br><span class="line">        swap(&amp;arr[k], &amp;arr[index]);</span><br><span class="line">        k = index;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// 原地堆排序 空间O(1)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">heap_autochthonous_sort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="comment">/// heapify</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = (n-<span class="number">1</span>)/<span class="number">2</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        heap_autochthonous_sort_shift_down(arr, n, i);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n-<span class="number">1</span>; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">        swap(&amp;arr[<span class="number">0</span>], &amp;arr[i]);</span><br><span class="line">        heap_autochthonous_sort_shift_down(arr, i, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="测试-2">测试</h3><p>我们用 50w 个元素测试：</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序优化	 sorttime: 0.003090s</span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.025961s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.067989s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.059503s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.109031s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.283506s</span><br><span class="line">sortname:堆排序优化　	 sorttime: 0.130963s</span><br><span class="line">sortname:堆排序原地　	 sorttime: 0.113156s</span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>近乎有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序优化	 sorttime: 0.011907s</span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.031257s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.069627s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.047605s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.090930s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.249643s</span><br><span class="line">sortname:堆排序优化　	 sorttime: 0.127976s</span><br><span class="line">sortname:堆排序原地　	 sorttime: 0.107415s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有大量的重复值<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.055228s</span><br><span class="line">sortname:快速排序随机	 sorttime: 27.275784s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.055961s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.015928s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.151020s</span><br><span class="line">sortname:堆排序优化　	 sorttime: 0.132577s</span><br><span class="line">sortname:堆排序原地　	 sorttime: 0.104522s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>随机<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.197971s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.099134s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.103923s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.120655s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.210723s</span><br><span class="line">sortname:堆排序优化　	 sorttime: 0.212289s</span><br><span class="line">sortname:堆排序原地　	 sorttime: 0.180132s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>逆序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:希尔排序　　	 sorttime: 0.057273s</span><br><span class="line">sortname:快速排序随机	 sorttime: 0.077192s</span><br><span class="line">sortname:快速排序双路	 sorttime: 0.049288s</span><br><span class="line">sortname:快速排序三路	 sorttime: 0.092265s</span><br><span class="line">sortname:堆排序　　　	 sorttime: 0.130887s</span><br><span class="line">sortname:堆排序优化　	 sorttime: 0.130506s</span><br><span class="line">sortname:堆排序原地　	 sorttime: 0.104213s</span><br></pre></td></tr></table></figure>
+<p>可以看到又稍稍快了一点。</p>
+<h2 id="结束">结束</h2><p>至此，整个排序算法便介绍完了。</p>
+<p>下面是各个排序的时间复杂度和空间复杂度的对比：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">–</th>
+<th style="text-align:center">平均时间复杂度</th>
+<th style="text-align:center">原地排序</th>
+<th style="text-align:center">额外空间</th>
+<th style="text-align:center">稳定排序</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">插入排序</td>
+<td style="text-align:center">O(n^2 )</td>
+<td style="text-align:center">✅</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">✅</td>
+</tr>
+<tr>
+<td style="text-align:center">归并排序</td>
+<td style="text-align:center">O(nlogn)</td>
+<td style="text-align:center">❌</td>
+<td style="text-align:center">O(n)</td>
+<td style="text-align:center">✅</td>
+</tr>
+<tr>
+<td style="text-align:center">快速排序</td>
+<td style="text-align:center">O(nlogn)</td>
+<td style="text-align:center">✅</td>
+<td style="text-align:center">O(logn)</td>
+<td style="text-align:center">❌</td>
+</tr>
+<tr>
+<td style="text-align:center">堆排序</td>
+<td style="text-align:center">O(nlogn)</td>
+<td style="text-align:center">✅</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">❌</td>
+</tr>
+</tbody>
+</table>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/10/quick-sort/" rel="next">排序算法之快速排序</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Share" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Share</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">just do it !</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于二叉树的一些概念"><span class="nav-number">1.</span> <span class="nav-text">关于二叉树的一些概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆的定义"><span class="nav-number">2.</span> <span class="nav-text">堆的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉堆的定义"><span class="nav-number">3.</span> <span class="nav-text">二叉堆的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉堆的基本实现_（最大堆）"><span class="nav-number">4.</span> <span class="nav-text">二叉堆的基本实现 （最大堆）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#shiftUp"><span class="nav-number">4.1.</span> <span class="nav-text">shiftUp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shiftUp_程序的编写"><span class="nav-number">4.2.</span> <span class="nav-text">shiftUp 程序的编写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试_insert"><span class="nav-number">4.3.</span> <span class="nav-text">测试 insert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shiftDown"><span class="nav-number">4.4.</span> <span class="nav-text">shiftDown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shiftDown_程序的编写"><span class="nav-number">4.5.</span> <span class="nav-text">shiftDown 程序的编写</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆排序"><span class="nav-number">5.</span> <span class="nav-text">堆排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">5.1.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆排序优化_heapify"><span class="nav-number">6.</span> <span class="nav-text">堆排序优化 heapify</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试-1"><span class="nav-number">6.1.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原地堆排序"><span class="nav-number">7.</span> <span class="nav-text">原地堆排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原地堆排序分析"><span class="nav-number">7.1.</span> <span class="nav-text">原地堆排序分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试-2"><span class="nav-number">7.2.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结束"><span class="nav-number">8.</span> <span class="nav-text">结束</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Share</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
