@@ -1,0 +1,637 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="just do it !" />
+
+
+
+  <meta name="keywords" content="Hexo,next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="索引堆索引堆的原理与实现索引堆实际上是对二叉堆的优化。
+在原来的数据结构中为每个数据增加一个索引，这样在数据更新的时候，只交换其索引，这样对于复杂的数据结构能提高一些性能。如下图：
+
+当索引 10 对应的值改为 70时，进行堆维护之后，则变为：
+
+可以看到，我们仅仅只是对 index 进行了交换，data 的顺序不变。其它的思路不变。
+可以把在上节实现的堆排序的代码拿过来修改一下：
+1234567">
+<meta property="og:type" content="article">
+<meta property="og:title" content="索引堆">
+<meta property="og:url" content="http://yoursite.com/2017/04/28/06-index-heap/index.html">
+<meta property="og:site_name" content="吾生也有涯，而知也无涯">
+<meta property="og:description" content="索引堆索引堆的原理与实现索引堆实际上是对二叉堆的优化。
+在原来的数据结构中为每个数据增加一个索引，这样在数据更新的时候，只交换其索引，这样对于复杂的数据结构能提高一些性能。如下图：
+
+当索引 10 对应的值改为 70时，进行堆维护之后，则变为：
+
+可以看到，我们仅仅只是对 index 进行了交换，data 的顺序不变。其它的思路不变。
+可以把在上节实现的堆排序的代码拿过来修改一下：
+1234567">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/index-heap-01m.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/index-heap-02m.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/index-heap-03.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/index-heap-04.png">
+<meta property="og:updated_time" content="2018-03-27T22:20:33.651Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="索引堆">
+<meta name="twitter:description" content="索引堆索引堆的原理与实现索引堆实际上是对二叉堆的优化。
+在原来的数据结构中为每个数据增加一个索引，这样在数据更新的时候，只交换其索引，这样对于复杂的数据结构能提高一些性能。如下图：
+
+当索引 10 对应的值改为 70时，进行堆维护之后，则变为：
+
+可以看到，我们仅仅只是对 index 进行了交换，data 的顺序不变。其它的思路不变。
+可以把在上节实现的堆排序的代码拿过来修改一下：
+1234567">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+
+
+  <title> 索引堆 | 吾生也有涯，而知也无涯 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">吾生也有涯，而知也无涯</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              索引堆
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-04-28T20:00:35+08:00" content="2017-04-28">
+            2017-04-28
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="索引堆">索引堆</h2><h3 id="索引堆的原理与实现">索引堆的原理与实现</h3><p>索引堆实际上是对二叉堆的优化。</p>
+<p>在原来的数据结构中为每个数据增加一个索引，这样在数据更新的时候，只交换其索引，这样对于复杂的数据结构能提高一些性能。如下图：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/index-heap-01m.png" alt=""></p>
+<p>当索引 <code>10</code> 对应的值改为 <code>70</code>时，进行堆维护之后，则变为：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/index-heap-02m.png" alt=""></p>
+<p>可以看到，我们仅仅只是对 index 进行了交换，data 的顺序不变。其它的思路不变。</p>
+<p>可以把在上节实现的堆排序的代码拿过来修改一下：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> void index_max_heap_shift_up(Index_max_heap *index_max_heap,<span class="keyword">int</span> k) &#123;</span><br><span class="line">    <span class="keyword">while</span> (k &gt; <span class="number">1</span> &amp;&amp; index_max_heap-&gt;item[index_max_heap-&gt;indexs[k/<span class="number">2</span>]] &lt; index_max_heap-&gt;item[index_max_heap-&gt;indexs[k]]) &#123;</span><br><span class="line">        <span class="comment">/// 仅交换 index</span></span><br><span class="line">        swap(&amp;index_max_heap-&gt;indexs[k/<span class="number">2</span>], &amp;index_max_heap-&gt;indexs[k]);</span><br><span class="line">        k /= <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> void index_max_heap_shift_down(Index_max_heap *index_max_heap,<span class="keyword">int</span> k) &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">2</span>*k &lt;= index_max_heap-&gt;count) &#123;</span><br><span class="line">        <span class="keyword">int</span> index = <span class="number">2</span>*k;</span><br><span class="line">        <span class="keyword">if</span> (index + <span class="number">1</span> &lt;= index_max_heap-&gt;count &amp;&amp; index_max_heap-&gt;item[index_max_heap-&gt;indexs[index + <span class="number">1</span>]] &gt; index_max_heap-&gt;item[index_max_heap-&gt;indexs[index]]) &#123;</span><br><span class="line">            index += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (index_max_heap-&gt;item[index_max_heap-&gt;indexs[k]] &gt; index_max_heap-&gt;item[index_max_heap-&gt;indexs[index]]) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        swap(&amp;index_max_heap-&gt;indexs[k], &amp;index_max_heap-&gt;indexs[index]);</span><br><span class="line">        k = index;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="实现更改索引堆的数据">实现更改索引堆的数据</h3><p>当数据变化的时候，我们要更改索引堆中对应的数据。假设 indexs 中存储的是数据的索引，现在我们要更改 索引为 <code>5</code> 对应的数据：</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">item<span class="string">[5]</span> = newItem;</span><br></pre></td></tr></table></figure>
+<p>现在我们要维护索引堆，但是并不知道 <code>5</code> 在 <code>indexs</code> 中的哪个位置，所以只能循环遍历出 <code>i</code>：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for <span class="list">(<span class="keyword">int</span> i = <span class="number">1</span><span class="comment">; i &lt;= count; i++) &#123;</span></span><br><span class="line">    if <span class="list">(<span class="keyword">indexs</span>[i] == <span class="number">5</span>)</span> &#123;</span><br><span class="line">        shiftUp<span class="list">(<span class="keyword">i</span>)</span><span class="comment">;</span></span><br><span class="line">        shiftDown<span class="list">(<span class="keyword">i</span>)</span><span class="comment">;</span></span><br><span class="line">        return<span class="comment">;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="增加反向查找索引_index">增加反向查找索引 index</h3><p>可以看到上面的查找还是比较耗时的，这里我们做一下优化，增加一个反向查找 <code>index</code> 的数组 <code>reverses</code>。</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/index-heap-03.png" alt=""></p>
+<p>我们再将索引 <code>10</code> 对应的值改为 <code>70</code>：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/index-heap-04.png" alt=""></p>
+<h3 id="全部的代码如下">全部的代码如下</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">"IndexMaxHeap.h"</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">"SortHelper.h"</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;assert.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> Index_max_heap_s Index_max_heap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> Index_max_heap_s &#123;</span><br><span class="line">    <span class="keyword">int</span> count;                                      <span class="comment">//-&gt; 当前堆内数据的大小</span></span><br><span class="line">    <span class="keyword">int</span> capacity;                                   <span class="comment">//-&gt; 当前堆的容量</span></span><br><span class="line">    <span class="keyword">void</span> (*insert)(Index_max_heap *,<span class="keyword">int</span>,<span class="keyword">int</span>);       <span class="comment">//-&gt; 插入函数</span></span><br><span class="line">    <span class="keyword">int</span> (*extract_max)(Index_max_heap *);           <span class="comment">//-&gt; 输出一个最大值</span></span><br><span class="line">    <span class="keyword">int</span> (*extract_max_index)(Index_max_heap *);     <span class="comment">//-&gt; 输出一个最大值的索引</span></span><br><span class="line">    <span class="keyword">int</span> (*get_item_by_index)(Index_max_heap *,<span class="keyword">int</span>); <span class="comment">//-&gt; 返回一个指定的索引值</span></span><br><span class="line">    <span class="keyword">void</span> (*change_item_by_index)(Index_max_heap *,<span class="keyword">int</span>,<span class="keyword">int</span>); <span class="comment">//-&gt; 更改指定索引的值</span></span><br><span class="line">    <span class="keyword">int</span> *item;                                      <span class="comment">//-&gt; 数组指针</span></span><br><span class="line">    <span class="keyword">int</span> *indexs;                                    <span class="comment">//-&gt; 数组指针 索引</span></span><br><span class="line">    <span class="keyword">int</span> *reverses;                                  <span class="comment">//-&gt; 数组指针 反向查找索引</span></span><br><span class="line">    <span class="keyword">void</span> (*print_to_dot)(Index_max_heap *);         <span class="comment">//-&gt; 生成 dot 语言 函数</span></span><br><span class="line">&#125; Index_max_heap;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">index_max_heap_shift_up</span><span class="params">(Index_max_heap *index_max_heap,<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (k &gt; <span class="number">1</span> &amp;&amp; index_max_heap-&gt;item[index_max_heap-&gt;indexs[k/<span class="number">2</span>]] &lt; index_max_heap-&gt;item[index_max_heap-&gt;indexs[k]]) &#123;</span><br><span class="line">        <span class="comment">/// 仅交换 index</span></span><br><span class="line">        swap(&amp;index_max_heap-&gt;indexs[k/<span class="number">2</span>], &amp;index_max_heap-&gt;indexs[k]);</span><br><span class="line">        index_max_heap-&gt;reverses[index_max_heap-&gt;indexs[k/<span class="number">2</span>]] = k/<span class="number">2</span>;</span><br><span class="line">        index_max_heap-&gt;reverses[index_max_heap-&gt;indexs[k]] = k;</span><br><span class="line">        k /= <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">index_max_heap_shift_down</span><span class="params">(Index_max_heap *index_max_heap,<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">2</span>*k &lt;= index_max_heap-&gt;count) &#123;</span><br><span class="line">        <span class="keyword">int</span> index = <span class="number">2</span>*k;</span><br><span class="line">        <span class="keyword">if</span> (index + <span class="number">1</span> &lt;= index_max_heap-&gt;count &amp;&amp; index_max_heap-&gt;item[index_max_heap-&gt;indexs[index + <span class="number">1</span>]] &gt; index_max_heap-&gt;item[index_max_heap-&gt;indexs[index]]) &#123;</span><br><span class="line">            index += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (index_max_heap-&gt;item[index_max_heap-&gt;indexs[k]] &gt; index_max_heap-&gt;item[index_max_heap-&gt;indexs[index]]) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        swap(&amp;index_max_heap-&gt;indexs[k], &amp;index_max_heap-&gt;indexs[index]);</span><br><span class="line">        index_max_heap-&gt;reverses[index_max_heap-&gt;indexs[k]] = k;</span><br><span class="line">        index_max_heap-&gt;reverses[index_max_heap-&gt;indexs[index]] = index;</span><br><span class="line"></span><br><span class="line">        k = index;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(Index_max_heap* index_max_heap,<span class="keyword">int</span> index,<span class="keyword">int</span> item)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (index_max_heap-&gt;count &gt; index_max_heap-&gt;capacity) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    index_max_heap-&gt;count += <span class="number">1</span>;</span><br><span class="line">    index_max_heap-&gt;item[index_max_heap-&gt;count] = item;</span><br><span class="line">    index_max_heap-&gt;reverses[index] = index_max_heap-&gt;count;</span><br><span class="line">    index_max_heap-&gt;indexs[index_max_heap-&gt;count] = index;</span><br><span class="line">    index_max_heap_shift_up(index_max_heap, index_max_heap-&gt;count);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">extract_max</span><span class="params">(Index_max_heap* index_max_heap)</span> </span>&#123;</span><br><span class="line">    assert(index_max_heap-&gt;count &gt; <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">int</span> ret = index_max_heap-&gt;item[index_max_heap-&gt;indexs[<span class="number">1</span>]];</span><br><span class="line">    </span><br><span class="line">    swap(&amp;index_max_heap-&gt;indexs[<span class="number">1</span>], &amp;index_max_heap-&gt;indexs[index_max_heap-&gt;count]);</span><br><span class="line">    index_max_heap-&gt;reverses[index_max_heap-&gt;indexs[<span class="number">1</span>]] = <span class="number">1</span>;</span><br><span class="line">    index_max_heap-&gt;reverses[index_max_heap-&gt;indexs[index_max_heap-&gt;count]] = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    index_max_heap-&gt;count -= <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    index_max_heap_shift_down(index_max_heap, <span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">extract_max_index</span><span class="params">(Index_max_heap* index_max_heap)</span> </span>&#123;</span><br><span class="line">    assert(index_max_heap-&gt;count &gt; <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">int</span> ret = index_max_heap-&gt;indexs[<span class="number">1</span>];</span><br><span class="line">    </span><br><span class="line">    swap(&amp;index_max_heap-&gt;indexs[<span class="number">1</span>], &amp;index_max_heap-&gt;indexs[index_max_heap-&gt;count]);</span><br><span class="line">    index_max_heap-&gt;reverses[index_max_heap-&gt;indexs[<span class="number">1</span>]] = <span class="number">1</span>;</span><br><span class="line">    index_max_heap-&gt;reverses[index_max_heap-&gt;indexs[index_max_heap-&gt;count]] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    index_max_heap-&gt;count -= <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    index_max_heap_shift_down(index_max_heap, <span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">contain</span><span class="params">(Index_max_heap* index_max_heap,<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    assert(i + <span class="number">1</span> &gt;= <span class="number">1</span> &amp;&amp; i + <span class="number">1</span> &lt;= index_max_heap-&gt;capacity );</span><br><span class="line">    <span class="keyword">return</span> index_max_heap-&gt;reverses[i + <span class="number">1</span>] != <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">get_item_by_index</span><span class="params">(Index_max_heap* index_max_heap,<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    assert(contain(index_max_heap,index));</span><br><span class="line">    <span class="keyword">return</span> index_max_heap-&gt;item[index + <span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">change_item_by_index</span><span class="params">(Index_max_heap* index_max_heap,<span class="keyword">int</span> index,<span class="keyword">int</span> item)</span> </span>&#123;</span><br><span class="line">    assert(contain(index_max_heap,index));</span><br><span class="line">    index += <span class="number">1</span>;</span><br><span class="line">    index_max_heap-&gt;item[index] = item;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//    for (int i = 1; i &lt;= index_max_heap-&gt;count; i++) &#123;</span></span><br><span class="line"><span class="comment">//        if (index_max_heap-&gt;indexs[i] == index) &#123;</span></span><br><span class="line"><span class="comment">//            index_max_heap_shift_up(index_max_heap, i);</span></span><br><span class="line"><span class="comment">//            index_max_heap_shift_down(index_max_heap, i);</span></span><br><span class="line"><span class="comment">//            return;</span></span><br><span class="line"><span class="comment">//        &#125;</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> i = index_max_heap-&gt;reverses[index];</span><br><span class="line">    index_max_heap_shift_up(index_max_heap, i);</span><br><span class="line">    index_max_heap_shift_down(index_max_heap, i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">print_to_dot</span><span class="params">(Index_max_heap *index_max_heap)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n&lt;---------- dot start ----------&gt;\n\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"digraph heap &#123;\nnode[shape=circle];\nnodesep=0.3;\n"</span>);</span><br><span class="line">    <span class="keyword">int</span> count = index_max_heap-&gt;count;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= count; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> leftIndex = <span class="number">2</span> * i;</span><br><span class="line">        <span class="keyword">int</span> rightIndex = <span class="number">2</span> * i + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (leftIndex &lt;= count) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\t%d -&gt; %d;\n"</span>,index_max_heap-&gt;item[index_max_heap-&gt;indexs[i]],index_max_heap-&gt;item[index_max_heap-&gt;indexs[leftIndex]]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (rightIndex &lt;= count) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\t%d -&gt; %d;\n"</span>,index_max_heap-&gt;item[index_max_heap-&gt;indexs[i]],index_max_heap-&gt;item[index_max_heap-&gt;indexs[rightIndex]]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"&#125;\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n\n&lt;---------- dot end ----------&gt;\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> Index_max_heap <span class="title">create_index_max_heap</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> *item = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>) * (capacity + <span class="number">1</span>));</span><br><span class="line">    <span class="keyword">int</span> *indexs = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>) * (capacity + <span class="number">1</span>));</span><br><span class="line">    <span class="keyword">int</span> *reverses = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>) * (capacity + <span class="number">1</span>));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; capacity; i++) &#123;</span><br><span class="line">        item[i] = <span class="number">0</span>;</span><br><span class="line">        indexs[i] = <span class="number">0</span>;</span><br><span class="line">        reverses[i] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Index_max_heap index_max_heap = &#123;</span><br><span class="line">        .count = <span class="number">0</span>,</span><br><span class="line">        .capacity = capacity,</span><br><span class="line">        .insert = insert,</span><br><span class="line">        .extract_max = extract_max,</span><br><span class="line">        .extract_max_index = extract_max_index,</span><br><span class="line">        .get_item_by_index = get_item_by_index,</span><br><span class="line">        .change_item_by_index = change_item_by_index,</span><br><span class="line">        .item = item,</span><br><span class="line">        .indexs = indexs,</span><br><span class="line">        .reverses = reverses,</span><br><span class="line">        .print_to_dot = print_to_dot</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> index_max_heap;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="preprocessor">#<span class="keyword">pragma</span> mark - test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test_index_max_heap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//    int *a = generateNoRepeatRandomArray(20,0,100);</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> arr[] = &#123; <span class="number">31</span>,<span class="number">2</span>, <span class="number">1</span>,<span class="number">45</span>,<span class="number">73</span>, <span class="number">69</span>, <span class="number">60</span>, <span class="number">59</span>,<span class="number">91</span>, <span class="number">49</span>,  <span class="number">43</span>, <span class="number">32</span>,  <span class="number">29</span>, <span class="number">18</span>,<span class="number">88</span>, <span class="number">17</span>, <span class="number">9</span>,<span class="number">76</span>, <span class="number">6</span>,  <span class="number">0</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    Index_max_heap index_max_heap = create_index_max_heap(<span class="number">50</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; i++) &#123;</span><br><span class="line">        index_max_heap.insert(&amp;index_max_heap,i,arr[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">void</span> (*change_item_by_index)(Index_max_heap *index_max_heap,<span class="keyword">int</span>,<span class="keyword">int</span>) = index_max_heap.change_item_by_index;</span><br><span class="line">    change_item_by_index(&amp;index_max_heap,<span class="number">8</span>,<span class="number">22</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">void</span> (*print_to_dot)(Index_max_heap *index_max_heap) = index_max_heap.print_to_dot;</span><br><span class="line">    print_to_dot(&amp;index_max_heap);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> (*extract_max)(Index_max_heap *index_max_heap) = index_max_heap.extract_max;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">20</span>; i ++) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d, "</span>,extract_max(&amp;index_max_heap));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/25/05-heap-sort/" rel="next">排序算法之堆排序</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Share" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Share</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">just do it !</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#索引堆"><span class="nav-number">1.</span> <span class="nav-text">索引堆</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#索引堆的原理与实现"><span class="nav-number">1.1.</span> <span class="nav-text">索引堆的原理与实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现更改索引堆的数据"><span class="nav-number">1.2.</span> <span class="nav-text">实现更改索引堆的数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加反向查找索引_index"><span class="nav-number">1.3.</span> <span class="nav-text">增加反向查找索引 index</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全部的代码如下"><span class="nav-number">1.4.</span> <span class="nav-text">全部的代码如下</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Share</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

@@ -47,7 +47,7 @@
 第一层两组：[8 , 6, 2 , 3">
 <meta property="og:type" content="article">
 <meta property="og:title" content="排序算法之归并排序">
-<meta property="og:url" content="http://yoursite.com/2017/03/15/merge-sort/index.html">
+<meta property="og:url" content="http://yoursite.com/2017/03/15/03-merge-sort/index.html">
 <meta property="og:site_name" content="吾生也有涯，而知也无涯">
 <meta property="og:description" content="排序算法之归并排序及其优化归并排序介绍归并排序是创建在归并操作上的一种有效的排序算法，效率为O(n log n)。1945年由约翰·冯·诺伊曼首次提出。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用，且各层分治递归可以同时进行。
 自顶向下不说废话了，开工。待排数组如下：
@@ -68,7 +68,7 @@
 <meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F11.png">
 <meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F10.png">
 <meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F12.png">
-<meta property="og:updated_time" content="2018-03-21T11:28:48.590Z">
+<meta property="og:updated_time" content="2018-03-27T22:26:42.193Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排序算法之归并排序">
 <meta name="twitter:description" content="排序算法之归并排序及其优化归并排序介绍归并排序是创建在归并操作上的一种有效的排序算法，效率为O(n log n)。1945年由约翰·冯·诺伊曼首次提出。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用，且各层分治递归可以同时进行。
@@ -280,6 +280,8 @@
 <p><strong>注意：这里的_merge 函数 用的是上一步的！</strong></p>
 <h2 id="测试">测试</h2><p>这里用了 1千万一个数据测试，测试结果如下：</p>
 <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:归并排序 　　	 sorttime: 3.218722s</span><br><span class="line">sortname:归并排序2　　	 sorttime: 2.599350s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>近乎有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:归并排序 　　	 sorttime: 3.078164s</span><br><span class="line">sortname:归并排序2　　	 sorttime: 2.605246s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>随机<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:归并排序 　　	 sorttime: 4.810648s</span><br><span class="line">sortname:归并排序2　　	 sorttime: 4.118894s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>倒叙<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:归并排序 　　	 sorttime: 3.054663s</span><br><span class="line">sortname:归并排序2　　	 sorttime: 2.569524s</span><br></pre></td></tr></table></figure>
+<hr>
+<p>最后附上<a href="https://github.com/xiaerfei/AlgorithmStudy" target="_blank" rel="external">Demo</a></p>
 </span>
       
     </div>
@@ -291,13 +293,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/10/quick-sort/" rel="prev">排序算法之快速排序</a>
+              <a href="/2017/04/10/04-quick-sort/" rel="prev">排序算法之快速排序</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/07/shell-sort/" rel="next">排序算法之希尔排序</a>
+              <a href="/2017/03/07/02-shell-sort/" rel="next">排序算法之希尔排序</a>
             
           </div>
         </div>
@@ -359,7 +361,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

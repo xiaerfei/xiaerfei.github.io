@@ -57,7 +57,7 @@
 第二步我们来考虑">
 <meta property="og:type" content="article">
 <meta property="og:title" content="排序算法之插入排序">
-<meta property="og:url" content="http://yoursite.com/2017/03/05/insert-sort/index.html">
+<meta property="og:url" content="http://yoursite.com/2017/03/05/01-insert-sort/index.html">
 <meta property="og:site_name" content="吾生也有涯，而知也无涯">
 <meta property="og:description" content="排序算法之插入排序从这周开始，每周我将写一些工作中常用的算法如下：
 
@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F14.png">
 <meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F15.png">
 <meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F16.png">
-<meta property="og:updated_time" content="2018-03-18T04:47:44.693Z">
+<meta property="og:updated_time" content="2018-03-27T22:26:17.210Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排序算法之插入排序">
 <meta name="twitter:description" content="排序算法之插入排序从这周开始，每周我将写一些工作中常用的算法如下：
@@ -322,6 +322,7 @@
 <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 0.000647s</span><br><span class="line">sortname:插入排序优化	 sorttime: 0.000554s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>近乎有序<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 0.051551s</span><br><span class="line">sortname:插入排序优化	 sorttime: 0.025874s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>随机<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 18.110468s</span><br><span class="line">sortname:插入排序优化	 sorttime: 8.335453s</span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>倒叙<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">sortname:插入排序　　	 sorttime: 36.259288s</span><br><span class="line">sortname:插入排序优化	 sorttime: 16.780035s</span><br></pre></td></tr></table></figure>
 <p>看看测试时间，这个优化还是有明显的提高的！！！</p>
 <p>不知道这一节你掌握了么？😜😜😜</p>
+<p>最后附上<a href="https://github.com/xiaerfei/AlgorithmStudy" target="_blank" rel="external">Demo</a></p>
 </span>
       
     </div>
@@ -333,13 +334,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/03/07/shell-sort/" rel="prev">排序算法之希尔排序</a>
+              <a href="/2017/03/07/02-shell-sort/" rel="prev">排序算法之希尔排序</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/02/20/bubble-sort/" rel="next">排序算法之冒泡排序和选择排序</a>
+              <a href="/2017/02/20/00-bubble-sort/" rel="next">排序算法之冒泡排序和选择排序</a>
             
           </div>
         </div>
@@ -401,7 +402,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
