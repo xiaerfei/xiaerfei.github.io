@@ -39,16 +39,34 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="CAKeyframeAnimation（关键帧动画）      关键帧动画就是在动画控制过程中开发者指定主要的动画状态，至于各个状态间动画如何进行则由系统自动运算补充（每两个关键帧之间系统形成的动画称为“补间动画”），这种动画的好处就是开发者不用逐个控制每个动画帧，而只要关心几个关键帧的状态即可。      关键帧动画开发分为两种形式：一种是通过设置不同的属性值进行关键帧控制，另一种是通过绘制路径">
+<meta name="description" content="左倾堆堆(heap)被为优先队列(priority queue)，但并不是队列按先后顺序来取出元素，而是按照元素的优先级。上一节的 索引堆、二叉堆 也是。
+这一节我们来介绍左倾堆
+左倾堆的介绍左偏树（英语：leftist tree或leftist heap），也可称为左偏堆、左倾堆，是计算机科学中的一种树，是一种优先队列实现方式 ━━＞ 维基百科
+当优先队列需要解决“两个优先队列合并”的问题时，二">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CAKeyframeAnimation 关键帧动画">
-<meta property="og:url" content="http://yoursite.com/2016/06/30/CAKeyframeAnimation/index.html">
+<meta property="og:title" content="左倾堆">
+<meta property="og:url" content="http://yoursite.com/2017/05/03/07-leftist-heap/index.html">
 <meta property="og:site_name" content="吾生也有涯，而知也无涯">
-<meta property="og:description" content="CAKeyframeAnimation（关键帧动画）      关键帧动画就是在动画控制过程中开发者指定主要的动画状态，至于各个状态间动画如何进行则由系统自动运算补充（每两个关键帧之间系统形成的动画称为“补间动画”），这种动画的好处就是开发者不用逐个控制每个动画帧，而只要关心几个关键帧的状态即可。      关键帧动画开发分为两种形式：一种是通过设置不同的属性值进行关键帧控制，另一种是通过绘制路径">
-<meta property="og:updated_time" content="2016-06-29T23:34:33.000Z">
+<meta property="og:description" content="左倾堆堆(heap)被为优先队列(priority queue)，但并不是队列按先后顺序来取出元素，而是按照元素的优先级。上一节的 索引堆、二叉堆 也是。
+这一节我们来介绍左倾堆
+左倾堆的介绍左偏树（英语：leftist tree或leftist heap），也可称为左偏堆、左倾堆，是计算机科学中的一种树，是一种优先队列实现方式 ━━＞ 维基百科
+当优先队列需要解决“两个优先队列合并”的问题时，二">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-00.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-01.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-02m.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-03mm.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-04mm.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-05mm.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-06.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-07.png">
+<meta property="og:image" content="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-08.png">
+<meta property="og:updated_time" content="2018-03-28T13:30:15.847Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CAKeyframeAnimation 关键帧动画">
-<meta name="twitter:description" content="CAKeyframeAnimation（关键帧动画）      关键帧动画就是在动画控制过程中开发者指定主要的动画状态，至于各个状态间动画如何进行则由系统自动运算补充（每两个关键帧之间系统形成的动画称为“补间动画”），这种动画的好处就是开发者不用逐个控制每个动画帧，而只要关心几个关键帧的状态即可。      关键帧动画开发分为两种形式：一种是通过设置不同的属性值进行关键帧控制，另一种是通过绘制路径">
+<meta name="twitter:title" content="左倾堆">
+<meta name="twitter:description" content="左倾堆堆(heap)被为优先队列(priority queue)，但并不是队列按先后顺序来取出元素，而是按照元素的优先级。上一节的 索引堆、二叉堆 也是。
+这一节我们来介绍左倾堆
+左倾堆的介绍左偏树（英语：leftist tree或leftist heap），也可称为左偏堆、左倾堆，是计算机科学中的一种树，是一种优先队列实现方式 ━━＞ 维基百科
+当优先队列需要解决“两个优先队列合并”的问题时，二">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -60,7 +78,7 @@
 
 
 
-  <title> CAKeyframeAnimation 关键帧动画 | 吾生也有涯，而知也无涯 </title>
+  <title> 左倾堆 | 吾生也有涯，而知也无涯 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -162,7 +180,7 @@
           
           
             
-              CAKeyframeAnimation 关键帧动画
+              左倾堆
             
           
         </h1>
@@ -171,8 +189,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2016-06-30T07:34:33+08:00" content="2016-06-30">
-            2016-06-30
+          <time itemprop="dateCreated" datetime="2017-05-03T19:36:10+08:00" content="2017-05-03">
+            2017-05-03
           </time>
         </span>
 
@@ -191,47 +209,73 @@
       
 
       
-        <span itemprop="articleBody"><p>CAKeyframeAnimation（关键帧动画）<br><br>      关键帧动画就是在动画控制过程中开发者指定主要的动画状态，至于各个状态间动画如何进行则由系统自动运算补充（每两个关键帧之间系统形成的动画称为“补间动画”），这种动画的好处就是开发者不用逐个控制每个动画帧，而只要关心几个关键帧的状态即可。<br>      关键帧动画开发分为两种形式：一种是通过设置不同的属性值进行关键帧控制，另一种是通过绘制路径进行关键帧控制。后者优先级高于前者，如果设置了路径则属性值就不再起作用。</p>
-<p>看下面的代码，简单的用法：</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CAKeyframeAnimation</span> *keyAnimation = [<span class="built_in">CAKeyframeAnimation</span> animationWithKeyPath:@“position”];</span><br><span class="line"><span class="comment">//设置关键点</span></span><br><span class="line"><span class="built_in">NSValue</span> *key1 = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:_layer<span class="variable">.position</span>];</span><br><span class="line"><span class="built_in">NSValue</span> *key2 = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">300</span>, <span class="number">220</span>)];</span><br><span class="line"><span class="built_in">NSValue</span> *key3 = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">100</span>, <span class="number">300</span>)];</span><br><span class="line"><span class="built_in">NSValue</span> *key4 = [<span class="built_in">NSValue</span> valueWith<span class="built_in">CGPoint</span>:<span class="built_in">CGPointMake</span>(<span class="number">300</span>, <span class="number">400</span>)];</span><br><span class="line">keyAnimation<span class="variable">.duration</span> = <span class="number">5.0</span>f;</span><br><span class="line">[<span class="keyword">self</span><span class="variable">.layer</span> addAnimation:keyAnimation forKey:<span class="string">@"key"</span>];</span><br></pre></td></tr></table></figure>
-<p>当然页可以换成路径：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//2.设置路径</span></span><br><span class="line"><span class="comment">//绘制贝塞尔曲线</span></span><br><span class="line">CGMutablePathRef path = CGPathCreateMutable();</span><br><span class="line"><span class="comment">//移动到起始点</span></span><br><span class="line">CGPathMoveToPoint(path, <span class="literal">NULL</span>, _layer.position.x, _layer.position.y);</span><br><span class="line"><span class="comment">//绘制二次贝塞尔曲线</span></span><br><span class="line">CGPathAddCurveToPoint(path, <span class="literal">NULL</span>, <span class="number">160</span>, <span class="number">280</span>, -<span class="number">30</span>, <span class="number">300</span>, <span class="number">55</span>, <span class="number">400</span>);</span><br><span class="line"><span class="comment">//设置path属性</span></span><br><span class="line">keyAnimation.path=path;</span><br><span class="line"><span class="comment">//释放路径对象</span></span><br><span class="line">CGPathRelease(path);</span><br></pre></td></tr></table></figure>
-<p>(1) values属性<br>        values属性指明整个动画过程中的关键帧点，例如上例中的key1-key2就是通过values指定的。需要注意的是，起点必须作为values的第一个值。</p>
-<p>(2)path属性<br>        作用与values属性一样，同样是用于指定整个动画所经过的路径的。需要注意的是，values与path是互斥的，当values与path同时指定时，path会覆盖values，即values属性将被忽略。</p>
-<p>(3)keyTimes<br>     keyTimes：各个关键帧的时间控制，如果你没有显式地对keyTimes进行设置，则系统会默认每条子路径的时间为：ti=duration/(5-1)，即每条子路径的duration相等，都为duration的1\4。当然，我们也可以传个数组让物体快慢结合。前面使用values设置了四个关键帧，默认情况下每两帧之间的间隔为:8/(4-1)秒。如果想要控制动画从第一帧到第二针占用时间4秒，从第二帧到第三帧时间为2秒，而从第三帧到第四帧时间2秒的话，就可以通过keyTimes进行设置。keyTimes中存储的是时间占用比例点，此时可以设置keyTimes的值为0.0，0.5，0.75，1.0（当然必须转换为NSNumber，其中首尾必须分别是0和1），也就是说1到2帧运行到总时间的50%，2到3帧运行到总时间的75%，3到4帧运行到8秒结束。</p>
-<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keyAnimation.keyTimes = <span class="variable">@[</span><span class="variable">@(</span><span class="number">0</span>),<span class="variable">@(</span><span class="number">0.3</span>),<span class="variable">@(</span><span class="number">0.8</span>),<span class="variable">@(</span><span class="number">1</span>)];</span><br></pre></td></tr></table></figure>
-<p>(3) calculationMode属性</p>
-<table>
-<thead>
-<tr>
-<th>calculationMode keys</th>
-<th>说明                                                                                                                                       </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>kCAAnimationLinear</td>
-<td>calculationMode的默认值,表示当关键帧为座标点的时候,关键帧之间直接直线相连进行插值计算;                                                                                                                                   </td>
-</tr>
-<tr>
-<td>kCAAnimationDiscrete</td>
-<td>离散的,就是不进行插值计算,所有关键帧直接逐个进行显示;                                                                                                                                    </td>
-</tr>
-<tr>
-<td>kCAAnimationPaced</td>
-<td>使得动画均匀进行,而不是按keyTimes设置的或者按关键帧平分时间,此时keyTimes和timingFunctions无效;   </td>
-</tr>
-<tr>
-<td>kCAAnimationCubic</td>
-<td>对关键帧为座标点的关键帧进行圆滑曲线相连后插值计算,对于曲线的形状还可以通过tensionValues,continuityValues,biasValues来进行调整自定义,这里的数学原理是Kochanek–Bartels spline,这里的主要目的是使得运行的轨迹变得圆滑;</td>
-</tr>
-<tr>
-<td>kCAAnimationCubicPaced</td>
-<td>看这个名字就知道和kCAAnimationCubic有一定联系,其实就是在kCAAnimationCubic的基础上使得动画运行变得均匀,就是系统时间内运动的距离相同,此时keyTimes以及timingFunctions也是无效的.      </td>
-</tr>
-</tbody>
-</table>
-<h5 id="感谢一下博客：">感谢一下博客：</h5><p><a href="http://www.cnblogs.com/kenshincui/p/3972100.html#autoid-3-1-0" target="_blank" rel="external">http://www.cnblogs.com/kenshincui/p/3972100.html#autoid-3-1-0</a><br><br><a href="http://www.cnblogs.com/wengzilin/p/4256468.html" target="_blank" rel="external">http://www.cnblogs.com/wengzilin/p/4256468.html</a><br><br><a href="http://blog.jobbole.com/69111/" target="_blank" rel="external">http://blog.jobbole.com/69111/</a></p>
+        <span itemprop="articleBody"><h2 id="左倾堆">左倾堆</h2><p>堆(heap)被为优先队列(priority queue)，但并不是队列按先后顺序来取出元素，而是按照元素的优先级。上一节的 <a href="http://xiaerfei.github.io/2017/04/28/06-index-heap/" target="_blank" rel="external">索引堆</a>、<a href="http://xiaerfei.github.io/2017/04/25/05-heap-sort/" target="_blank" rel="external">二叉堆</a> 也是。</p>
+<p>这一节我们来介绍左倾堆</p>
+<h3 id="左倾堆的介绍">左倾堆的介绍</h3><p>左偏树（英语：leftist tree或leftist heap），也可称为左偏堆、左倾堆，是计算机科学中的一种树，是一种优先队列实现方式 ━━＞ <a href="https://zh.wikipedia.org/wiki/%E5%B7%A6%E5%81%8F%E6%A0%91" target="_blank" rel="external">维基百科</a></p>
+<p>当优先队列需要解决“两个优先队列合并”的问题时，二叉堆的效率就比较差了，这时左倾堆等方式可以很好的解决这类问题。左倾堆合并时间复杂度为O(lgn)。左倾堆在统计问题，最值问题，模拟问题和贪心问题等问题中有广泛的应用。 左倾堆是二叉树，另外还有两个属性，键值和零距离。 ━━＞ <a href="http://mingnote.com/leftist-heap-algorithm-in-c.html" target="_blank" rel="external">来自这里</a></p>
+<p>不同于斜堆合并的平均情况复杂度,左偏堆的合并操作的最坏情况复杂度为O(log n)，而完全二叉堆为O(n)，所以左偏堆适合基于合并操作的情形。</p>
+<p>由于左偏堆已经不是完全二叉树，因此不能用数组存储表示，需要用链接结构。</p>
+<ul>
+<li>左子树</li>
+<li>右子树</li>
+<li>键值</li>
+<li>NPL</li>
+</ul>
+<hr>
+<blockquote>
+<p>键值</p>
+</blockquote>
+<p> 用来比较节点的大小</p>
+<blockquote>
+<p> 零距离( NPL )</p>
+</blockquote>
+<p>是 null path length 的缩写，指的是从该结点到达一个没有两个孩子的结点（一个或无孩子）的最短距离，叶节点的NPL为0, NULL的NPL为-1。</p>
+<h3 id="左倾堆的性质">左倾堆的性质</h3><ul>
+<li>节点的优先级大于或等于它子节点的优先级</li>
+<li>任意节点左孩子的NPL &gt;= 右孩子的NPL</li>
+<li>节点的NPL = 它的右孩子的NPL + 1</li>
+</ul>
+<p>下图是 NPL 的示意图：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-00.png" alt=""></p>
+<h3 id="合并操作图解">合并操作图解</h3><p>合并操作是左倾堆的重点。合并两个左倾堆的过程如下：</p>
+<ol>
+<li>如果一个空左倾堆与非空左倾堆合并，返回非空左倾堆;</li>
+<li>如果两个左倾堆都非空，比较两个根节点，取优先级高的根节点为新的根节点。将“优先级较高堆的根节点的右孩子”和“优先级底的堆”进行合并;</li>
+<li>如果新堆的右孩子的NPL &gt; 左孩子的NPL，则交换左右孩子;</li>
+<li>设置新堆的根节点的NPL = 右子堆NPL + 1;</li>
+</ol>
+<p>下图将是我们合并的两个左倾堆：</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-01.png" alt=""></p>
+<blockquote>
+<p>第一步 将 <code>较小堆(根为10)的右孩子</code> 和 <code>较大堆(根为12)</code> 进行合并</p>
+</blockquote>
+<p>因为 <code>根为 10 的堆</code> 比 <code>根为 12 的堆</code> 优先级高，<code>根为 10 的根节点</code> 作为新节点</p>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-02m.png" alt=""></p>
+<blockquote>
+<p>第二步 将上一步得到的 <code>根 12 的右子树</code> 和 <code>根为 15 的树</code> 进行合并<br><img src="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-03mm.png" alt=""></p>
+<p>第三步 将上一步得到的 <code>根 15 的右子树</code> 和 <code>根为 22 的树</code> 进行合并</p>
+</blockquote>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-04mm.png" alt=""></p>
+<blockquote>
+<p>第四步 将上一步得到的 <code>根 22 的右子树</code> 和 <code>根为 27 的树</code> 进行合并</p>
+</blockquote>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-05mm.png" alt=""></p>
+<p>至此，已经成功的将两棵树合并成为一棵树了。接下来，对新生成的树进行调节。</p>
+<blockquote>
+<p>第五步 上一步得到的 <code>树22的右孩子的NPL &gt; 左孩子的NPL</code> ，因此交换左右孩子</p>
+</blockquote>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-06.png" alt=""></p>
+<blockquote>
+<p>第六步 上一步得到的 <code>树13的右孩子的NPL &gt; 左孩子的NPL</code> ，因此交换左右孩子</p>
+</blockquote>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-07.png" alt=""></p>
+<blockquote>
+<p>第七步 上一步得到的 <code>树10的右孩子的NPL &gt; 左孩子的NPL</code> ，因此交换左右孩子</p>
+</blockquote>
+<p><img src="http://7xv4w8.com1.z0.glb.clouddn.com/leftist-heap-npl-08.png" alt=""></p>
+<p>至此，合并完毕。上面就是合并得到的左倾堆！</p>
+<p>最后，<a href="https://github.com/xiaerfei/AlgorithmStudy.git" target="_blank" rel="external">Demo 在这里</a></p>
+<h2 id="参考">参考</h2><p><a href="http://www.cnblogs.com/vamei/archive/2013/04/19/2978555.html" target="_blank" rel="external">纸上谈兵: 左倾堆 (leftist heap)</a><br><a href="http://mingnote.com/leftist-heap-algorithm-in-c.html" target="_blank" rel="external">左倾堆的C语言实现</a></p>
 </span>
       
     </div>
@@ -243,13 +287,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/06/30/CATransition/" rel="prev">CATransition 转场动画</a>
+              <a href="/2017/05/03/08-skew-heap/" rel="prev">斜堆</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/06/30/Core-Animation/" rel="next">Core Animation 基础知识</a>
+              <a href="/2017/04/28/06-index-heap/" rel="next">索引堆</a>
             
           </div>
         </div>
@@ -353,7 +397,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#感谢一下博客："><span class="nav-number">1.</span> <span class="nav-text">感谢一下博客：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#左倾堆"><span class="nav-number">1.</span> <span class="nav-text">左倾堆</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#左倾堆的介绍"><span class="nav-number">1.1.</span> <span class="nav-text">左倾堆的介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#左倾堆的性质"><span class="nav-number">1.2.</span> <span class="nav-text">左倾堆的性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合并操作图解"><span class="nav-number">1.3.</span> <span class="nav-text">合并操作图解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
